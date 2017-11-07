@@ -4,6 +4,7 @@ import ROOT
 from array import array
 import hashlib
 import logging
+import binning
 logger = logging.getLogger(__name__)
 """
 """
@@ -20,11 +21,11 @@ class TTreeContent(object):
         self._cuts = cuts
         self._weights = weights
         self._weight_name = "weight_" + self._name  # internal name needed for TDFs
-        self._result = False
+        self._result = None
         self._folder = folder
 
-    def is_present(self):  # return if h is already filled
-        return self._result != False
+    def is_present(self):
+        return self._result != None
 
     def files_folders(self):
         return (self._inputfiles, self._folder)
@@ -63,7 +64,8 @@ class TTreeContent(object):
         #m.update(self.cuts.expand())  # TODO: Not implemented?
         m.update(self._weights.extract())
         m.update(self._folder)
-        m.update(self._variable.name)  # TODO: not implemented?
+        if isinstance(self, Histogram):
+            m.update(self._variable.name)  # TODO: not implemented?
         return int(m.hexdigest(), 16)
 
     @property
@@ -85,16 +87,28 @@ class Histogram(TTreeContent):
 
     def create_result(self, dataframe=False):
         if dataframe:
-            self._result = dataframe.Histo1D(self._variable.name,
-                                             self._weight_name)
+            if not isinstance(self._variable.binning, binning.ConstantBinning):
+                logger.fatal("TDataFrames work only with a constant binning.")
+                raise Exception
+            self._result = dataframe.Histo1D(
+                ("", self._cuts.expand() + "*" + self._weights.extract(),
+                 self._variable.binning.nbinsx, self._variable.binning.xlow,
+                 self._variable.binning.xhigh), self._variable.name,
+                self._weight_name)
         else:  # classic way
+            # combine files to a single tree using TChain
             tree = ROOT.TChain()
             for inputfile in self._inputfiles:
                 tree.Add(inputfile + "/" + self._folder)
-            tree.Draw(self._variable.name + ">>" + self._name +
-                      self._variable.binning.extract(),
+            # create unfilled template histogram
+            hist = ROOT.TH1F(self._name, self._name,
+                             self._variable.binning.nbinsx,
+                             self._variable.binning.bin_borders)
+            # draw histogram and pipe result in the template histogram
+            tree.Draw(self._variable.name + ">>" + self._name,
                       self._cuts.expand() + "*" + self._weights.extract(),
                       "goff")
+            # write out result
             self._result = ROOT.gDirectory.Get(self._name)
         return self
 
@@ -239,7 +253,7 @@ class RootObjects(object):
         for files_folder in files_folders:
             # create the dataframe
             common_dataframe = ROOT.Experimental.TDataFrame(
-                files_folder[1], files_folder[0][0])
+                str(files_folder[1]), str(files_folder[0][0]))
             # loop over the corresponding histograms and create an own dataframe for each histogram -> TODO
             for h in [
                     h for h in self._root_objects

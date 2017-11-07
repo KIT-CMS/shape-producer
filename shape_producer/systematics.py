@@ -105,7 +105,8 @@ class Systematic(object):
             PROCESS=self._process.name,
             ANALYSIS=self._analysis,
             ERA=self._era.name,
-            VARIABLE=self._category.variable.name,
+            VARIABLE='COUNT' if self._category.variable == None else
+            self._category.variable.name,
             MASS=self._mass,
             VARIATION=""
             if self._variation.name == "Nominal" else self._variation.name)
@@ -160,9 +161,7 @@ class Systematics(object):
                      self._backend)
         if self._backend == "classic":
             self._root_objects_holder.produce_classic(self._num_threads)
-        elif self._backend == "tdf":  # experimental - do not use yet, need to set number of threads
-            logger.fatal("TDFs are not yet validated - do not use yet")
-            raise NotImplementedError
+        elif self._backend == "tdf":
             self._root_objects_holder.produce_tdf(self._num_threads)
         else:
             logger.fatal("Backend %s is not implemented.", self._backend)

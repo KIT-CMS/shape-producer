@@ -3,8 +3,7 @@
 import copy
 import os
 
-from estimation_methods import EstimationMethod
-from estimation_methods import ABCDEstimationMethod
+from estimation_methods import EstimationMethod, SStoOSEstimationMethod, ABCDEstimationMethod
 from histogram import *
 from cutstring import *
 from systematics import *
@@ -33,7 +32,6 @@ class DataEstimation(EstimationMethod):
         return Cuts()
 
 
-# TODO: Does this work?
 class HTTEstimation(EstimationMethod):
     def __init__(self, era, directory, channel):
         super(HTTEstimation, self).__init__(
@@ -147,8 +145,7 @@ class ZTTEstimation(EstimationMethod):
                 "z_stitching_weight"), self.era.lumi_weight)
 
     def get_cuts(self):
-        return Cuts(Cut("gen_match_2==5",
-                        "ztt_genmatch_mt"))  # FIXME: Doubles with weights?
+        return Cuts(Cut("gen_match_2==5", "ztt_genmatch_mt"))
 
     def get_files(self):
         query = {
@@ -284,11 +281,29 @@ class TTEstimation(EstimationMethod):
 
 
 class TTTEstimationMT(TTEstimation):
+    def __init__(self, era, directory, channel):
+        super(TTEstimation, self).__init__(
+            name="TTT",
+            folder="nominal",
+            era=era,
+            directory=directory,
+            channel=channel,
+            mc_campaign="RunIISummer16MiniAODv2")
+
     def get_cuts(self):
         return Cuts(Cut("gen_match_2==5", "ttt_genmatch_mt"))
 
 
 class TTJEstimationMT(TTEstimation):
+    def __init__(self, era, directory, channel):
+        super(TTEstimation, self).__init__(
+            name="TTJ",
+            folder="nominal",
+            era=era,
+            directory=directory,
+            channel=channel,
+            mc_campaign="RunIISummer16MiniAODv2")
+
     def get_cuts(self):
         return Cuts(Cut("gen_match_2!=5", "ttj_genmatch_mt"))
 
@@ -361,12 +376,27 @@ class VVEstimation(EstimationMethod):
         return self.artus_file_names(files)
 
 
-class QCDEstimation(ABCDEstimationMethod):
-    def __init__(self, name, folder, era, directory, channel, bg_processes,
-                 data_process):
-        super(QCDEstimation, self).__init__(
-            name=name,
-            folder=folder,
+class QCDEstimationET(SStoOSEstimationMethod):
+    def __init__(self, era, directory, channel, bg_processes, data_process):
+        super(QCDEstimationET, self).__init__(
+            name="QCD",
+            folder="nominal",
+            era=era,
+            directory=directory,
+            channel=channel,
+            bg_processes=bg_processes,
+            data_process=data_process)
+
+
+class QCDEstimationMT(QCDEstimationET):
+    pass
+
+
+class QCDEstimationTT(ABCDEstimationMethod):
+    def __init__(self, era, directory, channel, bg_processes, data_process):
+        super(QCDEstimationTT, self).__init__(
+            name="QCD",
+            folder="nominal",
             era=era,
             directory=directory,
             channel=channel,
