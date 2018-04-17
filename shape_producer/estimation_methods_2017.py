@@ -280,6 +280,22 @@ class TTLEstimationTT(TTEstimation):
                 "Empty Process")
         )  # All ttbar->real tau events are vetoed for embedded events
 
+class TTLEstimationEM(TTEstimation):
+    def __init__(self, era, directory, channel, friend_directory=None):
+        super(TTEstimation, self).__init__(
+            name="TTL",
+            folder="nominal",
+            era=era,
+            directory=directory,
+            friend_directory=friend_directory,
+            channel=channel,
+            mc_campaign="RunIISummer17MiniAOD")
+
+    def get_cuts(self):
+        return Cuts(
+            Cut("!((gen_match_1 == 3) && (gen_match_2 == 4))",
+                "ttbar->tau tau veto for embedded events")
+        )
 
 class QCDEstimationET(SStoOSEstimationMethod):
     def __init__(self,
@@ -545,6 +561,11 @@ class ZTTEstimationTT(ZTTEstimation):
         return Cuts(
             Cut("(gen_match_1==5 && gen_match_2==5)", "ztt_genmatch_tt"))
 
+class ZTTEstimationEM(ZTTEstimation):
+    def get_cuts(self):
+        return Cuts(
+            Cut("(gen_match_1==3 && gen_match_2==4)", "ztt_genmatch_em"))
+
 
 class ZJEstimationMT(ZTTEstimation):
     def get_cuts(self):
@@ -610,22 +631,28 @@ class ZTTEmbeddedEstimation(EstimationMethod):
 
                 # Data related scale-factors
                 Weight(
-                    "generatorWeight*(generatorWeight<=1.0)*idisoweight_1*muonEffEmbeddedIDWeight_1*muonEffEmbeddedIDWeight_2*muonEffTrgWeight_1*muonEffVVLIsoWeight_1*muonEffVVLIsoWeight_2*triggerweight_1",
-                    "generator_weight"),
-                Weight(
-                    "((1.0/dataEffWeight_1)*(dataEffWeight_1<=1.8)+(dataEffWeight_1>1.8))",
-                    "dataEffWeight"))
+                    "generatorWeight*(generatorWeight<=1.0)*idisoweight_1*muonEffEmbeddedIDWeight_1*muonEffEmbeddedIDWeight_2*muonEffTrgWeight_1*muonEffVVLIsoWeight_1*muonEffVVLIsoWeight_2*(triggerweight_1*(triggerweight_1<1.9)+(triggerweight_1>=1.9))",
+                    "generator_weight"))
+                #Weight(
+                #    "((1.0/dataEffWeight_1)*(dataEffWeight_1<=1.8)+(dataEffWeight_1>1.8))",
+                #    "dataEffWeight"),
+                # Weight("(41.29)/(4.767+4.224+9.261)", "lumi_weight"))
         elif self.channel.name == "et":
             return Weights(
                 Weight(
                     "generatorWeight*(generatorWeight<=1.0)*idisoweight_1*muonEffEmbeddedIDWeight_1*muonEffEmbeddedIDWeight_2*muonEffTrgWeight_1*muonEffVVLIsoWeight_1*muonEffVVLIsoWeight_2*triggerweight_1",
-                    "generator_weight"),
-                Weight("(42.71)/(4.767)", "lumi_weight"))
+                    "generator_weight"))
+                # Weight("(41.29)/(4.767+4.224+9.261)", "lumi_weight"))
         elif self.channel.name == "tt":
             return Weights(
                 Weight("generatorWeight*(generatorWeight<=1.0)",
                        "generator_weight"),
-                Weight("(42.71)/(4.767)", "lumi_weight"))
+                Weight("(41.29)/(4.767)", "lumi_weight"))
+        elif self.channel.name == "em":
+            return Weights(
+                Weight("generatorWeight*(generatorWeight<=1.0)",
+                       "generator_weight"),
+                Weight("(41.29)/(4.767)", "lumi_weight"))
 
     def get_files(self):
         query = {"process": "Embedding2017(B|C|D|E|F)", "embedded": True}
@@ -641,14 +668,14 @@ class ZTTEmbeddedEstimation(EstimationMethod):
             query["scenario"] = ".*v2"
         elif self.channel.name == "em":
             query["campaign"] = "ElMuFinalState"
+            query["scenario"] = ".*v2"
         files = self.era.datasets_helper.get_nicks_with_query(query)
         log_query(self.name, query, files)
         return self.artus_file_names(files)
 
     def get_cuts(self):
-        ztt_genmatch_cut = Cut("1 == 1", "ztt_genmatch")
         if self.channel.name in ["mt", "et"]:
-            ztt_genmatch_cut = Cut("gen_match_2==5", "ztt_genmatch")
+            ztt_genmatch_cut = Cut("gen_match_2==5","ztt_genmatch")
         elif self.channel.name == "tt":
             ztt_genmatch_cut = Cut("(gen_match_1==5) && (gen_match_2==5)",
                                    "ztt_genmatch")
@@ -812,8 +839,16 @@ class TTTEstimationMT(TTTEstimation):
 
 class TTJEstimationMT(TTTEstimation):
     def get_cuts(self):
-        return Cuts(Cut("gen_match_2!=5", "ttj_genmatch_mt"))
+        return Cuts(Cut("gen_match_2!=3", "ttj_genmatch_em"))
 
+class TTTEstimationEM(TTTEstimationMT):
+    # def get_cuts(self):
+    #     return Cuts(Cut("gen_match_2==3", "ttt_genmatch_em"))
+    pass
+
+class TTJEstimationEM(TTTEstimation):
+    def get_cuts(self):
+        return Cuts(Cut("gen_match_2!=3", "ttj_genmatch_mt"))
 
 class TTJEstimation(TTEstimation):
     def __init__(self, era, directory, channel, friend_directory=None):
@@ -834,6 +869,10 @@ class TTJEstimation(TTEstimation):
 
 class QCDEstimationMT(QCDEstimationET):
     pass
+
+class QCDEstimationEM(QCDEstimationET):
+    pass
+
 
 
 class ZLEstimationETSM(ZLEstimationMT):
@@ -872,6 +911,15 @@ class ZLEstimationTT(ZLEstimationMT):
         return Cuts(
             Cut("(gen_match_1<6 && gen_match_2<6 &&! (gen_match_1==5 && gen_match_2==5))",
                 "zl_genmatch_tt"))
+
+class ZJEstimationEM(ZJEstimationMT):
+    pass
+
+
+class ZLEstimationEM(ZTTEstimation):
+    def get_cuts(self):
+        return Cuts(Cut("gen_match_2<4 || gen_match_1<3", "zl_genmatch_em"))
+
 
 
 class TTTEstimationTT(TTEstimation):

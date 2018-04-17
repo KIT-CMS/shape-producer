@@ -99,9 +99,8 @@ class MTSM_17(Channel):
             Cut("byTightIsolationMVArun2v1DBoldDMwLT_2>0.5", "tau_iso"),
             Cut("iso_1<0.15", "muon_iso"), Cut("q_1*q_2<0", "os"),
             Cut("mt_1<50", "m_t"),
-            Cut("pt_1>30 && pt_2>30", "pt_cut")
-            #           Cut("((trg_singlemuon==1 && pt_1>29 && pt_2>30))",
-            #               "trg_singlemuoncross")
+            Cut("pt_1>30 && pt_2>30", "pt_cut"),
+            Cut("trg_singlemuon==1","trg_singlemuoncross")
         )  # in samples trg_singlemuon is "HLT_IsoMu27_v:29.0"
 
 
@@ -212,7 +211,7 @@ class EM(Channel):
             Cut("dilepton_veto<0.5", "dilepton_veto"),
             Cut("iso_1<0.15", "ele_iso"), Cut("iso_2<0.2", "muon_iso"),
             Cut("q_1*q_2<0", "os"),
-            Cut("trg_muonelectron==1", "trg_muonelectron"))
+            Cut("trg_muonelectron_lowpte==1", "trg_muonelectron"))
 
 
 class PU(Channel):

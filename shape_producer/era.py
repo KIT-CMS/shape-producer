@@ -72,7 +72,7 @@ class Run2016(Era):
 class Run2017(Era):
     def __init__(self, database_path):
         super(Run2017, self).__init__(
-            "Run2017", 42.71 * 1000.0, database_path
+            "Run2017", 41.29 * 1000.0, database_path
         )  # Lumi according to full Run2017 data (Prompt) with normtag
 
     def data_files(self, channel):
