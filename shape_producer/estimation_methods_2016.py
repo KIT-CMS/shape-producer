@@ -275,11 +275,12 @@ class ZTTEmbeddedEstimation(EstimationMethod):
 
     def scale_factors(self):
         if self.channel.name == "mt":
-            return "idWeight_1*(idWeight_1<2.0)*trgWeight_1*(trgWeight_1<2.0)*isoWeight_1*(isoWeight_1<2.0)*muonEffEmbeddedIDWeight_1*muonEffEmbeddedIDWeight_2*muonEffVVLIsoWeight_1*muonEffVVLIsoWeight_2*(((eta_1<=1.2)*(eta_1>=-1.2))*1.128668+((eta_1>1.2)||(eta_1<-1.2))*1.199)"
+        #    return "idWeight_1*(idWeight_1<2.0)*trgWeight_1*(trgWeight_1<2.0)*isoWeight_1*(isoWeight_1<2.0)*muonEffEmbeddedIDWeight_1*muonEffEmbeddedIDWeight_2*muonEffVVLIsoWeight_1*muonEffVVLIsoWeight_2*(((eta_1<=1.2)*(eta_1>=-1.2))*1.128668+((eta_1>1.2)||(eta_1<-1.2))*1.199)"
+            return "triggerweight_1*isoweight_1*muonEffTrgWeight"
         elif self.channel.name == "et":
-            return "idWeight_1*(idWeight_1<2.0)*trgWeight_1*(trgWeight_1<2.0)*isoWeight_1*(isoWeight_1<2.0)*muonEffEmbeddedIDWeight_1*muonEffEmbeddedIDWeight_2*muonEffVVLIsoWeight_1*muonEffVVLIsoWeight_2*(((eta_1<=1.2)*(eta_1>=-1.2))*1.128668+((eta_1>1.2)||(eta_1<-1.2))*1.199)"
+            return "muonEffTrgWeight*identificationWeight_1*triggerweight_1"
         elif self.channel.name == "tt":
-            return "1.5*triggerWeight_1*triggerWeight_2*muonEffEmbeddedIDWeight_1*muonEffEmbeddedIDWeight_2*muonEffVVLIsoWeight_1*muonEffVVLIsoWeight_2*(((eta_1<=1.2)*(eta_1>=-1.2))*1.128668+((eta_1>1.2)||(eta_1<-1.2))*1.199)"
+            return "muonEffEmbeddedIDWeight_1*muonEffEmbeddedIDWeight_2*trigweight_1*trigweight_2"
         elif self.channel.name == "em":
             return "1.0"
 
@@ -292,6 +293,8 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                    "generatorWeight (crucial for embedded events)"),
             Weight(self.scale_factors(), "Custom embedded TnP scale factors"),
             Weight("(1.0)", "zPtReweightWeight")
+            #Weight("generatorWeight*(generatorWeight<=1.0)*idisoweight_1*muonEffEmbeddedIDWeight_1*muonEffEmbeddedIDWeight_2*muonEffTrgWeight*muonEffVVLIsoWeight_1*muonEffVVLIsoWeight_2*(triggerweight_1*(triggerweight_1<1.9)+(triggerweight_1>=1.9))",
+            #        "generator_weight")
         )
 
     def get_files(self):

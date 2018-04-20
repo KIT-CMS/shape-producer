@@ -82,7 +82,7 @@ class MTSM(Channel):
             Cut("byTightIsolationMVArun2v1DBoldDMwLT_2>0.5", "tau_iso"),
             Cut("iso_1<0.15", "muon_iso"), Cut("q_1*q_2<0", "os"),
             Cut("mt_1<50", "m_t"),
-            Cut("((trg_singlemuon==1 && pt_1>23 && pt_2>30) + (trg_mutaucross==1 && pt_1>20 && pt_1<=23 && pt_2>30))",
+            Cut("((trg_singlemuon==1 && pt_1>20 && pt_2>30))",
                 "trg_singlemuoncross"))
 
 
@@ -183,7 +183,7 @@ class TTSM(Channel):
             Cut("byTightIsolationMVArun2v1DBoldDMwLT_1>0.5", "tau_1_iso"),
             Cut("byTightIsolationMVArun2v1DBoldDMwLT_2>0.5", "tau_2_iso"),
             Cut("q_1*q_2<0", "os"), Cut("pt_tt>50", "pt_h"),
-            Cut("(trg_doubletau==1 && pt_1>50 && pt_2>40)", "trg_doubletau"))
+            Cut("(pt_1>50 && pt_2>40)", "trg_doubletau"))
 
 
 class TTSM_17(Channel):
