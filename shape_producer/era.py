@@ -79,7 +79,7 @@ class Run2017(Era):
         query = {
             "data": True,
             "campaign": "Run2017(B|C|D|E|F)",
-            "scenario": "PromptRecov(1|2|3)"
+            "scenario": "17Nov2017*"
         }
         if channel.name == "mt":
             query["process"] = "SingleMuon"

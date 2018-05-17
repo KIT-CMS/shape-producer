@@ -167,7 +167,8 @@ class TT(Channel):
                 "againstElectronDiscriminator"),
             Cut("byTightIsolationMVArun2v1DBoldDMwLT_1>0.5", "tau_1_iso"),
             Cut("byTightIsolationMVArun2v1DBoldDMwLT_2>0.5", "tau_2_iso"),
-            Cut("q_1*q_2<0", "os"), Cut("trg_doubletau==1", "trg_doubletau"))
+            Cut("q_1*q_2<0", "os"), 
+            Cut("trg_doubletau==1", "trg_doubletau"))
 
 
 class TTSM(Channel):
@@ -198,8 +199,9 @@ class TTSM_17(Channel):
                 "againstElectronDiscriminator"),
             Cut("byTightIsolationMVArun2v1DBoldDMwLT_1>0.5", "tau_1_iso"),
             Cut("byTightIsolationMVArun2v1DBoldDMwLT_2>0.5", "tau_2_iso"),
-            Cut("q_1*q_2<0", "os"), Cut("pt_tt>50", "pt_h"),
-            Cut("(trg_doubletau==1 && pt_1>50 && pt_2>40)", "trg_doubletau"))
+            Cut("q_1*q_2<0", "os"), 
+            Cut("pt_tt>50", "pt_h"),
+            Cut("(pt_1>50 && pt_2>40)", "trg_doubletau"))
 
 
 class EM(Channel):
@@ -208,10 +210,11 @@ class EM(Channel):
         self._cuts = Cuts(
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
-            Cut("dilepton_veto<0.5", "dilepton_veto"),
-            Cut("iso_1<0.15", "ele_iso"), Cut("iso_2<0.2", "muon_iso"),
+            Cut("iso_1<0.15", "ele_iso"),
+            Cut("iso_2<0.2", "muon_iso"),
             Cut("q_1*q_2<0", "os"),
-            Cut("trg_muonelectron_lowpte==1", "trg_muonelectron"))
+            Cut("trg_muonelectron_lowptmu==1", "trg_muonelectron"),
+            Cut("pt_1>20 && pt_2 > 20", "pt_cut"))
 
 
 class PU(Channel):

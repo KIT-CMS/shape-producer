@@ -156,7 +156,7 @@ class TTEstimation(EstimationMethod):
             directory=directory,
             channel=channel,
             friend_directory=friend_directory,
-            mc_campaign="RunIISummer17MiniAOD")
+            mc_campaign="RunIIFall17MiniAOD")
 
     def get_weights(self):
         return Weights(
@@ -180,7 +180,7 @@ class TTEstimation(EstimationMethod):
 
     def get_files(self):
         query = {
-            "process": "^TT$",
+            "process": "^TT",
             "data": False,
             "campaign": self._mc_campaign,
             #"version": "v1" # to be used if only one inclusive sample is desired
@@ -199,15 +199,14 @@ class EWKEstimation(EstimationMethod):
             directory=directory,
             friend_directory=friend_directory,
             channel=channel,
-            mc_campaign="RunIISummer17MiniAOD")
+            mc_campaign="RunIIFall17MiniAOD")
 
     def get_files(self):
         query = {
             "process": "^EWKZ",
             "data": False,
             "campaign": self._mc_campaign,
-            "generator": "madgraph\-pythia8",
-            "extension": "ext2"
+            "generator": "madgraph\-pythia8"
         }
         files = self.era.datasets_helper.get_nicks_with_query(query)
         log_query(self.name, query, files)
@@ -236,7 +235,7 @@ class TTLEstimationMT(TTEstimation):
             directory=directory,
             friend_directory=friend_directory,
             channel=channel,
-            mc_campaign="RunIISummer17MiniAOD")
+            mc_campaign="RunIIFall17MiniAOD")
 
     def get_cuts(self):
         return Cuts(
@@ -254,7 +253,7 @@ class TTLEstimationET(TTEstimation):
             directory=directory,
             friend_directory=friend_directory,
             channel=channel,
-            mc_campaign="RunIISummer17MiniAOD")
+            mc_campaign="RunIIFall17MiniAOD")
 
     def get_cuts(self):
         return Cuts(
@@ -272,7 +271,7 @@ class TTLEstimationTT(TTEstimation):
             directory=directory,
             friend_directory=friend_directory,
             channel=channel,
-            mc_campaign="RunIISummer17MiniAOD")
+            mc_campaign="RunIIFall17MiniAOD")
 
     def get_cuts(self):
         return Cuts(
@@ -289,7 +288,7 @@ class TTLEstimationEM(TTEstimation):
             directory=directory,
             friend_directory=friend_directory,
             channel=channel,
-            mc_campaign="RunIISummer17MiniAOD")
+            mc_campaign="RunIIFall17MiniAOD")
 
     def get_cuts(self):
         return Cuts(
@@ -433,7 +432,7 @@ class VVEstimation(EstimationMethod):
             directory=directory,
             friend_directory=friend_directory,
             channel=channel,
-            mc_campaign="RunIISummer17MiniAOD")
+            mc_campaign="RunIIFall17MiniAOD")
 
     def get_files(self):
         query = {
@@ -485,27 +484,26 @@ class DYJetsToLLEstimation(EstimationMethod):
             directory=directory,
             channel=channel,
             friend_directory=friend_directory,
-            mc_campaign="RunIISummer17MiniAOD")
+            mc_campaign="RunIIFall17MiniAOD")
 
     def get_weights(self):
-        return Weights(
-
-            # MC related weights
-            Weight("generatorWeight", "generatorWeight"),
-            #Weight("numberGeneratedEventsWeight","numberGeneratedEventsWeight"), # to be used only for one inclusive sample
-            #Weight("crossSectionPerEventWeight","crossSectionPerEventWeight"), # to be used only for one inclusive sample
-            Weight(
-                "(((genbosonmass >= 50.0 && (npartons == 0 || npartons >= 4))*5.75970078e-5) + ((genbosonmass >= 50.0 && npartons == 1)*1.36277241e-5) + ((genbosonmass >= 50.0 && npartons == 2)*7.42888435e-6) + ((genbosonmass >= 50.0 && npartons == 3)*1.62808443e-5) + ((genbosonmass < 50.0)*numberGeneratedEventsWeight*crossSectionPerEventWeight))",
-                "z_stitching_weight"),
-
+        weightstring = Weights(
+            Weight("((((genbosonmass >= 50.0 && (npartons == 0 || npartons >= 4))*2.455936181) + ((genbosonmass >= 50.0 && npartons == 1)*0.5608870881) + ((genbosonmass >= 50.0 && npartons == 2)*0.5745263806) + ((genbosonmass >= 50.0 && npartons == 3)*0.617450628))+ ((genbosonmass < 50.0)*numberGeneratedEventsWeight*crossSectionPerEventWeight))",
+                "stitching_weight"),
             # Weights for corrections
-            Weight("zPtReweightWeight", "zPtReweightWeight"),
-            Weight("((gen_match_2 == 5)*0.95 + (gen_match_2 != 5))",
-                   "hadronic_tau_sf"),
-            Weight("puweight", "puweight"),
-
-            # Data related scale-factors
+            Weight("gen_match_2 == 5","hadronic_tau_sf"),
+            Weight("idisoweight_1*triggerweight_1", "muon_sf"),
             self.era.lumi_weight)
+        if self.channel.name == "em":
+            weightstring = Weights(
+                Weight( "((((genbosonmass >= 50.0 && (npartons == 0 || npartons >= 4))*2.455936181) + ((genbosonmass >= 50.0 && npartons == 1)*0.5608870881) + ((genbosonmass >= 50.0 && npartons == 2)*0.5745263806) + ((genbosonmass >= 50.0 && npartons == 3)*0.617450628))+ ((genbosonmass < 50.0)*numberGeneratedEventsWeight*crossSectionPerEventWeight))",
+                    "stitching_weight"),
+                # Weights for corrections
+                Weight("gen_match_2 == 5","hadronic_tau_sf"),
+                Weight("idisoweight_1*idisoweight_2", "muon_sf"),
+                self.era.lumi_weight)
+        return weightstring
+            
 
     def get_files(self):
         query = {
@@ -530,25 +528,18 @@ class ZTTEstimation(DYJetsToLLEstimation):
             directory=directory,
             friend_directory=friend_directory,
             channel=channel,
-            mc_campaign="RunIISummer17MiniAOD")
+            mc_campaign="RunIIFall17MiniAOD")
 
     def get_cuts(self):
-
-        ztt_genmatch_cut = Cut("1 == 1", "ztt_genmatch")
-        if self.channel.name == "mt":
-            return Cuts(
-                Cut("(trg_singlemuon==1 && pt_1>29 && pt_2>30)",
-                    "trg_singlemuon"), Cut("gen_match_2==5", "ztt_genmatch"))
-        else:
-            if self.channel.name == "et":
+        if self.channel.name in {"mt", "et"}:
                 ztt_genmatch_cut = Cut("gen_match_2==5", "ztt_genmatch")
-            elif self.channel.name == "tt":
-                ztt_genmatch_cut = Cut("(gen_match_1==5) && (gen_match_2==5)",
-                                       "ztt_genmatch")
-            elif self.channel.name == "em":
-                ztt_genmatch_cut = Cut("(gen_match_1>2) && (gen_match_2>3)",
-                                       "ztt_genmatch")
-            return Cuts(ztt_genmatch_cut)
+        elif self.channel.name == "tt":
+            ztt_genmatch_cut = Cut("(gen_match_1==5) && (gen_match_2==5)",
+                                    "ztt_genmatch")
+        elif self.channel.name == "em":
+            ztt_genmatch_cut = Cut("(gen_match_1>2) && (gen_match_2>3)",
+                                    "ztt_genmatch")
+        return Cuts(ztt_genmatch_cut)
 
 
 class ZLEstimationMT(ZTTEstimation):
@@ -576,12 +567,8 @@ class ZLEstimationMTSM(ZLEstimationMT):
     def get_weights(self):
         ztt_weights = super(ZLEstimationMT, self).get_weights()
         return ztt_weights + Weights(
-            # Weight(
-            #     "1.5*(((decayMode_2 == 0)*0.75) + ((decayMode_2 == 1 || decayMode_2 == 2)*1.0) + ((decayMode_2 == 10)*1.0))",
-            #     "decay_mode_reweight"))
             Weight(
-                "(((decayMode_2 == 0)*0.75) + ((decayMode_2 == 1 || decayMode_2 == 2)*1.0) + ((decayMode_2 == 10)*1.0))",
-                "decay_mode_reweight"))
+                "(((decayMode_2 == 0)*0.75) + ((decayMode_2 == 1 || decayMode_2 == 2)*1.0) + ((decayMode_2 == 10)*1.0))","decay_mode_reweight"))
 
 
 class ZLLEstimation(DYJetsToLLEstimation):
@@ -593,7 +580,7 @@ class ZLLEstimation(DYJetsToLLEstimation):
             directory=directory,
             channel=channel,
             friend_directory=friend_directory,
-            mc_campaign="RunIISummer17MiniAOD")
+            mc_campaign="RunIIFall17MiniAOD")
 
     def get_cuts(self):
         zll_genmatch_cut = Cut("1 == 1", "zll_genmatch")
@@ -620,39 +607,22 @@ class ZTTEmbeddedEstimation(EstimationMethod):
             mc_campaign=None)
 
     def get_weights(self):
-        if self.channel.name == "mt":
+        if self.channel.name in {"mt", "et"}:
             return Weights(
-
-                # MC related weights
-                #Weight("generatorWeight*(generatorWeight <= 1)",
-                #       "generatorWeight"),
-
-                # Weights for corrections
-
-                # Data related scale-factors
-                Weight(
-                    "generatorWeight*(generatorWeight<=1.0)*idisoweight_1*muonEffEmbeddedIDWeight_1*muonEffEmbeddedIDWeight_2*muonEffTrgWeight_1*muonEffVVLIsoWeight_1*muonEffVVLIsoWeight_2*(triggerweight_1*(triggerweight_1<1.9)+(triggerweight_1>=1.9))",
-                    "generator_weight"))
-                #Weight(
-                #    "((1.0/dataEffWeight_1)*(dataEffWeight_1<=1.8)+(dataEffWeight_1>1.8))",
-                #    "dataEffWeight"),
-                # Weight("(41.29)/(4.767+4.224+9.261)", "lumi_weight"))
-        elif self.channel.name == "et":
-            return Weights(
-                Weight(
-                    "generatorWeight*(generatorWeight<=1.0)*idisoweight_1*muonEffEmbeddedIDWeight_1*muonEffEmbeddedIDWeight_2*muonEffTrgWeight_1*muonEffVVLIsoWeight_1*muonEffVVLIsoWeight_2*triggerweight_1",
-                    "generator_weight"))
-                # Weight("(41.29)/(4.767+4.224+9.261)", "lumi_weight"))
+                Weight("generatorWeight", "simulation_sf"),
+                Weight("muonEffTrgWeight", "scale_factor"),
+                Weight("idweight_1*triggerweight_1*isoweight_1", "leptopn_sf"))
         elif self.channel.name == "tt":
             return Weights(
-                Weight("generatorWeight*(generatorWeight<=1.0)",
-                       "generator_weight"),
-                Weight("(41.29)/(4.767)", "lumi_weight"))
+                Weight("generatorWeight", "simulation_sf"),
+                Weight("muonEffTrgWeight", "scale_factor"),
+                Weight("(idweight_1*isoweight_1*idweight_2*isoweight_2*(triggerweight_1*(triggerweight_1<=1.8)+(triggerweight_1>1.8))*(triggerweight_2*(triggerweight_2<=1.8)+(triggerweight_2>1.8))", "leptopn_sf"))
         elif self.channel.name == "em":
             return Weights(
-                Weight("generatorWeight*(generatorWeight<=1.0)",
-                       "generator_weight"),
-                Weight("(41.29)/(4.767)", "lumi_weight"))
+                Weight("generatorWeight", "simulation_sf"),
+                Weight("muonEffTrgWeight", "scale_factor"),
+                # no trigger sf yet
+                Weight("idweight_1*isoweight_1*idweight_2*isoweight_2", "leptopn_sf"))
 
     def get_files(self):
         query = {"process": "Embedding2017(B|C|D|E|F)", "embedded": True}
@@ -824,7 +794,7 @@ class TTTEstimation(TTEstimation):
             directory=directory,
             channel=channel,
             friend_directory=friend_directory,
-            mc_campaign="RunIISummer17MiniAOD")
+            mc_campaign="RunIIFall17MiniAOD")
 
     def get_cuts(self):
         return Cuts(
@@ -834,16 +804,16 @@ class TTTEstimation(TTEstimation):
 
 class TTTEstimationMT(TTTEstimation):
     def get_cuts(self):
-        return Cuts(Cut("gen_match_2==5", "ttt_genmatch_mt"))
+        return Cuts(Cut("gen_match_2==5 && gen_match_1 == 4", "ttt_genmatch_mt"))
 
 
 class TTJEstimationMT(TTTEstimation):
     def get_cuts(self):
-        return Cuts(Cut("gen_match_2!=3", "ttj_genmatch_em"))
+        return Cuts(Cut("gen_match_2!=3", "ttj_genmatch_mt"))
 
 class TTTEstimationEM(TTTEstimationMT):
-    # def get_cuts(self):
-    #     return Cuts(Cut("gen_match_2==3", "ttt_genmatch_em"))
+    def get_cuts(self):
+        return Cuts(Cut("gen_match_1 == 3 && gen_match_2 == 4", "ttt_genmatch_em"))
     pass
 
 class TTJEstimationEM(TTTEstimation):
@@ -859,7 +829,7 @@ class TTJEstimation(TTEstimation):
             directory=directory,
             channel=channel,
             friend_directory=friend_directory,
-            mc_campaign="RunIISummer17MiniAOD")
+            mc_campaign="RunIIFall17MiniAOD")
 
     def get_cuts(self):
         return Cuts(
@@ -931,7 +901,7 @@ class TTTEstimationTT(TTEstimation):
             directory=directory,
             friend_directory=friend_directory,
             channel=channel,
-            mc_campaign="RunIISummer17MiniAOD")
+            mc_campaign="RunIIFall17MiniAOD")
 
     def get_cuts(self):
         return Cuts(
@@ -948,7 +918,7 @@ class TTJEstimationTT(TTEstimation):
             directory=directory,
             friend_directory=friend_directory,
             channel=channel,
-            mc_campaign="RunIISummer17MiniAOD")
+            mc_campaign="RunIIFall17MiniAOD")
 
     def get_cuts(self):
         return Cuts(
@@ -1012,7 +982,7 @@ class TTTTEstimationMT(TTEstimation):
             directory=directory,
             friend_directory=friend_directory,
             channel=channel,
-            mc_campaign="RunIISummer17MiniAOD")
+            mc_campaign="RunIIFall17MiniAOD")
 
     def get_cuts(self):
         return Cuts(
@@ -1029,7 +999,7 @@ class TTTTEstimationET(TTEstimation):
             directory=directory,
             friend_directory=friend_directory,
             channel=channel,
-            mc_campaign="RunIISummer17MiniAOD")
+            mc_campaign="RunIIFall17MiniAOD")
 
     def get_cuts(self):
         return Cuts(
@@ -1046,7 +1016,7 @@ class TTTEstimationTT(TTEstimation):
             directory=directory,
             friend_directory=friend_directory,
             channel=channel,
-            mc_campaign="RunIISummer17MiniAOD")
+            mc_campaign="RunIIFall17MiniAOD")
 
     def get_cuts(self):
         return Cuts(
