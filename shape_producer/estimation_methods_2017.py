@@ -166,12 +166,12 @@ class TTEstimation(EstimationMethod):
             Weight("numberGeneratedEventsWeight",
                    "numberGeneratedEventsWeight"),
             Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
-            Weight("0.5", "tt_stitching_weight"),
+            #~ Weight("0.5", "tt_stitching_weight"),
 
             # Weights for corrections
-            Weight("topPtReweightWeight", "topPtReweightWeight"),
-            Weight("((gen_match_2 == 5)*0.95 + (gen_match_2 != 5))",
-                   "hadronic_tau_sf"),
+            #~ Weight("topPtReweightWeight", "topPtReweightWeight"),
+            #~ Weight("((gen_match_2 == 5)*0.95 + (gen_match_2 != 5))",
+                   #~ "hadronic_tau_sf"),
             #Weight("eventWeight", "eventWeight"),
             Weight("puweight", "puweight"),
 
@@ -491,17 +491,13 @@ class DYJetsToLLEstimation(EstimationMethod):
             Weight("((((genbosonmass >= 50.0 && (npartons == 0 || npartons >= 4))*2.455936181) + ((genbosonmass >= 50.0 && npartons == 1)*0.5608870881) + ((genbosonmass >= 50.0 && npartons == 2)*0.5745263806) + ((genbosonmass >= 50.0 && npartons == 3)*0.617450628))+ ((genbosonmass < 50.0)*numberGeneratedEventsWeight*crossSectionPerEventWeight))",
                 "stitching_weight"),
             # Weights for corrections
-            Weight("gen_match_2 == 5","hadronic_tau_sf"),
-            Weight("idisoweight_1*triggerweight_1", "muon_sf"),
-            self.era.lumi_weight)
+            Weight("(eleTauFakeRateWeight*muTauFakeRateWeight*isoWeight_1*idWeight_1*trackWeight_1*(singleTriggerMCEfficiencyWeightKIT_1>0.01*(singleTriggerDataEfficiencyWeightKIT_1/singleTriggerMCEfficiencyWeightKIT_1)+singleTriggerMCEfficiencyWeightKIT_1<0.01))", "muon_sf"))
         if self.channel.name == "em":
             weightstring = Weights(
                 Weight( "((((genbosonmass >= 50.0 && (npartons == 0 || npartons >= 4))*2.455936181) + ((genbosonmass >= 50.0 && npartons == 1)*0.5608870881) + ((genbosonmass >= 50.0 && npartons == 2)*0.5745263806) + ((genbosonmass >= 50.0 && npartons == 3)*0.617450628))+ ((genbosonmass < 50.0)*numberGeneratedEventsWeight*crossSectionPerEventWeight))",
                     "stitching_weight"),
                 # Weights for corrections
-                Weight("gen_match_2 == 5","hadronic_tau_sf"),
-                Weight("idisoweight_1*idisoweight_2", "muon_sf"),
-                self.era.lumi_weight)
+                Weight("(eleTauFakeRateWeight*muTauFakeRateWeight*isoWeight_1*idWeight_1*trackWeight_1*(singleTriggerMCEfficiencyWeightKIT_1>0.01*(singleTriggerDataEfficiencyWeightKIT_1/singleTriggerMCEfficiencyWeightKIT_1)+singleTriggerMCEfficiencyWeightKIT_1<0.01))", "muon_sf"))
         return weightstring
             
 
@@ -531,6 +527,7 @@ class ZTTEstimation(DYJetsToLLEstimation):
             mc_campaign="RunIIFall17MiniAOD")
 
     def get_cuts(self):
+        
         if self.channel.name in {"mt", "et"}:
                 ztt_genmatch_cut = Cut("gen_match_2==5", "ztt_genmatch")
         elif self.channel.name == "tt":
@@ -611,18 +608,18 @@ class ZTTEmbeddedEstimation(EstimationMethod):
             return Weights(
                 Weight("generatorWeight", "simulation_sf"),
                 Weight("muonEffTrgWeight", "scale_factor"),
-                Weight("idweight_1*triggerweight_1*isoweight_1", "leptopn_sf"))
+                Weight("idWeight_1*triggerWeight_1*isoWeight_1", "leptopn_sf"))
         elif self.channel.name == "tt":
             return Weights(
                 Weight("generatorWeight", "simulation_sf"),
                 Weight("muonEffTrgWeight", "scale_factor"),
-                Weight("(idweight_1*isoweight_1*idweight_2*isoweight_2*(triggerweight_1*(triggerweight_1<=1.8)+(triggerweight_1>1.8))*(triggerweight_2*(triggerweight_2<=1.8)+(triggerweight_2>1.8))", "leptopn_sf"))
+                Weight("(1.48)", "global_trg_sf"))
         elif self.channel.name == "em":
             return Weights(
                 Weight("generatorWeight", "simulation_sf"),
                 Weight("muonEffTrgWeight", "scale_factor"),
                 # no trigger sf yet
-                Weight("idweight_1*isoweight_1*idweight_2*isoweight_2", "leptopn_sf"))
+                Weight("idWeight_1*isoWeight_1*idWeight_2*isoWeight_2", "leptopn_sf"))
 
     def get_files(self):
         query = {"process": "Embedding2017(B|C|D|E|F)", "embedded": True}
@@ -731,6 +728,45 @@ class ZTTEmbeddingEstimation_ScaledToMC(EstimationMethod):
         embedding_shape.name = systematic.name
         return embedding_shape
 
+class WJetsEstimation(EstimationMethod):
+    def __init__(self, era, directory, channel, friend_directory=None):
+        super(WJetsEstimation, self).__init__(
+            name="WJets",
+            folder="nominal",
+            era=era,
+            directory=directory,
+            channel=channel,
+            mc_campaign="RunIISummer17MiniAOD")
+
+    def get_weights(self):
+        return Weights(
+
+            # MC related weights
+            Weight("generatorWeight", "generatorWeight"),
+            #Weight("numberGeneratedEventsWeight","numberGeneratedEventsWeight"), # to be used only for one inclusive sample
+            #Weight("crossSectionPerEventWeight","crossSectionPerEventWeight"), # to be used only for one inclusive sample
+            Weight(
+                "(((npartons == 0 || npartons >= 5)*2.36006270e-3) + ((npartons == 1)*2.34817764e-4) + ((npartons == 2)*1.31144867e-4) + ((npartons == 3)*1.39177532e-4) + ((npartons == 4)*6.46064804e-5))",
+                "wj_stitching_weight"),
+
+            # Weights for corrections
+            #Weight("((gen_match_2 == 5)*0.95 + (gen_match_2 != 5))", "hadronic_tau_sf"),
+            Weight("puweight", "puweight"),
+
+            # Data related scale-factors
+            self.era.lumi_weight)
+
+    def get_files(self):
+        query = {
+            "process": "W.?JetsToLNu",
+            #"process": "WJetsToLNu",
+            "data": False,
+            "campaign": self._mc_campaign,
+            "generator": "madgraph-pythia8"
+        }
+        files = self.era.datasets_helper.get_nicks_with_query(query)
+        log_query(self.name, query, files)
+        return self.artus_file_names(files)
 
 class WEstimation(EstimationMethod):
     def __init__(self, era, directory, channel, friend_directory=None):
@@ -809,7 +845,7 @@ class TTTEstimationMT(TTTEstimation):
 
 class TTJEstimationMT(TTTEstimation):
     def get_cuts(self):
-        return Cuts(Cut("gen_match_2!=3", "ttj_genmatch_mt"))
+        return Cuts(Cut("gen_match_2!=5", "ttj_genmatch_mt"))
 
 class TTTEstimationEM(TTTEstimationMT):
     def get_cuts(self):
@@ -818,7 +854,7 @@ class TTTEstimationEM(TTTEstimationMT):
 
 class TTJEstimationEM(TTTEstimation):
     def get_cuts(self):
-        return Cuts(Cut("gen_match_2!=3", "ttj_genmatch_mt"))
+        return Cuts(Cut("gen_match_1<10", "ttj_genmatch_mt"))
 
 class TTJEstimation(TTEstimation):
     def __init__(self, era, directory, channel, friend_directory=None):

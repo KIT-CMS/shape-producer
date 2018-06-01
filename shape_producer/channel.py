@@ -98,9 +98,10 @@ class MTSM_17(Channel):
                 "againstElectronDiscriminator"),
             Cut("byTightIsolationMVArun2v1DBoldDMwLT_2>0.5", "tau_iso"),
             Cut("iso_1<0.15", "muon_iso"), Cut("q_1*q_2<0", "os"),
-            Cut("mt_1<50", "m_t"),
+            Cut("mt_1<50", "mt"),
             Cut("pt_1>30 && pt_2>30", "pt_cut"),
             Cut("trg_singlemuon==1","trg_singlemuoncross")
+            #~ Cut("m_vis<85", "mass_cut")
         )  # in samples trg_singlemuon is "HLT_IsoMu27_v:29.0"
 
 
@@ -150,7 +151,7 @@ class ETSM_17(Channel):
                 "againstElectronDiscriminator"),
             Cut("byTightIsolationMVArun2v1DBoldDMwLT_2>0.5", "tau_iso"),
             Cut("iso_1<0.1", "ele_iso"), Cut("q_1*q_2<0", "os"),
-            Cut("mt_1<50", "m_t"),
+            Cut("mt_1<50", "mt"),
             Cut("(trg_singleelectron==1 && pt_1>37 && pt_2>30)",
                 "trg_singleelectron"))
 
@@ -201,7 +202,9 @@ class TTSM_17(Channel):
             Cut("byTightIsolationMVArun2v1DBoldDMwLT_2>0.5", "tau_2_iso"),
             Cut("q_1*q_2<0", "os"), 
             Cut("pt_tt>50", "pt_h"),
-            Cut("(pt_1>50 && pt_2>40)", "trg_doubletau"))
+            #~ Cut("m_vis<90", "m_vis"),
+            Cut("(pt_1>50 && pt_2>40)","pt_cut"),
+            Cut("trg_doubletau==1", "trg_doubletau"))
 
 
 class EM(Channel):
@@ -215,6 +218,20 @@ class EM(Channel):
             Cut("q_1*q_2<0", "os"),
             Cut("trg_muonelectron_lowptmu==1", "trg_muonelectron"),
             Cut("pt_1>20 && pt_2 > 20", "pt_cut"))
+
+class EMMSSM2017(Channel):
+    def __init__(self):
+        self._name = "em"
+        self._cuts = Cuts(
+            Cut("extraelec_veto<0.5", "extraelec_veto"),
+            Cut("extramuon_veto<0.5", "extramuon_veto"),
+            #~ Cut("dilepton_veto<0.5", "dilepton_veto"),
+            Cut("iso_1<0.15", "ele_iso"),
+            Cut("iso_2<0.2", "muon_iso"),
+            Cut("q_1*q_2<0", "os"),
+            Cut("pt_1>20 && pt_2>20 && ((trg_muonelectron_lowptmu) || (trg_muonelectron_lowpte))", "trg_selection"),
+            #~ Cut("m_vis < 85", "m_vis cut"),
+            Cut("pZetaMissVis > -50","dzeta_cut"))
 
 
 class PU(Channel):
