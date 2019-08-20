@@ -213,10 +213,10 @@ class Histogram(TTreeContent):
             raise Exception
 
         if abs(norm_all - norm_positive) > tolerance * norm_all:
-            logger.fatal(
+            logger.warning(
                 "Renormalization failed because the normalization changed by %f, which is above the tolerance %f.",
                 abs(norm_all - norm_positive), tolerance * norm_all)
-            raise Exception
+            #raise Exception
 
         # Renormalize histogram if negative entries are found
         if norm_all != norm_positive:
