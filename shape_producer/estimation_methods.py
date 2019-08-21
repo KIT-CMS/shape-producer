@@ -473,24 +473,17 @@ class AddHistogramEstimationMethod(EstimationMethod):
             s.do_estimation()
 
         # First shape
-        shape = systematic._add_systematics[0].shape
+        final_shape = copy.deepcopy(systematic._add_systematics[0].shape)
 
         # Add/subtract additional shapes from first shape
         for s in systematic._add_systematics[1:]:
-            if not isinstance(shape.result,float):
-                shape.result.Add(s.shape.result, self._add_weights[-1])
+            if not isinstance(final_shape.result,float):
+                final_shape.result.Add(s.shape.result, self._add_weights[-1])
             else:
-                shape.result += s.shape.result * self._add_weights[-1]
+                final_shape.result += s.shape.result * self._add_weights[-1]
 
-        final_shape = copy.deepcopy(shape)
-
-        # Rename root object accordingly (hacky part)
         final_shape.name = systematic.name
-        # if "ZTTpTTTauTauUp" in final_shape.name:
-        #     final_shape.name = systematic.name.replace("ZTTpTTTauTauUp", "EMB")
-        # elif "ZTTpTTTauTauDown" in final_shape.name:
-        #     final_shape.name = systematic.name.replace("ZTTpTTTauTauDown",
-        #                                                "EMB")
+
         return final_shape
 
     def get_files(self):
