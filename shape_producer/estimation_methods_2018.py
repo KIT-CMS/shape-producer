@@ -540,7 +540,7 @@ class DYJetsToLLEstimation(EstimationMethod):
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
-            # Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
+            Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel.name),
             Weight("zPtReweightWeight", "zPtReweightWeight"),
 
@@ -771,7 +771,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("generatorWeight",
                        "simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
-                Weight("(triggerWeight_1+triggerWeight_2)/2.0","tau1_leg_weight"),
+                Weight("triggerWeight_1*triggerWeight_2","tau1_leg_weight"),
                 #~ Weight("(0.104*(pt_2>=30 && pt_2<35) + 0.519*(pt_2>=35 && pt_2<40) + 0.682*(pt_2>=40 && pt_2<45) + 0.766*(pt_2>=45 && pt_2<50) + 0.786*(pt_2>=50 && pt_2<60) + 0.804*(pt_2>=60 && pt_2<80) + 0.735*(pt_2>=80 && pt_2<100) + 0.730*(pt_2>=100 && pt_2<150) + 0.683*(pt_2>=150 && pt_2<200) + (pt_2>=200))","tau2_leg_weight"),
                 Weight("((gen_match_1==5)*0.97+(gen_match_1!=5))*((gen_match_2==5)*0.97+(gen_match_2!=5))", "emb_tau_id"),
                 Weight("gen_match_1==5 && gen_match_2==5","emb_veto"),
