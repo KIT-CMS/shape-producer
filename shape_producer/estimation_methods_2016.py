@@ -63,32 +63,30 @@ def get_triggerweight_for_channel(channel):
     weight = Weight("1.0", "triggerweight")
 
     singleMC = "singleTriggerMCEfficiencyWeightKIT_1"
-    crossMC = "crossTriggerMCEfficiencyWeight_1"
-    MCTau_1 = "((byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5 && byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_vloose_MVA_1 + (byTightIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_tight_MVA_1)"
+    crossMCL = "crossTriggerMCEfficiencyWeight_1"
+    MCTau_1 = "((byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5 && byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_vloose_MVAv2_1 + (byTightIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_tight_MVAv2_1)"
     MCTau_2 = MCTau_1.replace("_1", "_2")
 
     if "mt" in channel:
         trig_sL = "(trg_singlemuon)"
-        trig_X = "(pt_1 > 20 && pt_1 < 21 && trg_mutaucross)"
-        MCTau = "dummy"
+        trig_X = "(pt_1 < 23 && trg_mutaucross)"
 
-        MuTauMC = "*".join([trig_sL, singleMC]) + "+" + "*".join(
-            [trig_X, crossMC])  # TODO add TauCrossTrigger Weight back in
+        MuTauMC = "*".join([trig_sL, singleMC]) + "+" + "*".join([trig_X, crossMCL, MCTau_2])  
         MuTauData = MuTauMC.replace("MC", "Data")
         MuTau = "(" + MuTauData + ")/(" + MuTauMC + ")"
         weight = Weight(MuTau, "triggerWeight")
 
     elif "et" in channel:
-        trig_sL = "(trg_singleelectron)"
-        trig_X = "blank"  # TODO add ElTau Crosstrigger
+        trig_sL = "(trg_singleelectron)" # no etau crosstrigger in 2016
 
         ElTauMC = "*".join([trig_sL, singleMC
-                            ])  # + "+" + "*".join([trig_X, crossMCL, MCTau_2])
+                            ])
         ElTauData = ElTauMC.replace("MC", "Data")
         ElTau = "(" + ElTauData + ")/(" + ElTauMC + ")"
         weight = Weight(ElTau, "triggerweight")
 
-    elif "tt" in channel:  # TODO add TauTrigger SF
+    elif "tt" in channel:  
+        # TODO add TauTrigger SF iwth new ntuples
         #DiTauMC = "*".join([MCTau_1,MCTau_2])
         #DiTauData = DiTauMC.replace("MC","Data")
         #DiTau = "("+DiTauData+")/("+DiTauMC+")"
@@ -106,7 +104,7 @@ def get_triggerweight_for_channel(channel):
 def get_singlelepton_triggerweight_for_channel(channel):
     weight = Weight("1.0", "triggerweight_sl")
 
-    MCTau_1 = "((byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5 && byMediumIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_medium_MVA_1 + (byTightIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_tight_MVA_1)"
+    MCTau_1 = "((byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5 && byMediumIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_medium_MVAv2_1 + (byTightIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_tight_MVAv2_1)"
     MCTau_2 = MCTau_1.replace("_1", "_2")
 
     # if "mt" in channel or "et" in channel:
@@ -149,7 +147,7 @@ def get_eleRecoWeight_for_channel(channel):
         weight = Weight("(eleRecoWeight_1)", "eleRecoWeight")
     if "em" in channel:
         weight = Weight("(eleRecoWeight_1)",
-                        "eleRecoWeight")  # TODO all this in next ntuples
+                        "eleRecoWeight")
     return weight
 
 
@@ -390,8 +388,7 @@ class HTTEstimation(EstimationMethod):
         query = {
             "process": "(^GluGluHToTauTau.*125.*|^VBFHToTauTau.*125.*)",
             "data": False,
-            "campaign": self._mc_campaign,
-            "generator": "powheg\-pythia8"
+            "campaign": self._mc_campaign,"generator": "powheg\-pythia8"
         }
         files = self.era.datasets_helper.get_nicks_with_query(query)
         log_query(self.name, query, files)
@@ -930,7 +927,6 @@ class DYJetsToLLEstimation(EstimationMethod):
                 "((genbosonmass >= 50.0) * 4.255812e-05*((npartons == 0 || npartons >= 5)*1.0+(npartons == 1)*0.32123574062076404+(npartons == 2)*0.3314444833963529+(npartons == 3)*0.3389929050626262+(npartons == 4)*0.2785338687268455) + (genbosonmass < 50.0)*((abs(crossSectionPerEventWeight - 3.987) < 0.01)*4.6936e-06 + (abs(crossSectionPerEventWeight - 10.01) < 0.01)*3.7568e-06))",
                 "z_stitching_weight")
         return Weights(
-            # TODO add triggerweights etc
             Weight("generatorWeight", "generatorWeight"),
             Weight("isoWeight_1*isoWeight_2", "isoWeight"),
             Weight("idWeight_1*idWeight_2", "idWeight"),
@@ -939,8 +935,8 @@ class DYJetsToLLEstimation(EstimationMethod):
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
             self.get_triggerweight_for_channel(self.channel._name),
-            # self.get_singlelepton_triggerweight_for_channel(self.channel.name),
-            # self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
+            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
@@ -1809,13 +1805,12 @@ class TTEstimation(EstimationMethod):
             Weight("topPtReweightWeight", "topPtReweightWeight"),
             Weight("isoWeight_1*isoWeight_2", "isoWeight"),
             Weight("idWeight_1*idWeight_2", "idWeight"),
-            self.get_tauByIsoIdWeight_for_channel(self.channel),
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
-            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
-            Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
-                   "leptonTauFakeRateWeight"),
+            #self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            Weight("eleTauFakeRateWeight*muTauFakeRateWeight","leptonTauFakeRateWeight"),
+            self.get_tauByIsoIdWeight_for_channel(self.channel),
             self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
@@ -1960,89 +1955,8 @@ class TTJEstimation(TTEstimation):
         return Cuts(Cut(ct, "tt_fakes"))
 
 
-# class VVEstimation(EstimationMethod):
-#     def __init__(self, era, directory, channel, friend_directory=None, folder="nominal",
-#             get_triggerweight_for_channel=get_triggerweight_for_channel,
-#             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-#             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-#             get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
-#         super(VVEstimation, self).__init__(
-#             name="VV",
-#             folder=folder,
-#             get_triggerweight_for_channel=get_triggerweight_for_channel,
-#             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-#             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-#             get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
-#             era=era,
-#             directory=directory,
-#             friend_directory=friend_directory,
-#             channel=channel,
-#             mc_campaign="RunIISummer16MiniAODv3")
-
-#     def get_weights(self):
-#         # if self.channel.name=="em":
-#         #     return Weights(
-#         #         Weight("numberGeneratedEventsWeight", "numberGeneratedEventsWeight"),
-#         #         Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
-#         #         Weight("triggerWeight_1*identificationWeight_1*identificationWeight_2*trackWeight_1*trackWeight_2", "eventWeight"),
-#         #         Weight("puweight", "puweight"),
-#         #         self.get_tauByIsoIdWeight_for_channel(self.channel),
-#         #         Weight("prefiringweight", "prefireWeight"),
-#         #         self.era.lumi_weight)
-#         # else:
-#         return Weights(
-#             Weight("isoWeight_1*isoWeight_2","isoWeight"),
-#             Weight("idWeight_1*idWeight_2","idWeight"),
-#             self.get_tauByIsoIdWeight_for_channel(self.channel),
-#             Weight("puweight", "puweight"),
-#             Weight("trackWeight_1*trackWeight_2","trackweight"),
-#             self.get_triggerweight_for_channel(self.channel._name),
-#             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
-#             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
-#             self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
-#             get_eleRecoWeight_for_channel(self.channel.name),
-#             Weight("prefiringweight", "prefireWeight"),
-#             # MC weights
-#             #TODO doing stitching with cross-section as reference for WW, WZ, ZZ, so WATCH OUT after changing the cross-sections!!!
-#             Weight("1.252790591041545e-07*(abs(crossSectionPerEventWeight - 63.21) < 0.01) + 5.029933132068942e-07*(abs(crossSectionPerEventWeight - 10.32) < 0.01) + 2.501519047441559e-07*(abs(crossSectionPerEventWeight - 22.82) < 0.01) + numberGeneratedEventsWeight*(abs(crossSectionPerEventWeight - 63.21) > 0.01 && abs(crossSectionPerEventWeight - 10.32) > 0.01 && abs(crossSectionPerEventWeight - 22.82) > 0.01)","numberGeneratedEventsWeight"),
-#             #TODO correct to proper cross-section values. WILL BE DEPRECATED after fixing cross-sections in datasets.json & producing ntuples
-#             Weight("118.7*(abs(crossSectionPerEventWeight - 63.21) < 0.01) + crossSectionPerEventWeight*(abs(crossSectionPerEventWeight - 63.21) > 0.01)", "crossSectionPerEventWeight"),
-#             Weight("generatorWeight", "generatorWeight"),
-#             self.era.lumi_weight)
-
-#     def get_files(self):
-#         query = {
-#             "process": "(WW|ZZ|WZ)$",  # Query for Di-Boson samples
-#             "data": False,
-#             "campaign": self._mc_campaign,
-#             "generator": "pythia8"
-#         }
-#         files = self.era.datasets_helper.get_nicks_with_query(query)
-
-#         query = {
-#             "process":
-#             "(STt-channelantitop4finclusiveDecays|STt-channeltop4finclusiveDecays|STtWantitop5finclusiveDecays|STtWtop5finclusiveDecays)",
-#             "data":
-#             False,
-#             "campaign":
-#             self._mc_campaign
-#         }
-#         files += self.era.datasets_helper.get_nicks_with_query(query)
-
-#         log_query(self.name, "<optimzed out>", files)
-#         return self.artus_file_names(files)
-
-
-class VVEstimation(
-        EstimationMethod
-):  # TODO swap back to newer Estimation with Di-Boson Samples as soon as samples are available
-    def __init__(
-            self,
-            era,
-            directory,
-            channel,
-            friend_directory=None,
-            folder="nominal",
+class VVEstimation(EstimationMethod):
+    def __init__(self, era, directory, channel, friend_directory=None, folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
@@ -2051,8 +1965,7 @@ class VVEstimation(
             name="VV",
             folder=folder,
             get_triggerweight_for_channel=get_triggerweight_for_channel,
-            get_singlelepton_triggerweight_for_channel=
-            get_singlelepton_triggerweight_for_channel,
+            get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
             get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
@@ -2073,68 +1986,150 @@ class VVEstimation(
         #         self.era.lumi_weight)
         # else:
         return Weights(
-            Weight("isoWeight_1*isoWeight_2", "isoWeight"),
-            Weight("idWeight_1*idWeight_2", "idWeight"),
+            Weight("isoWeight_1*isoWeight_2","isoWeight"),
+            Weight("idWeight_1*idWeight_2","idWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
             Weight("puweight", "puweight"),
-            Weight("trackWeight_1*trackWeight_2", "trackweight"),
+            Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
-            Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
-                   "leptonTauFakeRateWeight"),
+            Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
             self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
             # MC weights
-            Weight("numberGeneratedEventsWeight",
-                   "numberGeneratedEventsWeight"),
-            Weight(
-                "(1.0+0.56*(abs(crossSectionPerEventWeight-75.769996)<0.00001))",
-                "VV_NNLO_reweight"),
+            #TODO doing stitching with cross-section as reference for WW, WZ, ZZ, so WATCH OUT after changing the cross-sections!!!
+            Weight("1.252790591041545e-07*(abs(crossSectionPerEventWeight - 63.21) < 0.01) + 5.029933132068942e-07*(abs(crossSectionPerEventWeight - 10.32) < 0.01) + 2.501519047441559e-07*(abs(crossSectionPerEventWeight - 22.82) < 0.01) + numberGeneratedEventsWeight*(abs(crossSectionPerEventWeight - 63.21) > 0.01 && abs(crossSectionPerEventWeight - 10.32) > 0.01 && abs(crossSectionPerEventWeight - 22.82) > 0.01)","numberGeneratedEventsWeight"),
+            #TODO correct to proper cross-section values. WILL BE DEPRECATED after fixing cross-sections in datasets.json & producing ntuples
+            Weight("118.7*(abs(crossSectionPerEventWeight - 63.21) < 0.01) + crossSectionPerEventWeight*(abs(crossSectionPerEventWeight - 63.21) > 0.01)", "crossSectionPerEventWeight"),
             Weight("generatorWeight", "generatorWeight"),
             self.era.lumi_weight)
 
     def get_files(self):
         query = {
-            "process":
-            "(WWTo1L1Nu2Q|" + "WZTo1L1Nu2Q|" + "WZTo1L3Nu|" + "WZTo2L2Q|" +
-            "ZZTo2L2Q" + ")",
-            "data":
-            False,
-            "campaign":
-            self._mc_campaign,
-            "generator":
-            "amcatnlo-pythia8"
-        }
-        files = self.era.datasets_helper.get_nicks_with_query(query)
-
-        query = {
-            "process": "(VVTo2L2Nu|ZZTo4L)",
-            "extension": "ext1",
-            "data": False,
-            "campaign": self._mc_campaign,
-            "generator": "amcatnlo-pythia8"
-        }
-        files += self.era.datasets_helper.get_nicks_with_query(query)
-
-        query = {
-            "process": "WZJToLLLNu",
+            "process": "(WW|ZZ|WZ)$",  # Query for Di-Boson samples
             "data": False,
             "campaign": self._mc_campaign,
             "generator": "pythia8"
         }
-        files += self.era.datasets_helper.get_nicks_with_query(query)
+        files = self.era.datasets_helper.get_nicks_with_query(query)
 
         query = {
             "process":
             "(STt-channelantitop4finclusiveDecays|STt-channeltop4finclusiveDecays|STtWantitop5finclusiveDecays|STtWtop5finclusiveDecays)",
-            "data": False,
-            "campaign": self._mc_campaign
+            "data":
+            False,
+            "campaign":
+            self._mc_campaign
         }
         files += self.era.datasets_helper.get_nicks_with_query(query)
 
         log_query(self.name, "<optimzed out>", files)
         return self.artus_file_names(files)
+
+
+# class VVEstimation(
+#         EstimationMethod
+# ):  # old method of estimation not using inclusive diboson samples
+#     def __init__(
+#             self,
+#             era,
+#             directory,
+#             channel,
+#             friend_directory=None,
+#             folder="nominal",
+#             get_triggerweight_for_channel=get_triggerweight_for_channel,
+#             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
+#             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+#             get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+#         super(VVEstimation, self).__init__(
+#             name="VV",
+#             folder=folder,
+#             get_triggerweight_for_channel=get_triggerweight_for_channel,
+#             get_singlelepton_triggerweight_for_channel=
+#             get_singlelepton_triggerweight_for_channel,
+#             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+#             get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
+#             era=era,
+#             directory=directory,
+#             friend_directory=friend_directory,
+#             channel=channel,
+#             mc_campaign="RunIISummer16MiniAODv3")
+
+#     def get_weights(self):
+#         # if self.channel.name=="em":
+#         #     return Weights(
+#         #         Weight("numberGeneratedEventsWeight", "numberGeneratedEventsWeight"),
+#         #         Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
+#         #         Weight("triggerWeight_1*identificationWeight_1*identificationWeight_2*trackWeight_1*trackWeight_2", "eventWeight"),
+#         #         Weight("puweight", "puweight"),
+#         #         self.get_tauByIsoIdWeight_for_channel(self.channel),
+#         #         Weight("prefiringweight", "prefireWeight"),
+#         #         self.era.lumi_weight)
+#         # else:
+#         return Weights(
+#             Weight("isoWeight_1*isoWeight_2", "isoWeight"),
+#             Weight("idWeight_1*idWeight_2", "idWeight"),
+#             self.get_tauByIsoIdWeight_for_channel(self.channel),
+#             Weight("puweight", "puweight"),
+#             Weight("trackWeight_1*trackWeight_2", "trackweight"),
+#             self.get_triggerweight_for_channel(self.channel._name),
+#             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+#             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
+#                    "leptonTauFakeRateWeight"),
+#             self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
+#             get_eleRecoWeight_for_channel(self.channel.name),
+#             Weight("prefiringweight", "prefireWeight"),
+#             # MC weights
+#             Weight("numberGeneratedEventsWeight",
+#                    "numberGeneratedEventsWeight"),
+#             Weight(
+#                 "(1.0+0.56*(abs(crossSectionPerEventWeight-75.769996)<0.00001))",
+#                 "VV_NNLO_reweight"),
+#             Weight("generatorWeight", "generatorWeight"),
+#             self.era.lumi_weight)
+
+#     def get_files(self):
+#         query = {
+#             "process":
+#             "(WWTo1L1Nu2Q|" + "WZTo1L1Nu2Q|" + "WZTo1L3Nu|" + "WZTo2L2Q|" +
+#             "ZZTo2L2Q" + ")",
+#             "data":
+#             False,
+#             "campaign":
+#             self._mc_campaign,
+#             "generator":
+#             "amcatnlo-pythia8"
+#         }
+#         files = self.era.datasets_helper.get_nicks_with_query(query)
+
+#         query = {
+#             "process": "(VVTo2L2Nu|ZZTo4L)",
+#             "extension": "ext1",
+#             "data": False,
+#             "campaign": self._mc_campaign,
+#             "generator": "amcatnlo-pythia8"
+#         }
+#         files += self.era.datasets_helper.get_nicks_with_query(query)
+
+#         query = {
+#             "process": "WZJToLLLNu",
+#             "data": False,
+#             "campaign": self._mc_campaign,
+#             "generator": "pythia8"
+#         }
+#         files += self.era.datasets_helper.get_nicks_with_query(query)
+
+#         query = {
+#             "process":
+#             "(STt-channelantitop4finclusiveDecays|STt-channeltop4finclusiveDecays|STtWantitop5finclusiveDecays|STtWtop5finclusiveDecays)",
+#             "data": False,
+#             "campaign": self._mc_campaign
+#         }
+#         files += self.era.datasets_helper.get_nicks_with_query(query)
+
+#         log_query(self.name, "<optimzed out>", files)
+#         return self.artus_file_names(files)
 
 
 class VVLEstimation(VVEstimation):
