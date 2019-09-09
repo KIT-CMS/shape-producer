@@ -441,8 +441,6 @@ class ggHEstimation(HTTEstimation):
         #         Weight("prefiringweight", "prefireWeight"))
         # else:
         weights = super(ggHEstimation, self).get_weights()
-        weights.remove("numberGeneratedEventsWeight")
-        weights.add(Weight("8.8384e-8", "numberGeneratedEventsWeight"))
         weights.add(Weight("ggh_NNLO_weight", "gghNNLO"))
         weights.add(Weight("1.01", "bbh_inclusion_weight"))
         return weights
@@ -1294,7 +1292,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 self.channel.name)
 
     def embedding_tauid(self):
-        """         if self.channel.name == "et" or self.channel.name == "mt":
+        if self.channel.name == "et" or self.channel.name == "mt":
             return Weight(
                 "(gen_match_2==5)*0.87+(gen_match_2!=5)",
                 "emb_tau_id")  # TODO measure for now MC correction factors
@@ -1302,8 +1300,8 @@ class ZTTEmbeddedEstimation(EstimationMethod):
             return Weight(
                 "((gen_match_1==5)*0.87+(gen_match_1!=5))*((gen_match_2==5)*0.870+(gen_match_2!=5))",
                 "emb_tau_id"),
-        else: """
-        return Weight("1.0", "emb_tau_id"),
+        else:
+            return Weight("1.0", "emb_tau_id"),
 
     def get_weights(self):
         emb_weights = Weights(
@@ -1324,7 +1322,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("gen_match_1==4 && gen_match_2==5", "emb_veto"))
 
         elif self.channel.name == "et":
-            #emb_weights.add(Weight("idWeight_1*triggerWeight_1*isoWeight_1","lepton_sf"))
+            emb_weights.add(Weight("idWeight_1*triggerWeight_1*isoWeight_1","lepton_sf"))
             emb_weights.add(
                 Weight("gen_match_1==3 && gen_match_2==5", "emb_veto"))
 
