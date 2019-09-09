@@ -133,14 +133,6 @@ def get_tauByIsoIdWeight_for_channel(channel):
             "taubyIsoIdWeight")
     return weight
 
-
-def get_eleHLTZvtxWeight_for_channel(channel):  #TODO is this needed ?
-    weight = Weight("1.0", "eleHLTZvtxWeight")
-    # if "et" in channel:
-    #     weight = Weight("(trg_singleelectron_35 || trg_singleelectron_32 || trg_singleelectron_27 || trg_crossele_ele24tau30)*0.991 + (!(trg_singleelectron_35 || trg_singleelectron_32 || trg_singleelectron_27 || trg_crossele_ele24tau30))*1.0", "eleHLTZvtxWeight")
-    return weight
-
-
 def get_eleRecoWeight_for_channel(channel):
     weight = Weight("1.0", "eleRecoWeight")
     if "et" in channel:
@@ -184,8 +176,7 @@ class FakeEstimationLT(DataEstimation):
             folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(DataEstimation, self).__init__(
             name="fakes",
             folder=folder,
@@ -193,7 +184,6 @@ class FakeEstimationLT(DataEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -226,8 +216,7 @@ class NewFakeEstimationLT(NewFakeEstimationMethodLT):
             friend_directory=None,
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(NewFakeEstimationLT, self).__init__(
             name="jetFakes",
             folder="nominal",
@@ -236,7 +225,6 @@ class NewFakeEstimationLT(NewFakeEstimationMethodLT):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             directory=directory,
             friend_directory=friend_directory,
             channel=channel,
@@ -259,8 +247,7 @@ class NewFakeEstimationTT(NewFakeEstimationMethodTT):
             friend_directory=None,
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(NewFakeEstimationTT, self).__init__(
             name="jetFakes",
             folder="nominal",
@@ -268,7 +255,6 @@ class NewFakeEstimationTT(NewFakeEstimationMethodTT):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -293,8 +279,7 @@ class FakeEstimationTT(DataEstimation):
             folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(DataEstimation, self).__init__(
             name="fakes",
             folder=folder,
@@ -302,7 +287,6 @@ class FakeEstimationTT(DataEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -338,8 +322,7 @@ class HTTEstimation(EstimationMethod):
             folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(HTTEstimation, self).__init__(
             name="HTT",
             folder=folder,
@@ -347,7 +330,6 @@ class HTTEstimation(EstimationMethod):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -374,7 +356,6 @@ class HTTEstimation(EstimationMethod):
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
-            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
             # MC weights
@@ -409,7 +390,6 @@ class ggHEstimation(HTTEstimation):
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
     ):
         super(HTTEstimation, self).__init__(
             name=name,
@@ -418,7 +398,6 @@ class ggHEstimation(HTTEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -473,7 +452,6 @@ class qqHEstimation(HTTEstimation):
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
     ):
         super(HTTEstimation, self).__init__(
             name=name,
@@ -482,7 +460,6 @@ class qqHEstimation(HTTEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -517,8 +494,7 @@ class VHEstimation(HTTEstimation):
             folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(HTTEstimation, self).__init__(
             name="VH",
             folder=folder,
@@ -526,7 +502,6 @@ class VHEstimation(HTTEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -559,8 +534,7 @@ class WHEstimation(HTTEstimation):
             friend_directory=None,
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(HTTEstimation, self).__init__(
             name="WH",
             folder="nominal",
@@ -568,7 +542,6 @@ class WHEstimation(HTTEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -601,8 +574,7 @@ class ZHEstimation(HTTEstimation):
             friend_directory=None,
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(HTTEstimation, self).__init__(
             name="ZH",
             folder="nominal",
@@ -610,7 +582,6 @@ class ZHEstimation(HTTEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -643,8 +614,7 @@ class ttHEstimation(HTTEstimation):
             friend_directory=None,
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(HTTEstimation, self).__init__(
             name="ttH",
             folder="nominal",
@@ -652,7 +622,6 @@ class ttHEstimation(HTTEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -682,7 +651,6 @@ class ggHWWEstimation(EstimationMethod):
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
     ):
         super(ggHWWEstimation, self).__init__(
             name="ggHWW125",
@@ -691,7 +659,6 @@ class ggHWWEstimation(EstimationMethod):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             channel=channel,
@@ -715,7 +682,6 @@ class ggHWWEstimation(EstimationMethod):
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
-            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
@@ -746,7 +712,6 @@ class qqHWWEstimation(EstimationMethod):
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
     ):
         super(qqHWWEstimation, self).__init__(
             name="qqHWW125",
@@ -755,7 +720,6 @@ class qqHWWEstimation(EstimationMethod):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             channel=channel,
@@ -779,7 +743,6 @@ class qqHWWEstimation(EstimationMethod):
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
-            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
@@ -808,8 +771,7 @@ class bbH120Estimation(HTTEstimation):
             friend_directory=None,
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(HTTEstimation, self).__init__(
             name="bbH120",
             folder="nominal",
@@ -817,7 +779,6 @@ class bbH120Estimation(HTTEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -845,8 +806,7 @@ class bbH130Estimation(HTTEstimation):
             friend_directory=None,
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(HTTEstimation, self).__init__(
             name="bbH130",
             folder="nominal",
@@ -854,7 +814,6 @@ class bbH130Estimation(HTTEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -884,8 +843,7 @@ class DYJetsToLLEstimation(EstimationMethod):
             atNLO=False,
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         self.atNLO = atNLO
         name = "DYJetsToLLNLO" if self.atNLO else "DYJetsToLL"
         super(DYJetsToLLEstimation, self).__init__(
@@ -895,7 +853,6 @@ class DYJetsToLLEstimation(EstimationMethod):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -936,7 +893,6 @@ class DYJetsToLLEstimation(EstimationMethod):
                    "leptonTauFakeRateWeight"),
             self.get_triggerweight_for_channel(self.channel._name),
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
-            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
@@ -1021,8 +977,7 @@ class EWKZEstimation(DYJetsToLLEstimation):
             atNLO=False,
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         self.atNLO = atNLO
         super(DYJetsToLLEstimation, self).__init__(
             name="EWKZ",
@@ -1031,7 +986,6 @@ class EWKZEstimation(DYJetsToLLEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -1061,8 +1015,7 @@ class ZTTEstimation(DYJetsToLLEstimation):
             atNLO=False,
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         self.atNLO = atNLO
         name = "ZTTNLO" if self.atNLO else "ZTT"
         super(DYJetsToLLEstimation, self).__init__(
@@ -1072,7 +1025,6 @@ class ZTTEstimation(DYJetsToLLEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -1104,8 +1056,7 @@ class ZLEstimation(DYJetsToLLEstimation):
             atNLO=False,
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         self.atNLO = atNLO
         name = "ZLNLO" if self.atNLO else "ZL"
         super(DYJetsToLLEstimation, self).__init__(
@@ -1115,7 +1066,6 @@ class ZLEstimation(DYJetsToLLEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -1162,8 +1112,7 @@ class ZJEstimation(DYJetsToLLEstimation):
             atNLO=False,
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         self.atNLO = atNLO
         name = "ZJNLO" if self.atNLO else "ZJ"
         super(DYJetsToLLEstimation, self).__init__(
@@ -1173,7 +1122,6 @@ class ZJEstimation(DYJetsToLLEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -1201,8 +1149,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
             folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(ZTTEmbeddedEstimation, self).__init__(
             name="EMB",
             folder=folder,
@@ -1210,7 +1157,6 @@ class ZTTEmbeddedEstimation(EstimationMethod):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             friend_directory=friend_directory,
             directory=directory,
@@ -1376,7 +1322,6 @@ class WEstimation(EstimationMethod):
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
     ):
         super(WEstimation, self).__init__(
             name="W",
@@ -1385,7 +1330,6 @@ class WEstimation(EstimationMethod):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             channel=channel,
@@ -1404,7 +1348,6 @@ class WEstimation(EstimationMethod):
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
-            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
             # MC related weights
@@ -1447,8 +1390,7 @@ class EWKWpEstimation(EstimationMethod):
             folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(EWKWpEstimation, self).__init__(
             name="EWKWp",
             folder=folder,
@@ -1456,7 +1398,6 @@ class EWKWpEstimation(EstimationMethod):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -1489,7 +1430,6 @@ class EWKWpEstimation(EstimationMethod):
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
-            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
             Weight("generatorWeight", "generatorWeight"),
@@ -1520,8 +1460,7 @@ class EWKWmEstimation(EstimationMethod):
             folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(EWKWmEstimation, self).__init__(
             name="EWKWm",
             folder=folder,
@@ -1529,7 +1468,6 @@ class EWKWmEstimation(EstimationMethod):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -1561,7 +1499,6 @@ class EWKWmEstimation(EstimationMethod):
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
-            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
             # MC weights
@@ -1596,8 +1533,7 @@ class WEstimationRaw(EstimationMethod):
             folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(WEstimationRaw, self).__init__(
             name="W",
             folder=folder,
@@ -1605,7 +1541,6 @@ class WEstimationRaw(EstimationMethod):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -1637,7 +1572,6 @@ class WEstimationRaw(EstimationMethod):
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
-            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
             # MC weights
@@ -1663,15 +1597,13 @@ class WEstimationRaw(EstimationMethod):
 #     def __init__(self, era, directory, channel, friend_directory=None, folder="nominal",
 #             get_triggerweight_for_channel=get_triggerweight_for_channel,
 #             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-#             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-#             get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+#             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
 #         super(WEstimation, self).__init__(
 #             name="W",
 #             folder=folder,
 #             get_triggerweight_for_channel=get_triggerweight_for_channel,
 #             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
 #             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-#             get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
 #             era=era,
 #             directory=directory,
 #             friend_directory=friend_directory,
@@ -1711,8 +1643,7 @@ class WTEstimation(WEstimation):
             folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(WEstimation, self).__init__(
             name="W",
             folder=folder,
@@ -1720,7 +1651,6 @@ class WTEstimation(WEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -1741,8 +1671,7 @@ class WLEstimation(WEstimation):
             folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(WEstimation, self).__init__(
             name="W",
             folder=folder,
@@ -1750,7 +1679,6 @@ class WLEstimation(WEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -1771,8 +1699,7 @@ class TTEstimation(EstimationMethod):
             folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(TTEstimation, self).__init__(
             name="TT",
             folder=folder,
@@ -1780,7 +1707,6 @@ class TTEstimation(EstimationMethod):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -1811,7 +1737,6 @@ class TTEstimation(EstimationMethod):
             #self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight","leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
-            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
             # MC weights
@@ -1842,8 +1767,7 @@ class TTLEstimation(TTEstimation):
             folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(TTEstimation, self).__init__(
             name="TTL",
             folder=folder,
@@ -1851,7 +1775,6 @@ class TTLEstimation(TTEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -1888,8 +1811,7 @@ class TTTEstimation(TTEstimation):
             folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(TTEstimation, self).__init__(
             name="TTT",
             folder=folder,
@@ -1897,7 +1819,6 @@ class TTTEstimation(TTEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -1928,8 +1849,7 @@ class TTJEstimation(TTEstimation):
             folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(TTEstimation, self).__init__(
             name="TTJ",
             folder=folder,
@@ -1937,7 +1857,6 @@ class TTJEstimation(TTEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -1959,15 +1878,13 @@ class VVEstimation(EstimationMethod):
     def __init__(self, era, directory, channel, friend_directory=None, folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(VVEstimation, self).__init__(
             name="VV",
             folder=folder,
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -1994,7 +1911,6 @@ class VVEstimation(EstimationMethod):
             self.get_triggerweight_for_channel(self.channel._name),
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
-            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
             # MC weights
@@ -2040,8 +1956,7 @@ class VVEstimation(EstimationMethod):
 #             folder="nominal",
 #             get_triggerweight_for_channel=get_triggerweight_for_channel,
 #             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-#             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-#             get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+#             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
 #         super(VVEstimation, self).__init__(
 #             name="VV",
 #             folder=folder,
@@ -2049,7 +1964,6 @@ class VVEstimation(EstimationMethod):
 #             get_singlelepton_triggerweight_for_channel=
 #             get_singlelepton_triggerweight_for_channel,
 #             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-#             get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
 #             era=era,
 #             directory=directory,
 #             friend_directory=friend_directory,
@@ -2077,7 +1991,6 @@ class VVEstimation(EstimationMethod):
 #             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
 #             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
 #                    "leptonTauFakeRateWeight"),
-#             self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
 #             get_eleRecoWeight_for_channel(self.channel.name),
 #             Weight("prefiringweight", "prefireWeight"),
 #             # MC weights
@@ -2142,8 +2055,7 @@ class VVLEstimation(VVEstimation):
             folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(VVEstimation, self).__init__(
             name="VVL",
             folder=folder,
@@ -2151,7 +2063,6 @@ class VVLEstimation(VVEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -2188,8 +2099,7 @@ class VVTEstimation(VVEstimation):
             folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(VVEstimation, self).__init__(
             name="VVT",
             folder=folder,
@@ -2197,7 +2107,6 @@ class VVTEstimation(VVEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -2228,8 +2137,7 @@ class VVJEstimation(VVEstimation):
             folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(VVEstimation, self).__init__(
             name="VVJ",
             folder=folder,
@@ -2237,7 +2145,6 @@ class VVJEstimation(VVEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -2269,8 +2176,7 @@ class QCDEstimation_SStoOS_MTETEM(SStoOSEstimationMethod):
             qcd_weight=Weight("1.0", "qcd_Weight"),
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(QCDEstimation_SStoOS_MTETEM, self).__init__(
             name="QCD",
             folder=folder,
@@ -2278,7 +2184,6 @@ class QCDEstimation_SStoOS_MTETEM(SStoOSEstimationMethod):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             channel=channel,
@@ -2301,8 +2206,7 @@ class QCDEstimationTT(ABCDEstimationMethod):
             folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(QCDEstimationTT, self).__init__(
             name="QCD",
             folder=folder,
@@ -2310,7 +2214,6 @@ class QCDEstimationTT(ABCDEstimationMethod):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -2352,8 +2255,7 @@ class WEstimationWithQCD(EstimationMethod):
             folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(WEstimationWithQCD, self).__init__(
             name="WJets",
             folder=folder,
@@ -2361,7 +2263,6 @@ class WEstimationWithQCD(EstimationMethod):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             channel=channel,
@@ -2605,8 +2506,7 @@ class QCDEstimationWithW(EstimationMethod):
             folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
-            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel):
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
         super(QCDEstimationWithW, self).__init__(
             name="QCD",
             folder=folder,
@@ -2614,7 +2514,6 @@ class QCDEstimationWithW(EstimationMethod):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             channel=channel,
