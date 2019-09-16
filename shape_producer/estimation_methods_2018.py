@@ -36,7 +36,7 @@ def get_triggerweight_for_channel(channel):
         weight = Weight("(crossTriggerMCWeight_1*(crossTriggerMCWeight_1<10 && crossTriggerMCWeight_1>0.1)+(crossTriggerMCWeight_1>10 || crossTriggerMCWeight_1<0.1))*(pt_1<25) + (trigger_24_27_Weight_1*(pt_1>25))","triggerweight")
 
     elif "et" in channel:
-        trig_sL = "(trg_singleelectron_35 || trg_singleelectron_32 || trg_singleelectron_27)"
+        trig_sL = "(trg_singleelectron_35 || trg_singleelectron_32)"
         trig_X = "(pt_1>25 && pt_1<28 && trg_crossele_ele24tau30)"
 
         # Eff = Eff(singleL)*(1 - Eff(xTau)) + Eff(xL)*Eff(xTau)
@@ -91,7 +91,7 @@ def get_tauByIsoIdWeight_for_channel(channel):
 def get_eleHLTZvtxWeight_for_channel(channel):
     weight = Weight("1.0","eleHLTZvtxWeight")
     if "et" in channel:
-        weight = Weight("(trg_singleelectron_35 || trg_singleelectron_32 || trg_singleelectron_27 || trg_crossele_ele24tau30)*0.991 + (!(trg_singleelectron_35 || trg_singleelectron_32 || trg_singleelectron_27 || trg_crossele_ele24tau30))*1.0", "eleHLTZvtxWeight")
+        weight = Weight("(trg_singleelectron_35 || trg_singleelectron_32 || trg_crossele_ele24tau30)*0.991 + (!(trg_singleelectron_35 || trg_singleelectron_32 || trg_crossele_ele24tau30))*1.0", "eleHLTZvtxWeight")
     return weight
 
 class DataEstimation(DataEstimation2016):
