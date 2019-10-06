@@ -153,7 +153,7 @@ class Weights(object):
         return self
 
     def square(self, name):
-        new = self.get(name)
+        new = copy.deepcopy(self.get(name))
         new._name = new._name + "_squared"
         self._weightstrings.append(new)
         return self
