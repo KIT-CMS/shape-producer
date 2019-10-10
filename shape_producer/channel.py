@@ -151,10 +151,10 @@ class MTSM2016(Channel):
             Cut("againstMuonTight3_2>0.5", "againstMuonDiscriminator"),
             Cut("againstElectronVLooseMVA6_2>0.5","againstElectronDiscriminator"),
             Cut("byTightIsolationMVArun2017v2DBoldDMwLT2017_2>0.5", "tau_iso"),
-            Cut("iso_1<0.15", "muon_iso"), 
+            Cut("iso_1<0.15", "muon_iso"),
             Cut("q_1*q_2<0", "os"),
             Cut("mt_1<50", "m_t"),
-            Cut("pt_2>30 && ((trg_singlemuon == 1) || (trg_mutaucross == 1 && pt_1 <= 23 && pt_1 > 20))","trg_selection")
+            Cut("pt_2>30 && ((trg_singlemuon == 1) || (trg_mutaucross == 1 && pt_1 < 23))","trg_selection")
             )
 
 class ET(Channel):
@@ -234,8 +234,8 @@ class ETSM2016(Channel):
             Cut("againstElectronTightMVA6_2>0.5",
                 "againstElectronDiscriminator"),
             Cut("byTightIsolationMVArun2017v2DBoldDMwLT2017_2>0.5", "tau_iso"),
-            Cut("iso_1<0.1", "ele_iso"), 
-            Cut("q_1*q_2<0", "os"), 
+            Cut("iso_1<0.1", "ele_iso"),
+            Cut("q_1*q_2<0", "os"),
             Cut("mt_1<50", "m_t"),
             Cut("(trg_singleelectron==1 && pt_1>26 && pt_2>30)","trg_singleelectron"))
 
@@ -264,13 +264,11 @@ class TTSM2016(Channel):
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
             Cut("dilepton_veto<0.5", "dilepton_veto"),
-            Cut("againstMuonLoose3_1>0.5 && againstMuonLoose3_2>0.5",
-                "againstMuonDiscriminator"),
-            Cut("againstElectronVLooseMVA6_1>0.5 && againstElectronVLooseMVA6_2>0.5",
-                "againstElectronDiscriminator"),
+            Cut("againstMuonLoose3_1>0.5 && againstMuonLoose3_2>0.5", "againstMuonDiscriminator"),
+            Cut("againstElectronVLooseMVA6_1>0.5 && againstElectronVLooseMVA6_2>0.5", "againstElectronDiscriminator"),
             Cut("byTightIsolationMVArun2017v2DBoldDMwLT2017_1>0.5", "tau_1_iso"),
             Cut("byTightIsolationMVArun2017v2DBoldDMwLT2017_2>0.5", "tau_2_iso"),
-            Cut("q_1*q_2<0", "os"), 
+            Cut("q_1*q_2<0", "os"),
             Cut("pt_tt>50", "pt_h"),
             Cut("trg_doubletau==1", "trg_doubletau"))
 

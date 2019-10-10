@@ -1585,13 +1585,13 @@ class qqHEstimation(HTTEstimation):
         return self.artus_file_names(files)
 
 class SUSYggHEstimation(EstimationMethod):
-    def __init__(self, era, directory, channel, mass, friend_directory=None, folder="nominal",
+    def __init__(self, era, directory, channel, mass, contribution, friend_directory=None, folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
             get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,):
         super(SUSYggHEstimation, self).__init__(
-            name="_".join(["ggH",str(mass)]),
+            name="_".join(["gg"+contribution,str(mass)]),
             folder=folder,
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
@@ -1603,14 +1603,20 @@ class SUSYggHEstimation(EstimationMethod):
             friend_directory=friend_directory,
             mc_campaign="RunIIFall17MiniAODv2")
         self.mass = mass
+        self.contribution = contribution
 
     def get_weights(self):
+        contribution_weight = "1.0"
+        if self.contribution in ["A_i", "A_t", "A_b", "H_i", "H_t", "H_b", "h_i", "h_t", "h_b"]:
+            contribution_weight = "gg%s_weight"%self.contribution
+
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
+            Weight(contribution_weight, "contributionWeight"),
             Weight("numberGeneratedEventsWeight",
                    "numberGeneratedEventsWeight"),
-            Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
+            #Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"), # not needed, since should be at 1.0
 
             # Weights for corrections
             Weight("puweight", "puweight"),
@@ -1663,7 +1669,7 @@ class SUSYbbHEstimation(EstimationMethod):
             Weight("generatorWeight", "generatorWeight"),
             Weight("numberGeneratedEventsWeight",
                    "numberGeneratedEventsWeight"),
-            Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
+            #Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"), # not needed, since should be at 1.0
 
             # Weights for corrections
             Weight("puweight", "puweight"),
@@ -1684,7 +1690,8 @@ class SUSYbbHEstimation(EstimationMethod):
         query = {
             "process": "^SUSYGluGluToBBHToTauTau_M{MASS}$".format(MASS=self.mass),
             "data": False,
-            "campaign": self._mc_campaign
+            "campaign": self._mc_campaign,
+            "generator": "amcatnlo-pythia8",
         }
         files = self.era.datasets_helper.get_nicks_with_query(query)
         log_query(self.name, query, files)
