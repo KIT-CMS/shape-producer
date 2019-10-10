@@ -1501,7 +1501,7 @@ class NMSSMEstimation(EstimationMethod):
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
             get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,):
         super(NMSSMEstimation, self).__init__(
-            name="NMSSM",
+            name="NMSSM_{}_{}".format(heavy_mass, light_mass),
             folder=folder,
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
