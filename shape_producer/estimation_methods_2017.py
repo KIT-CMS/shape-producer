@@ -1010,8 +1010,8 @@ class TTEstimation(EstimationMethod):
             Weight("generatorWeight", "generatorWeight"),
             Weight("numberGeneratedEventsWeight",
                    "numberGeneratedEventsWeight"),
-            Weight("(abs(crossSectionPerEventWeight - 380.1) < 0.1)*377.96 + (abs(crossSectionPerEventWeight - 87.31) < 0.1)*88.29 + (abs(crossSectionPerEventWeight - 364.4) < 0.1)*365.35", "crossSectionPerEventWeight"),
-            #Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
+            #Weight("(abs(crossSectionPerEventWeight - 380.1) < 0.1)*377.96 + (abs(crossSectionPerEventWeight - 87.31) < 0.1)*88.29 + (abs(crossSectionPerEventWeight - 364.4) < 0.1)*365.35", "crossSectionPerEventWeight"),
+            Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
 
             # Weights for corrections
             Weight("puweight", "puweight"),
@@ -1454,7 +1454,7 @@ class ZHEstimation(HTTEstimation):
 
 class ggHEstimation(HTTEstimation):
     htxs_dict = ggH_htxs
-    def __init__(self, name,  era, directory, channel, friend_directory=None, folder="nominal",
+    def __init__(self, name, era, directory, channel, friend_directory=None, folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
@@ -1521,7 +1521,7 @@ class NMSSMEstimation(EstimationMethod):
             Weight("generatorWeight", "generatorWeight"),
             Weight("numberGeneratedEventsWeight",
                    "numberGeneratedEventsWeight"),
-            Weight("0.1*crossSectionPerEventWeight", "crossSectionPerEventWeight"),
+            Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
 
             # Weights for corrections
             Weight("puweight", "puweight"),
@@ -1546,6 +1546,7 @@ class NMSSMEstimation(EstimationMethod):
             "generator": "madgraph\-pythia8"
         } 
         files = self.era.datasets_helper.get_nicks_with_query(query)
+        files = [x for x in files if str(self._light_mass)+"_" in x]
         log_query(self.name, query, files)
         return self.artus_file_names(files)
 
