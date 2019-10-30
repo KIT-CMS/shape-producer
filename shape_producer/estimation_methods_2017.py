@@ -21,46 +21,54 @@ def get_triggerweight_for_channel(channel):
     MCTau_1 = "((byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5 && byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_vloose_MVAv2_1 + (byTightIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_tight_MVAv2_1)"
     MCTau_2 = MCTau_1.replace("_1","_2")
 
-    if "mt" in channel:
-        trig_sL = "(trg_singlemuon_27 || trg_singlemuon_24)"
-        trig_X = "(pt_1 > 21 && pt_1 < 25 && trg_crossmuon_mu20tau27)"
+    if "mt" in channel.name:
+        if "TauID" in channel.__class__.__name__:
+            trig_sL = "((trg_singlemuon_27 == 1)) || ((trg_singlemuon_24 == 1))"
+            MuTauMC = "*".join([trig_sL, singleMC])
+        else:
+            trig_sL = "(trg_singlemuon_27 || trg_singlemuon_24)"
+            # trig_X = "(pt_1 > 21 && pt_1 < 25 && trg_crossmuon_mu20tau27)"
+            trig_X = "(trg_crossmuon_mu20tau27)"
 
-        # Eff = Eff(singleL)*(1 - Eff(xTau)) + Eff(xL)*Eff(xTau)
-        #MuTauMC = "*".join([trig_sL,singleMC,"(1-"+trig_X+"*"+crossMCL+")"])+"+"+"*".join([trig_X,crossMCL,MCTau_2])
-        #MuTauData = MuTauMC.replace("MC","Data")
-        #MuTau = "("+MuTauData+")/("+MuTauMC+")"
+            # Eff = Eff(singleL)*(1 - Eff(xTau)) + Eff(xL)*Eff(xTau)
+            #MuTauMC = "*".join([trig_sL,singleMC,"(1-"+trig_X+"*"+crossMCL+")"])+"+"+"*".join([trig_X,crossMCL,MCTau_2])
+            #MuTauData = MuTauMC.replace("MC","Data")
+            #MuTau = "("+MuTauData+")/("+MuTauMC+")"
 
-        MuTauMC = "*".join([trig_sL, singleMC]) + "+" + "*".join([trig_X, crossMCL, MCTau_2])
+            # MuTauMC = "*".join([trig_sL, singleMC]) + "+" + "*".join([trig_X, crossMCL, MCTau_2])
+            MuTauMC = "*".join([trig_X, crossMCL, MCTau_2])
         MuTauData = MuTauMC.replace("MC","Data")
         MuTau = "("+MuTauData+")/("+MuTauMC+")"
         weight = Weight(MuTau,"triggerweight")
 
-    elif "et" in channel:
+    elif "et" in channel.name:
         trig_sL = "(trg_singleelectron_35 || trg_singleelectron_32 || trg_singleelectron_27)"
-        trig_X = "(pt_1>25 && pt_1<28 && trg_crossele_ele24tau30)"
+        # trig_X = "(pt_1>25 && pt_1<28 && trg_crossele_ele24tau30)"
+        trig_X = "(trg_crossele_ele24tau30)"
 
         # Eff = Eff(singleL)*(1 - Eff(xTau)) + Eff(xL)*Eff(xTau)
         #ElTauMC = "*".join([trig_sL,singleMC,"(1-"+trig_X+"*"+crossMCL+")"])+"+"+"*".join([trig_X,crossMCL,MCTau_2])
         #ElTauData = ElTauMC.replace("MC","Data")
         #ElTau = "("+ElTauData+")/("+ElTauMC+")"
 
-        ElTauMC = "*".join([trig_sL, singleMC]) + "+" + "*".join([trig_X, crossMCL, MCTau_2])
+        # ElTauMC = "*".join([trig_sL, singleMC]) + "+" + "*".join([trig_X, crossMCL, MCTau_2])
+        ElTauMC = "*".join([trig_X, crossMCL, MCTau_2])
         ElTauData = ElTauMC.replace("MC","Data")
         ElTau = "("+ElTauData+")/("+ElTauMC+")"
         weight = Weight(ElTau,"triggerweight")
 
-    elif "tt" in channel:
+    elif "tt" in channel.name:
         DiTauMC = "*".join([MCTau_1,MCTau_2])
         DiTauData = DiTauMC.replace("MC","Data")
         DiTau = "("+DiTauData+")/("+DiTauMC+")"
         weight = Weight(DiTau,"triggerweight")
 
-    elif "em" in channel:
+    elif "em" in channel.name:
         weight = Weight(
             "(trigger_23_data_Weight_2*trigger_12_data_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_data_Weight_1*trigger_8_data_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_data_Weight_2*trigger_23_data_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))/(trigger_23_mc_Weight_2*trigger_12_mc_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_mc_Weight_1*trigger_8_mc_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_mc_Weight_2*trigger_23_mc_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))",
             "trigger_lepton_sf")
 
-    elif "mm" in channel:
+    elif "mm" in channel.name:
         weight = Weight(
             "singleTriggerDataEfficiencyWeightKIT_1/singleTriggerMCEfficiencyWeightKIT_1",
             "trigger_lepton_sf")
@@ -89,9 +97,12 @@ def get_tauByIsoIdWeight_for_channel(channel):
     # WPs: VLoose 0.88, Loose 0.89, Medium 0.89, Tight 0.89, VTight 0.86, VVTight 0.84. Currently used: SR mt,et Tight; SR tt Tight, anti-iso CR tt Medium; VVLoose is used for SF estimation and therefore not listed here.
     # Source: https://indico.cern.ch/event/738043/contributions/3048471/attachments/1674773/2691664/TauId_26062018.pdf
     weight = Weight("1.0","taubyIsoIdWeight")
-    if "mt" in channel or "et" in channel:
-        weight = Weight("((gen_match_2 == 5)*0.89 + (gen_match_2 != 5))", "taubyIsoIdWeight")
-    elif "tt" in channel:
+    if "mt" in channel.name or "et" in channel.name:
+        if "TauID" in channel.__class__.__name__:
+            pass
+        else:
+            weight = Weight("((gen_match_2 == 5)*0.89 + (gen_match_2 != 5))", "taubyIsoIdWeight")
+    elif "tt" in channel.name:
         weight = Weight("((gen_match_1 == 5)*0.89 + (gen_match_1 != 5))*((gen_match_2 == 5)*0.89 + (gen_match_2 != 5))", "taubyIsoIdWeight")
     return weight
 
@@ -313,10 +324,10 @@ class VVEstimation(EstimationMethod):
             Weight("idWeight_1*idWeight_2","idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
-            self.get_triggerweight_for_channel(self.channel.name),
+            self.get_triggerweight_for_channel(self.channel),
             # self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
-            self.get_tauByIsoIdWeight_for_channel(self.channel.name),
+            self.get_tauByIsoIdWeight_for_channel(self.channel),
             self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             Weight("118.7*(abs(crossSectionPerEventWeight - 63.21) < 0.01) + crossSectionPerEventWeight*(abs(crossSectionPerEventWeight - 63.21) > 0.01)", "crossSectionPerEventWeight"),
             Weight("prefiringweight", "prefireWeight"),
@@ -499,10 +510,10 @@ class EWKZEstimation(EstimationMethod):
             Weight("idWeight_1*idWeight_2","idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
-            self.get_triggerweight_for_channel(self.channel.name),
+            self.get_triggerweight_for_channel(self.channel),
             # self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
-            self.get_tauByIsoIdWeight_for_channel(self.channel.name),
+            self.get_tauByIsoIdWeight_for_channel(self.channel),
             self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
 
@@ -557,9 +568,9 @@ class DYJetsToLLEstimation(EstimationMethod):
             Weight("idWeight_1*idWeight_2","idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
-            self.get_triggerweight_for_channel(self.channel._name),
+            self.get_triggerweight_for_channel(self.channel),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
-            self.get_tauByIsoIdWeight_for_channel(self.channel.name),
+            self.get_tauByIsoIdWeight_for_channel(self.channel),
             self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             Weight("zPtReweightWeight", "zPtReweightWeight"),
             Weight("prefiringweight", "prefireWeight"),
@@ -955,10 +966,10 @@ class WEstimation(EstimationMethod):
             Weight("idWeight_1*idWeight_2","idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
-            self.get_triggerweight_for_channel(self.channel._name),
+            self.get_triggerweight_for_channel(self.channel),
             # self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
-            self.get_tauByIsoIdWeight_for_channel(self.channel.name),
+            self.get_tauByIsoIdWeight_for_channel(self.channel),
             self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
 
@@ -1019,10 +1030,10 @@ class TTEstimation(EstimationMethod):
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             Weight("topPtReweightWeight", "topPtReweightWeight"),
-            self.get_triggerweight_for_channel(self.channel._name),
+            self.get_triggerweight_for_channel(self.channel),
             # self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
-            self.get_tauByIsoIdWeight_for_channel(self.channel.name),
+            self.get_tauByIsoIdWeight_for_channel(self.channel),
             self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
 
@@ -1173,10 +1184,10 @@ class HTTEstimation(EstimationMethod):
             Weight("idWeight_1*idWeight_2","idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
-            self.get_triggerweight_for_channel(self.channel._name),
+            self.get_triggerweight_for_channel(self.channel),
             # self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
-            self.get_tauByIsoIdWeight_for_channel(self.channel.name),
+            self.get_tauByIsoIdWeight_for_channel(self.channel),
             self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
 
@@ -1226,9 +1237,9 @@ class HWWEstimation(EstimationMethod):
             Weight("idWeight_1*idWeight_2","idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
-            self.get_triggerweight_for_channel(self.channel._name),
+            self.get_triggerweight_for_channel(self.channel),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
-            self.get_tauByIsoIdWeight_for_channel(self.channel.name),
+            self.get_tauByIsoIdWeight_for_channel(self.channel),
             self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
 
@@ -1278,9 +1289,9 @@ class ggHWWEstimation(EstimationMethod):
             Weight("idWeight_1*idWeight_2","idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
-            self.get_triggerweight_for_channel(self.channel._name),
+            self.get_triggerweight_for_channel(self.channel),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
-            self.get_tauByIsoIdWeight_for_channel(self.channel.name),
+            self.get_tauByIsoIdWeight_for_channel(self.channel),
             self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
 
@@ -1330,9 +1341,9 @@ class qqHWWEstimation(EstimationMethod):
             Weight("idWeight_1*idWeight_2","idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
-            self.get_triggerweight_for_channel(self.channel._name),
+            self.get_triggerweight_for_channel(self.channel),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
-            self.get_tauByIsoIdWeight_for_channel(self.channel.name),
+            self.get_tauByIsoIdWeight_for_channel(self.channel),
             self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
 
@@ -1564,10 +1575,10 @@ class SUSYggHEstimation(EstimationMethod):
             Weight("idWeight_1*idWeight_2","idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
-            self.get_triggerweight_for_channel(self.channel._name),
+            self.get_triggerweight_for_channel(self.channel),
             # self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
-            self.get_tauByIsoIdWeight_for_channel(self.channel.name),
+            self.get_tauByIsoIdWeight_for_channel(self.channel),
             self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
 
@@ -1617,10 +1628,10 @@ class SUSYbbHEstimation(EstimationMethod):
             Weight("idWeight_1*idWeight_2","idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
-            self.get_triggerweight_for_channel(self.channel._name),
+            self.get_triggerweight_for_channel(self.channel),
             # self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
-            self.get_tauByIsoIdWeight_for_channel(self.channel.name),
+            self.get_tauByIsoIdWeight_for_channel(self.channel),
             self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
 
