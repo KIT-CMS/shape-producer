@@ -121,9 +121,8 @@ class Histogram(TTreeContent):
             logger.debug("------>combine files to a single tree using TChain")
             tree = ROOT.TChain()
             for inputfile in self._inputfiles:
-                logger.debug("------>inputfile: " + inputfile)
                 folder = self._folder
-                logger.debug("------>include:" + inputfile + " / " + self._folder)
+                logger.debug("------>inputfile: " + inputfile + " / " + self._folder)
 
                 tree.Add(inputfile + "/" + folder)
             # repeat this for friends if applicable
@@ -146,7 +145,7 @@ class Histogram(TTreeContent):
                              self._variable.binning.nbinsx,
                              self._variable.binning.bin_borders)
             # draw histogram and pipe result in the template histogram
-            logger.debug("------>draw histogram and pipe result in the template histogram: " )
+            logger.debug("------>draw histogram and pipe result in the template histogram: ")
             logger.debug(self._variable.expression + ">>" + self._name + ' ; \n' + self._cuts.expand() + "*" + self._weights.extract())
             tree.Draw(self._variable.expression + ">>" + self._name,
                       self._cuts.expand() + "*" + self._weights.extract(),
@@ -421,6 +420,13 @@ class RootObjects(object):
     def produce_classic(self, num_threads):
         self.create_output_file()
         self._produced = True
+
+        if len(self._root_objects) == 0:
+            logger.info(
+                "produce_classic : %u shapes in classic mode and %u processes. -> nothing to produce, returning",
+                len(self._root_objects), num_threads)
+            return self
+
         logger.info(
             "produce_classic : Start to produce %u shapes in classic mode and %u processes.",
             len(self._root_objects), num_threads)
