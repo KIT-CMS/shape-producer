@@ -329,7 +329,7 @@ class VVEstimation(EstimationMethod):
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
             self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
-            Weight("118.7*(abs(crossSectionPerEventWeight - 63.21) < 0.01) + crossSectionPerEventWeight*(abs(crossSectionPerEventWeight - 63.21) > 0.01)", "crossSectionPerEventWeight"),
+            Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
             Weight("prefiringweight", "prefireWeight"),
 
             # Data related scale-factors
@@ -819,6 +819,10 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                        "idiso_lepton_sf"),
                 Weight("(trigger_23_data_Weight_2*trigger_12_data_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_data_Weight_1*trigger_8_data_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_data_Weight_2*trigger_23_data_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))/(trigger_23_embed_Weight_2*trigger_12_embed_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_embed_Weight_1*trigger_8_embed_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_embed_Weight_2*trigger_23_embed_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))",
                        "trigger_lepton_sf"))
+        elif self.channel.name == "mm":
+            return Weights(
+                    Weight("generatorWeight", "simulation_sf"),
+                    Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"))
 
 
     def get_files(self):
@@ -834,6 +838,8 @@ class ZTTEmbeddedEstimation(EstimationMethod):
             query["scenario"] = ".*(v2|v3)"
         elif self.channel.name == "em":
             query["campaign"] = "ElMuFinalState"
+        elif self.channel.name == "mm":
+            query["campaign"] = "MuonEmbedding"
         files = self.era.datasets_helper.get_nicks_with_query(query)
         log_query(self.name, query, files)
         return self.artus_file_names(files)
@@ -1021,8 +1027,7 @@ class TTEstimation(EstimationMethod):
             Weight("generatorWeight", "generatorWeight"),
             Weight("numberGeneratedEventsWeight",
                    "numberGeneratedEventsWeight"),
-            Weight("(abs(crossSectionPerEventWeight - 380.1) < 0.1)*377.96 + (abs(crossSectionPerEventWeight - 87.31) < 0.1)*88.29 + (abs(crossSectionPerEventWeight - 364.4) < 0.1)*365.35", "crossSectionPerEventWeight"),
-            #Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
+            Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
 
             # Weights for corrections
             Weight("puweight", "puweight"),
