@@ -67,17 +67,22 @@ def get_triggerweight_for_channel(channel):
     MCTau_1 = "((byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5 && byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_vloose_MVAv2_1 + (byTightIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_tight_MVAv2_1)"
     MCTau_2 = MCTau_1.replace("_1", "_2")
 
-    if "mt" in channel:
-        trig_sL = "(trg_singlemuon)"
-        trig_X = "(pt_1 < 23 && trg_mutaucross)"
+    if "mt" in channel.name:
+        if "TauID" in channel.__class__.__name__:
+            trig_sL = "(trg_singlemuon == 1)"
+            MuTauMC = "*".join([trig_sL, singleMC])
+        else:
+            trig_sL = "(trg_singlemuon == 1)"
+            trig_X = "(pt_1 < 23 && trg_mutaucross)"
 
-        MuTauMC = "*".join([trig_sL, singleMC]) + "+" + "*".join([trig_X, crossMCL, MCTau_2])  
-        MuTauData = MuTauMC.replace("MC", "Data")
-        MuTau = "(" + MuTauData + ")/(" + MuTauMC + ")"
-        weight = Weight(MuTau, "triggerWeight")
+            MuTauMC = "*".join([trig_sL, singleMC]) + "+" + "*".join([trig_X, crossMC]) # TODO add TauCrossTrigger Weight back in
+        MuTauData = MuTauMC.replace("MC","Data")
+        MuTau = "("+MuTauData+")/("+MuTauMC+")"
+        weight = Weight(MuTau,"triggerWeight")
 
-    elif "et" in channel:
-        trig_sL = "(trg_singleelectron)" # no etau crosstrigger in 2016
+    elif "et" in channel.name:
+        trig_sL = "(trg_singleelectron)"
+        trig_X = "blank" # TODO add ElTau Crosstrigger 
 
         ElTauMC = "*".join([trig_sL, singleMC
                             ])
@@ -85,15 +90,14 @@ def get_triggerweight_for_channel(channel):
         ElTau = "(" + ElTauData + ")/(" + ElTauMC + ")"
         weight = Weight(ElTau, "triggerweight")
 
-    elif "tt" in channel:  
-        # TODO add TauTrigger SF iwth new ntuples
+    elif "tt" in channel.name: # TODO add TauTrigger SF
         #DiTauMC = "*".join([MCTau_1,MCTau_2])
         #DiTauData = DiTauMC.replace("MC","Data")
         #DiTau = "("+DiTauData+")/("+DiTauMC+")"
         #weight = Weight(DiTau,"triggerweight")
         weight = Weight("triggerWeight_1 * triggerWeight_2", "triggerweight")
 
-    # elif "em" in channel:
+    # elif "em" in channel.name:
     #     weight = Weight(
     #         "(trigger_23_data_Weight_2*trigger_12_data_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_data_Weight_1*trigger_8_data_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_data_Weight_2*trigger_23_data_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))/(trigger_23_mc_Weight_2*trigger_12_mc_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_mc_Weight_1*trigger_8_mc_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_mc_Weight_2*trigger_23_mc_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))",
     #         "trigger_lepton_sf")
@@ -352,7 +356,7 @@ class HTTEstimation(EstimationMethod):
             self.get_tauByIsoIdWeight_for_channel(self.channel),
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
-            self.get_triggerweight_for_channel(self.channel._name),
+            self.get_triggerweight_for_channel(self.channel),
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
@@ -860,19 +864,6 @@ class DYJetsToLLEstimation(EstimationMethod):
             mc_campaign="RunIISummer16MiniAODv3")
 
     def get_weights(self):
-        # if self.channel.name=="em":
-        #     return Weights(
-        #          Weight("((genbosonmass >= 50.0) * 4.255812e-05*((npartons == 0 || npartons >= 5)*1.0+(npartons == 1)*0.32123574062076404+(npartons == 2)*0.3314444833963529+(npartons == 3)*0.3389929050626262+(npartons == 4)*0.2785338687268455) + ((genbosonmass < 50.0)*numberGeneratedEventsWeight*crossSectionPerEventWeight))","z_stitching_weight"),
-        #         Weight("trackWeight_1*trackWeight_2", "eventWeight"), # TODO will be replaced by get_eleRecoWeight_for_channel in new ntuple
-        #         Weight("puweight", "puweight"),
-        #         Weight("isoWeight_1*isoWeight_2","isoWeight"),
-        #         Weight("idWeight_1*idWeight_2","idWeight"),
-        #         Weight("zPtReweightWeight", "zPtReweightWeight"),
-        #         Weight("prefiringweight", "prefireWeight"),
-        #         self.get_triggerweight_for_channel(self.channel._name),
-        #         Weight("(((gen_match_1 == 5)*0.95 + (gen_match_1 != 5))*((gen_match_2 == 5)*0.95 + (gen_match_2 != 5)))","hadronic_tau_sf"),
-        #         self.era.lumi_weight)
-        # else:
         z_stitching_weight = Weight("(1.0)", "z_stitching_weight")
         if self.atNLO:
             z_stitching_weight = Weight(
@@ -891,8 +882,7 @@ class DYJetsToLLEstimation(EstimationMethod):
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
-            self.get_triggerweight_for_channel(self.channel._name),
-            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            self.get_triggerweight_for_channel(self.channel),
             get_eleRecoWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
@@ -1163,84 +1153,15 @@ class ZTTEmbeddedEstimation(EstimationMethod):
             channel=channel,
             mc_campaign=None)
 
-    def embedding_stitchingweight(self):
-        if self.channel.name == 'mt':
-            comp_eff_B = "(1.0/0.899)"
-            comp_eff_C = "(1.0/0.881)"
-            comp_eff_D = "(1.0/0.877)"
-            comp_eff_E = "(1.0/0.939)"
-            comp_eff_F = "(1.0/0.936)"
-            comp_eff_G = "(1.0/0.908)"
-            comp_eff_H = "(1.0/0.962)"
-            runB = "((run >= 272007) && (run < 275657))*" + comp_eff_B
-            runC = "+((run >= 275657) && (run < 276315))*" + comp_eff_C
-            runD = "+((run >= 276315) && (run < 276831))*" + comp_eff_D
-            runE = "+((run >= 276831) && (run < 277772))*" + comp_eff_E
-            runF = "+((run >= 277772) && (run < 278820))*" + comp_eff_F
-            runG = "+((run >= 278820) && (run < 280919))*" + comp_eff_G
-            runH = "+((run >= 280919) && (run < 284045))*" + comp_eff_H
-            return "(" + runB + runC + runD + runE + runF + runG + runH + ")"
-        elif self.channel.name == 'et':
-            comp_eff_B = "(1.0/0.902)"
-            comp_eff_C = "(1.0/0.910)"
-            comp_eff_D = "(1.0/0.945)"
-            comp_eff_E = "(1.0/0.945)"
-            comp_eff_F = "(1.0/0.915)"
-            comp_eff_G = "(1.0/0.903)"
-            comp_eff_H = "(1.0/0.933)"
-            runB = "((run >= 272007) && (run < 275657))*" + comp_eff_B
-            runC = "+((run >= 275657) && (run < 276315))*" + comp_eff_C
-            runD = "+((run >= 276315) && (run < 276831))*" + comp_eff_D
-            runE = "+((run >= 276831) && (run < 277772))*" + comp_eff_E
-            runF = "+((run >= 277772) && (run < 278820))*" + comp_eff_F
-            runG = "+((run >= 278820) && (run < 280919))*" + comp_eff_G
-            runH = "+((run >= 280919) && (run < 284045))*" + comp_eff_H
-            return "(" + runB + runC + runD + runE + runF + runG + runH + ")"
-        elif self.channel.name == 'tt':
-            comp_eff_B = "(1.0/0.897)"
-            comp_eff_C = "(1.0/0.908)"
-            comp_eff_D = "(1.0/0.950)"
-            comp_eff_E = "(1.0/0.861)"
-            comp_eff_F = "(1.0/0.941)"
-            comp_eff_G = "(1.0/0.908)"
-            comp_eff_H = "(1.0/0.949)"
-            runB = "((run >= 272007) && (run < 275657))*" + comp_eff_B
-            runC = "+((run >= 275657) && (run < 276315))*" + comp_eff_C
-            runD = "+((run >= 276315) && (run < 276831))*" + comp_eff_D
-            runE = "+((run >= 276831) && (run < 277772))*" + comp_eff_E
-            runF = "+((run >= 277772) && (run < 278820))*" + comp_eff_F
-            runG = "+((run >= 278820) && (run < 280919))*" + comp_eff_G
-            runH = "+((run >= 280919) && (run < 284045))*" + comp_eff_H
-            return "(" + runB + runC + runD + runE + runF + runG + runH + ")"
-        elif self.channel.name == 'em':
-            comp_eff_B = "(1.0/0.891)"
-            comp_eff_C = "(1.0/0.910)"
-            comp_eff_D = "(1.0/0.953)"
-            comp_eff_E = "(1.0/0.947)"
-            comp_eff_F = "(1.0/0.942)"
-            comp_eff_G = "(1.0/0.906)"
-            comp_eff_H = "(1.0/0.950)"
-            runB = "((run >= 272007) && (run < 275657))*" + comp_eff_B
-            runC = "+((run >= 275657) && (run < 276315))*" + comp_eff_C
-            runD = "+((run >= 276315) && (run < 276831))*" + comp_eff_D
-            runE = "+((run >= 276831) && (run < 277772))*" + comp_eff_E
-            runF = "+((run >= 277772) && (run < 278820))*" + comp_eff_F
-            runG = "+((run >= 278820) && (run < 280919))*" + comp_eff_G
-            runH = "+((run >= 280919) && (run < 284045))*" + comp_eff_H
-            return "(" + runB + runC + runD + runE + runF + runG + runH + ")"
-        else:
-            log.error(
-                "Embedded currently not implemented for channel \"%s\"!" %
-                self.channel.name)
-
     def embedding_tauid(self):
         if self.channel.name == "et" or self.channel.name == "mt":
-            return Weight(
-                "(gen_match_2==5)*0.87+(gen_match_2!=5)",
-                "emb_tau_id")  # TODO measure for now MC correction factors
+            return Weight("1.", "emb_tau_id")
+            # return Weight(
+            #     "(gen_match_2==5)*0.95+(gen_match_2!=5)",
+            #     "emb_tau_id")  # TODO measure for now MC correction factors
         elif self.channel.name == "tt":
             return Weight(
-                "((gen_match_1==5)*0.87+(gen_match_1!=5))*((gen_match_2==5)*0.870+(gen_match_2!=5))",
+                "((gen_match_1==5)*0.95+(gen_match_1!=5))*((gen_match_2==5)*0.95+(gen_match_2!=5))",
                 "emb_tau_id"),
         else:
             return Weight("1.0", "emb_tau_id"),
@@ -1248,18 +1169,15 @@ class ZTTEmbeddedEstimation(EstimationMethod):
     def get_weights(self):
         emb_weights = Weights(
             self.embedding_tauid(),
-            Weight("35.883/5.711", "embscaling"),
             Weight("generatorWeight*(generatorWeight<=1.0)", "simulation_sf"),
             Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2",
                    "scale_factor"),
-            Weight(self.embedding_stitchingweight(), "2016 stitching weight"),
             Weight("embeddedDecayModeWeight", "decayMode_SF"))
         if self.channel.name == "mt":
             emb_weights.add(
                 Weight(
-                    "idWeight_1*(triggerWeight_1*(pt_1>23)+((MuTau_TauLeg_DataEfficiencyWeight_2/MuTau_TauLeg_EmbeddedEfficiencyWeight_2)*(pt_1<=23)))*isoWeight_1",
+                    "idWeight_1*isoWeight_1",
                     "lepton_sf"))
-            #emb_weights.add(Weight("1.0", "mutau_crosstriggerweight"))
             emb_weights.add(
                 Weight("gen_match_1==4 && gen_match_2==5", "emb_veto"))
 
@@ -1286,20 +1204,21 @@ class ZTTEmbeddedEstimation(EstimationMethod):
         return emb_weights
 
     def get_files(self):
-        query = {"process": "Embedding2016(B)", "embedded": True}
+        query = {"process": "Embedding2016(B|C|D|E|F|G|H)", "embedded": True}
         if self.channel.name == "mt":
             query["campaign"] = "MuTauFinalState"
-            query["scenario"] = "inputDoubleMu94XlegacyminiAOD"
+            query["scenario"] = "inputDoubleMu_94X_Legacy_miniAOD"
         elif self.channel.name == "et":
             query["campaign"] = "ElTauFinalState"
-            query["scenario"] = "inputDoubleMu94XlegacyminiAOD"
+            query["scenario"] = "inputDoubleMu_94X_Legacy_miniAOD"
         elif self.channel.name == "tt":
             query["campaign"] = "TauTauFinalState"
-            query["scenario"] = ".*(v2|v3)"
+            query["scenario"] = "inputDoubleMu_94X_Legacy_miniAOD"
         elif self.channel.name == "em":
             query["campaign"] = "ElMuFinalState"
-            query["scenario"] = ".*(v2|v4)"
-        files = self.era.datasets_helper.get_nicks_with_query(query)
+            query["scenario"] = "inputDoubleMu_94X_Legacy_miniAOD"
+        elif self.channel.name == "mm":
+            query["campaign"] = "MuonEmbedding"
 
         log_query(self.name, query, files)
         return self.artus_file_names(files)
@@ -1344,8 +1263,7 @@ class WEstimation(EstimationMethod):
             Weight("zPtReweightWeight", "zPtReweightWeight"),
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
-            self.get_triggerweight_for_channel(self.channel._name),
-            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            self.get_triggerweight_for_channel(self.channel),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
             get_eleRecoWeight_for_channel(self.channel.name),
@@ -1405,20 +1323,6 @@ class EWKWpEstimation(EstimationMethod):
             mc_campaign="RunIISummer16MiniAODv3")
 
     def get_weights(self):
-        # if self.channel.name=="em":
-        #     return Weights(
-        #         Weight(
-        #             "(((gen_match_1 == 5)*0.95 + (gen_match_1 != 5))*((gen_match_2 == 5)*0.95 + (gen_match_2 != 5)))",
-        #             "hadronic_tau_sf"), Weight("numberGeneratedEventsWeight", "numberGeneratedEventsWeight"),
-        #         Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
-        #         Weight("triggerWeight_1*triggerWeight_2*identificationWeight_1*identificationWeight_2*trackWeight_1*trackWeight_2", "eventWeight"),
-        #         Weight("puweight", "puweight"),
-        #         Weight(
-        #             "(5.190747826298e-6)/(numberGeneratedEventsWeight*crossSectionPerEventWeight)",
-        #             "EWKWp_stitching_weight"),
-        #         Weight("prefiringweight", "prefireWeight"),
-        #         self.era.lumi_weight)
-        # else:
         return Weights(
             Weight("isoWeight_1*isoWeight_2", "isoWeight"),
             Weight("idWeight_1*idWeight_2", "idWeight"),
@@ -1426,8 +1330,7 @@ class EWKWpEstimation(EstimationMethod):
             Weight("zPtReweightWeight", "zPtReweightWeight"),
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
-            self.get_triggerweight_for_channel(self.channel._name),
-            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            self.get_triggerweight_for_channel(self.channel),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
             get_eleRecoWeight_for_channel(self.channel.name),
@@ -1475,28 +1378,13 @@ class EWKWmEstimation(EstimationMethod):
             mc_campaign="RunIISummer16MiniAODv3")
 
     def get_weights(self):
-        # if self.channel.name=="em":
-        #     return Weights(
-        #         Weight(
-        #             "(((gen_match_1 == 5)*0.95 + (gen_match_1 != 5))*((gen_match_2 == 5)*0.95 + (gen_match_2 != 5)))",
-        #             "hadronic_tau_sf"), Weight("numberGeneratedEventsWeight", "numberGeneratedEventsWeight"),
-        #         Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
-        #         Weight("triggerWeight_1*triggerWeight_2*identificationWeight_1*identificationWeight_2*trackWeight_1*trackWeight_2", "eventWeight"),
-        #         Weight("puweight", "puweight"),
-        #         Weight(
-        #             "(5.190747826298e-6)/(numberGeneratedEventsWeight*crossSectionPerEventWeight)",
-        #             "EWKWp_stitching_weight"),
-        #         Weight("prefiringweight", "prefireWeight"),
-        #         self.era.lumi_weight)
-        # else:
         return Weights(
             Weight("isoWeight_1*isoWeight_2", "isoWeight"),
             Weight("idWeight_1*idWeight_2", "idWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
-            self.get_triggerweight_for_channel(self.channel._name),
-            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            self.get_triggerweight_for_channel(self.channel),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
             get_eleRecoWeight_for_channel(self.channel.name),
@@ -1548,28 +1436,13 @@ class WEstimationRaw(EstimationMethod):
             mc_campaign="RunIISummer16MiniAODv3")
 
     def get_weights(self):
-        # if self.channel.name=="em":
-        #         return Weights(
-        #             Weight(
-        #                 "(((npartons == 0 || npartons >= 5)*7.09390278348407e-4) + ((npartons == 1)*1.90063898596475e-4) + ((npartons == 2)*5.8529964471165e-5) + ((npartons == 3)*1.9206444928444e-5) + ((npartons == 4)*1.923548021385e-5))/(numberGeneratedEventsWeight*crossSectionPerEventWeight*sampleStitchingWeight)",
-        #                 "wj_stitching_weight"),
-        #             Weight(
-        #                 "(((gen_match_1 == 5)*0.95 + (gen_match_1 != 5))*((gen_match_2 == 5)*0.95 + (gen_match_2 != 5)))",
-        #                 "hadronic_tau_sf"), Weight("numberGeneratedEventsWeight", "numberGeneratedEventsWeight"),
-        #             Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
-        #             Weight("triggerWeight_1*triggerWeight_2*identificationWeight_1*identificationWeight_2*trackWeight_1*trackWeight_2", "eventWeight"),
-        #             Weight("puweight", "puweight"),
-        #             Weight("prefiringweight", "prefireWeight"),
-        #             self.era.lumi_weight)
-        # else:
         return Weights(
             Weight("isoWeight_1*isoWeight_2", "isoWeight"),
             Weight("idWeight_1*idWeight_2", "idWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
-            self.get_triggerweight_for_channel(self.channel._name),
-            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            self.get_triggerweight_for_channel(self.channel),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
             get_eleRecoWeight_for_channel(self.channel.name),
@@ -1714,27 +1587,13 @@ class TTEstimation(EstimationMethod):
             mc_campaign="RunIISummer16MiniAODv3")
 
     def get_weights(self):
-        # if self.channel.name=="em":
-        #     return Weights(
-        #         Weight("0.989*topPtReweightWeightRun1", "topPtReweightWeight"), #TODO topPTRun1 reweight ?
-        #         Weight("numberGeneratedEventsWeight", "numberGeneratedEventsWeight"),
-        #         Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
-        #         Weight("triggerWeight_1*triggerWeight_2*identificationWeight_1*identificationWeight_2*trackWeight_1*trackWeight_2", "eventWeight"),
-        #         Weight("puweight", "puweight"),
-        #         Weight(
-        #             "(((gen_match_1 == 5)*0.95 + (gen_match_1 != 5))*((gen_match_2 == 5)*0.95 + (gen_match_2 != 5)))",
-        #             "hadronic_tau_sf"),
-        #         Weight("prefiringweight", "prefireWeight"),
-        #         self.era.lumi_weight)
-        # else:
         return Weights(
             Weight("topPtReweightWeight", "topPtReweightWeight"),
             Weight("isoWeight_1*isoWeight_2", "isoWeight"),
             Weight("idWeight_1*idWeight_2", "idWeight"),
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
-            self.get_triggerweight_for_channel(self.channel._name),
-            #self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            self.get_triggerweight_for_channel(self.channel),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight","leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
             get_eleRecoWeight_for_channel(self.channel.name),
@@ -1892,24 +1751,13 @@ class VVEstimation(EstimationMethod):
             mc_campaign="RunIISummer16MiniAODv3")
 
     def get_weights(self):
-        # if self.channel.name=="em":
-        #     return Weights(
-        #         Weight("numberGeneratedEventsWeight", "numberGeneratedEventsWeight"),
-        #         Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
-        #         Weight("triggerWeight_1*identificationWeight_1*identificationWeight_2*trackWeight_1*trackWeight_2", "eventWeight"),
-        #         Weight("puweight", "puweight"),
-        #         self.get_tauByIsoIdWeight_for_channel(self.channel),
-        #         Weight("prefiringweight", "prefireWeight"),
-        #         self.era.lumi_weight)
-        # else:
         return Weights(
             Weight("isoWeight_1*isoWeight_2","isoWeight"),
             Weight("idWeight_1*idWeight_2","idWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
-            self.get_triggerweight_for_channel(self.channel._name),
-            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            self.get_triggerweight_for_channel(self.channel),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
             get_eleRecoWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
