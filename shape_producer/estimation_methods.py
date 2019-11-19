@@ -73,8 +73,8 @@ class EstimationMethod(object):
     # function parsing the datasets helper to return the files
     # overwrite this function
     # TODO: Error handling for missing files!
-    def get_files(self):
-        raise NotImplementedError
+    # def get_files(self):
+    #     raise NotImplementedError
 
     def get_friend_files(self):
         return [[
@@ -265,11 +265,11 @@ class SStoOSEstimationMethod(EstimationMethod):
         return final_shape
 
     # Data-driven estimation, no associated files and weights
-    def get_files(self):
-        raise NotImplementedError
+    # def get_files(self):
+    #     raise NotImplementedError
 
-    def get_weights(self):
-        raise NotImplementedError
+    # def get_weights(self):
+    #     raise NotImplementedError
 
 
 class ABCDEstimationMethod(EstimationMethod):
@@ -427,11 +427,11 @@ class ABCDEstimationMethod(EstimationMethod):
         return derived_shape
 
     # Data-driven estimation, no associated files and weights
-    def get_files(self):
-        raise NotImplementedError
+    # def get_files(self):
+    #     raise NotImplementedError
 
-    def get_weights(self):
-        raise NotImplementedError
+    # def get_weights(self):
+    #     raise NotImplementedError
 
 
 class AddHistogramEstimationMethod(EstimationMethod):
@@ -492,11 +492,11 @@ class AddHistogramEstimationMethod(EstimationMethod):
 
         return final_shape
 
-    def get_files(self):
-        raise NotImplementedError
+    # def get_files(self):
+    #     raise NotImplementedError
 
-    def get_weights(self):
-        raise NotImplementedError
+    # def get_weights(self):
+    #     raise NotImplementedError
 
 
 class SumUpEstimationMethod(EstimationMethod):
@@ -690,11 +690,11 @@ class NewFakeEstimationMethodLT(EstimationMethod):
         return shape
 
     # Data-driven estimation, no associated files and weights
-    def get_files(self):
-        raise NotImplementedError
+    # def get_files(self):
+    #     raise NotImplementedError
 
-    def get_weights(self):
-        raise NotImplementedError
+    # def get_weights(self):
+    #     raise NotImplementedError
 
 
 class NewFakeEstimationMethodTT(NewFakeEstimationMethodLT):
