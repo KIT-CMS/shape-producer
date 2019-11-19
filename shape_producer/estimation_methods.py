@@ -30,8 +30,9 @@ class EstimationMethod(object):
         self._mc_campaign = mc_campaign
         self._channel = channel
         self._era = era
+        import six
         self._friend_directories = [friend_directory] if isinstance(
-            friend_directory, str) else friend_directory
+            friend_directory, six.string_types) else friend_directory
 
         self.get_triggerweight_for_channel = get_triggerweight_for_channel
         self.get_singlelepton_triggerweight_for_channel = get_singlelepton_triggerweight_for_channel
