@@ -1289,10 +1289,10 @@ class ZTTEmbeddedEstimation(EstimationMethod):
         query = {"process": "Embedding2016(B)", "embedded": True}
         if self.channel.name == "mt":
             query["campaign"] = "MuTauFinalState"
-            query["scenario"] = "inputDoubleMu94XlegacyminiAOD"
+            query["scenario"] = "imputSep16DoubleMu_mirror_miniAODv2"
         elif self.channel.name == "et":
             query["campaign"] = "ElTauFinalState"
-            query["scenario"] = "inputDoubleMu94XlegacyminiAOD"
+            query["scenario"] = "imputSep16DoubleMu_mirror_miniAODv2"
         elif self.channel.name == "tt":
             query["campaign"] = "TauTauFinalState"
             query["scenario"] = ".*(v2|v3)"
