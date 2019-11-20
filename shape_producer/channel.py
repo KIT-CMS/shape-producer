@@ -326,7 +326,7 @@ class TTSM2018(Channel):
                 "tau_1_iso"),
             Cut("byTightDeepTau2017v2p1VSjet_2>0.5",
                 "tau_2_iso"), Cut("q_1*q_2<0", "os"),
-            Cut("(((!isMC && run>=317509) || isMC) && (trg_doubletau_35_mediso_hps == 1)) || (!isMC && (run<317509) && ((trg_doubletau_35_tightiso_tightid == 1) || (trg_doubletau_40_mediso_tightid == 1) || (trg_doubletau_40_tightiso == 1)))",
+            Cut("(((!(isMC||isEmbedded) && run>=317509) || (isMC||isEmbedded)) && (trg_doubletau_35_mediso_hps == 1)) || (!(isMC||isEmbedded) && (run<317509) && ((trg_doubletau_35_tightiso_tightid == 1) || (trg_doubletau_40_mediso_tightid == 1) || (trg_doubletau_40_tightiso == 1)))",
                 "trg_selection"))
 
 class EM(Channel):
