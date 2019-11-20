@@ -18,7 +18,7 @@ def get_triggerweight_for_channel(channel):
 
     singleMC = "singleTriggerMCEfficiencyWeightKIT_1"
     crossMCL = "crossTriggerMCEfficiencyWeight_1"
-    MCTau_1 = "((byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5 && byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_vloose_MVAv2_1 + (byTightIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_tight_MVAv2_1)"
+    MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1)"
     MCTau_2 = MCTau_1.replace("_1","_2")
 
     if "mt" in channel:
@@ -71,7 +71,7 @@ def get_triggerweight_for_channel(channel):
 def get_singlelepton_triggerweight_for_channel(channel):
     weight = Weight("1.0","triggerweight")
 
-    MCTau_1 = "((byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5 && byMediumIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_medium_MVAv2_1 + (byTightIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_tight_MVAv2_1)"
+    MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byMediumDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_medium_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1)"
     MCTau_2 = MCTau_1.replace("_1","_2")
 
     if "mt" in channel or "et" in channel:
@@ -178,8 +178,8 @@ class QCDEstimation_ABCD_TT_ISO2(ABCDEstimationMethod):
                 "tau_2_iso",
             ],
             BD_cuts=[      # cuts to be applied instead of cuts removed above
-                Cut("byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5", "tau_2_iso"),
-                Cut("byMediumIsolationMVArun2017v2DBoldDMwLT2017_2>0.5",
+                Cut("byTightDeepTau2017v2p1VSjet_2<0.5", "tau_2_iso"),
+                Cut("byMediumDeepTau2017v2p1VSjet_2>0.5",
                     "tau_2_iso_loose"),
             ],
             AB_cut_names=[ # cuts applied in AB, which should be removed in the CD control regions
@@ -221,8 +221,8 @@ class QCDEstimation_ABCD_TT_ISO2_TRANSPOSED(ABCDEstimationMethod):
                 "tau_2_iso"
             ],
             CD_cuts=[      # cuts to be applied instead of cuts removed above
-                Cut("byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5", "tau_2_iso"),
-                Cut("byMediumIsolationMVArun2017v2DBoldDMwLT2017_2>0.5",
+                Cut("byTightDeepTau2017v2p1VSjet_2<0.5", "tau_2_iso"),
+                Cut("byMediumDeepTau2017v2p1VSjet_2>0.5",
                     "tau_2_iso_loose"),
             ],
             AC_cut_names=[ # cuts applied in AC, which should be removed in the BD control regions
@@ -264,8 +264,8 @@ class QCDEstimation_ABCD_TT_ISO1(ABCDEstimationMethod):
                 "tau_1_iso"
             ],
             BD_cuts=[      # cuts to be applied instead of cuts removed above
-                Cut("byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5", "tau_1_iso"),
-                Cut("byLooseIsolationMVArun2v1DBoldDMwLT_1>0.5",
+                Cut("byTightDeepTau2017v2p1VSjet_1<0.5", "tau_1_iso"),
+                Cut("byLooseDeepTau2017v2p1VSjet_1>0.5",
                     "tau_1_iso_loose")
             ],
             AB_cut_names=[ # cuts applied in AB, which should be removed in the CD control regions
@@ -773,17 +773,17 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("generatorWeight",
                        "simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
-                Weight("idWeight_1*(trigger_24_27_Weight_1*(pt_1>25)+((0.81*(pt_1>=21 && pt_1<22) + 0.82*(pt_1>=22 && pt_1<23) + 0.83*(pt_1>=23))*(pt_1<25)))*isoWeight_1", "lepton_sf"),
-                Weight("(pt_1>25)+(pt_1 >= 21 && pt_1<25)*((pt_2>=20 && pt_2<25)*0.12714+(pt_2>=25 && pt_2<30)*0.46930+0.71983*(pt_2>=30 && pt_2<35) + 0.75209*(pt_2>=35 && pt_2<40) + 0.78164*(pt_2>=40 && pt_2<45) + 0.83241*(pt_2>=45 && pt_2<50) + 0.86694*(pt_2>=50 && pt_2<60) + 0.89966*(pt_2>=60 && pt_2<80) + 0.88534*(pt_2>=80 && pt_2<100) + 0.90095*(pt_2>=100 && pt_2<150) + 0.84402*(pt_2>=150 && pt_2<200) + (pt_2>=200))","tau_leg_weight"),
+                Weight("idWeight_1*(trigger_24_27_Weight_1*(pt_1>25)+(1.0)*(pt_1<25))*isoWeight_1", "lepton_sf"), #FIXME: Add muon leg weight of mt cross trigger when available
+                Weight("1.0","tau_leg_weight"), #FIXME: Add tau leg weight of mt cross trigger when available
                 Weight("(gen_match_2==5)*0.97+(gen_match_2!=5)", "emb_tau_id"),
                 Weight("gen_match_1==4 && gen_match_2==5","emb_veto"),
                 Weight("embeddedDecayModeWeight", "decayMode_SF"))
         elif self.channel.name in ["et"]:
             return Weights(
                 Weight("generatorWeight",
-                       "simulation_sf"),
+		"simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
-                Weight("(pt_1>28)+(pt_1<28)*(crossTriggerDataEfficiencyWeight_tight_MVAv2_2*(abs(eta_1)>=1.5)+((1.29079*(pt_2>=30 && pt_2<35) + 1.06504*(pt_2>=35 && pt_2<40) + 0.93972*(pt_2>=40 && pt_2<45) + 0.91923*(pt_2>=45 && pt_2<50) + 0.89598*(pt_2>=50 && pt_2<60) + 0.90597*(pt_2>=60 && pt_2<80) + 0.88761*(pt_2>=80 && pt_2<100) + 0.90210*(pt_2>=100 && pt_2<150) + 0.84939*(pt_2>=150 && pt_2<200) + (pt_2>=200))*(abs(eta_1)<1.5)))","tau_leg_weight"),
+                Weight("((pt_1>28)+(pt_1<28)*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2*(abs(eta_1)>=1.5)+(1.0)*(abs(eta_1)<1.5)))","tau_leg_weight"), #FIXME: Add tau leg weight of mt cross trigger when available
                 Weight("(pt_1>28)+(pt_1<28)*(crossTriggerDataEfficiencyWeight_1*(abs(eta_1)>=1.5)+((0.39*(pt_1>=25 && pt_1<26) + 0.46*(pt_1>=26 && pt_1<27) + 0.48*(pt_1>=27 && pt_1<28))*(abs(eta_1)<1.5)))","lepton_leg_weight"),
                 Weight("idWeight_1*((pt_1>28)*(trigger_27_32_35_Weight_1*(abs(eta_1) < 1.5) + singleTriggerDataEfficiencyWeightKIT_1*(abs(eta_1)>=1.5))+(pt_1<28))*isoWeight_1", "lepton_sf"),
                 Weight("(gen_match_2==5)*0.97+(gen_match_2!=5)", "emb_tau_id"),
@@ -794,14 +794,13 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("generatorWeight",
                        "simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
-                Weight("(0.18321*(pt_1>=30 && pt_1<35) + 0.53906*(pt_1>=35 && pt_1<40) + 0.63658*(pt_1>=40 && pt_1<45) + 0.73152*(pt_1>=45 && pt_1<50) + 0.79002*(pt_1>=50 && pt_1<60) + 0.84666*(pt_1>=60 && pt_1<80) + 0.84919*(pt_1>=80 && pt_1<100) + 0.86819*(pt_1>=100 && pt_1<150) + 0.88206*(pt_1>=150 && pt_1<200) + (pt_1>=200))","tau1_leg_weight"),
-                Weight("(0.18321*(pt_2>=30 && pt_2<35) + 0.53906*(pt_2>=35 && pt_2<40) + 0.63658*(pt_2>=40 && pt_2<45) + 0.73152*(pt_2>=45 && pt_2<50) + 0.79002*(pt_2>=50 && pt_2<60) + 0.84666*(pt_2>=60 && pt_2<80) + 0.84919*(pt_2>=80 && pt_2<100) + 0.86819*(pt_2>=100 && pt_2<150) + 0.88206*(pt_2>=150 && pt_2<200) + (pt_2>=200))","tau2_leg_weight"),
+                Weight("1.0","tau_trigger_weight"), #FIXME: Add tau trigger weight when available 
                 Weight("((gen_match_1==5)*0.97+(gen_match_1!=5))*((gen_match_2==5)*0.97+(gen_match_2!=5))", "emb_tau_id"),
                 Weight("gen_match_1==5 && gen_match_2==5","emb_veto"),
                 Weight("embeddedDecayModeWeight", "decayMode_SF"))
         elif self.channel.name == "em":
             return Weights(
-                Weight("1.043*generatorWeight", "simulation_sf"), # 1.043 for event loss in ntuple production, to be removed with new ntuples
+                Weight("generatorWeight", "simulation_sf"),
                 Weight("(gen_match_1==3 && gen_match_2==4)", "emb_gen_match"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
                 Weight("0.99*trackWeight_1*trackWeight_2*idWeight_1*isoWeight_1*idWeight_2*looseIsoWeight_2",
@@ -1762,7 +1761,7 @@ class FakeEstimationLT(DataEstimation2016):
         aiso_systematic.category.cuts.remove("tau_iso")
         aiso_systematic.category.cuts.add(
             Cut(
-                "byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5&&byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2>0.5",
+                "byTightDeepTau2017v2p1VSjet_2<0.5&&byVLooseDeepTau2017v2p1VSjet_2>0.5",
                 "tau_aiso"))
         return super(FakeEstimationLT,
                      self).create_root_objects(aiso_systematic)
@@ -1788,7 +1787,7 @@ class FakeEstimationLT(DataEstimation2016):
         aiso_systematic.category.cuts.remove("tau_iso")
         aiso_systematic.category.cuts.add(
             Cut(
-                "byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5&&byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2>0.5",
+                "byTightDeepTau2017v2p1VSjet_2<0.5&&byVLooseDeepTau2017v2p1VSjet_2>0.5",
                 "tau_aiso"))
         return super(AntiFakeEstimationLT,
                      self).create_root_objects(aiso_systematic)
@@ -1811,7 +1810,7 @@ class DataFakeEstimationLT(DataEstimation2016):
         aiso_systematic.category.cuts.remove("tau_iso")
         aiso_systematic.category.cuts.add(
             Cut(
-                "byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5&&byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2>0.5",
+                "byTightDeepTau2017v2p1VSjet_2<0.5&&byVLooseDeepTau2017v2p1VSjet_2>0.5",
                 "tau_aiso"))
         return super(DataFakeEstimationLT,
                      self).create_root_objects(aiso_systematic)
@@ -1868,7 +1867,7 @@ class FakeEstimationTT(DataEstimation2016):
     def get_weights(self):
         return Weights(
             Weight(
-                "(0.5*ff1_nom*(byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5)+0.5*ff2_nom*(byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5))",
+                "(0.5*ff1_nom*(byTightDeepTau2017v2p1VSjet_1<0.5)+0.5*ff2_nom*(byTightDeepTau2017v2p1VSjet_2<0.5))",
                 "fake_factor"))
 
     def create_root_objects(self, systematic):
@@ -1877,7 +1876,7 @@ class FakeEstimationTT(DataEstimation2016):
         aiso_systematic.category.cuts.remove("tau_2_iso")
         aiso_systematic.category.cuts.add(
             Cut(
-                "(byTightIsolationMVArun2017v2DBoldDMwLT2017_2>0.5&&byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5&&byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)||(byTightIsolationMVArun2017v2DBoldDMwLT2017_1>0.5&&byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5&&byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2>0.5)",
+                "(byTightDeepTau2017v2p1VSjet_2>0.5&&byTightDeepTau2017v2p1VSjet_1<0.5&&byVLooseDeepTau2017v2p1VSjet_1>0.5)||(byTightDeepTau2017v2p1VSjet_1>0.5&&byTightDeepTau2017v2p1VSjet_2<0.5&&byVLooseDeepTau2017v2p1VSjet_2>0.5)",
                 "tau_aiso"))
         return super(FakeEstimationTT,
                      self).create_root_objects(aiso_systematic)
@@ -1910,7 +1909,7 @@ class NewFakeEstimationLT(NewFakeEstimationMethodLT):
             nofake_processes=nofake_processes,
             data_process=data_process,
             aisoCut=Cut(
-                "byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5&&byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2>0.5",
+                "byTightDeepTau2017v2p1VSjet_2<0.5&&byVLooseDeepTau2017v2p1VSjet_2>0.5",
                 "tau_aiso"),
             fakeWeightstring="ff2_nom")
 
@@ -1942,6 +1941,6 @@ class NewFakeEstimationTT(NewFakeEstimationMethodTT):
             nofake_processes=nofake_processes,
             data_process=data_process,
             aisoCut=Cut(
-                "(byTightIsolationMVArun2017v2DBoldDMwLT2017_2>0.5&&byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5&&byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)||(byTightIsolationMVArun2017v2DBoldDMwLT2017_1>0.5&&byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5&&byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2>0.5)",
+                "(byTightDeepTau2017v2p1VSjet_2>0.5&&byTightDeepTau2017v2p1VSjet_1<0.5&&byVLooseDeepTau2017v2p1VSjet_1>0.5)||(byTightDeepTau2017v2p1VSjet_1>0.5&&byTightDeepTau2017v2p1VSjet_2<0.5&&byVLooseDeepTau2017v2p1VSjet_2>0.5)",
                 "tau_aiso"),
-            fakeWeightstring="(0.5*ff1_nom*(byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5)+0.5*ff2_nom*(byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5))")
+            fakeWeightstring="(0.5*ff1_nom*(byTightDeepTau2017v2p1VSjet_1<0.5)+0.5*ff2_nom*(byTightDeepTau2017v2p1VSjet_2<0.5))")

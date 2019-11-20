@@ -64,14 +64,14 @@ def get_triggerweight_for_channel(channel):
 
     singleMC = "singleTriggerMCEfficiencyWeightKIT_1"
     crossMCL = "crossTriggerMCEfficiencyWeight_1"
-    MCTau_1 = "((byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5 && byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_vloose_MVAv2_1 + (byTightIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_tight_MVAv2_1)"
+    MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1)"
     MCTau_2 = MCTau_1.replace("_1", "_2")
 
     if "mt" in channel:
         trig_sL = "(trg_singlemuon)"
         trig_X = "(pt_1 < 23 && trg_mutaucross)"
 
-        MuTauMC = "*".join([trig_sL, singleMC])  + "+" + "*".join([trig_X, crossMCL]) # , MCTau_2])  # TODO once crossTriggerMCEfficiencyWeight_vloose_MVAv2_1 are available but back in 
+        MuTauMC = "*".join([trig_sL, singleMC])  + "+" + "*".join([trig_X, crossMCL]) # , MCTau_2])  # TODO once crossTriggerMCEfficiencyWeight_vloose_DeepTau_1 are available but back in 
         MuTauData = MuTauMC.replace("MC", "Data")
         MuTau = "(" + MuTauData + ")/(" + MuTauMC + ")"
         weight = Weight(MuTau, "triggerweight")
@@ -104,7 +104,7 @@ def get_triggerweight_for_channel(channel):
 def get_singlelepton_triggerweight_for_channel(channel):
     weight = Weight("1.0", "triggerweight_sl")
 
-    MCTau_1 = "((byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5 && byMediumIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_medium_MVAv2_1 + (byTightIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_tight_MVAv2_1)"
+    MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byMediumDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_medium_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1)"
     MCTau_2 = MCTau_1.replace("_1", "_2")
 
     # if "mt" in channel or "et" in channel:
@@ -199,7 +199,7 @@ class FakeEstimationLT(DataEstimation):
         aiso_systematic.category.cuts.remove("tau_iso")
         aiso_systematic.category.cuts.add(
             Cut(
-                "byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5&&byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2>0.5",
+                "byTightDeepTau2017v2p1VSjet_2<0.5&&byVLooseDeepTau2017v2p1VSjet_2>0.5",
                 "tau_aiso"))
         return super(FakeEstimationLT,
                      self).create_root_objects(aiso_systematic)
@@ -231,7 +231,7 @@ class NewFakeEstimationLT(NewFakeEstimationMethodLT):
             nofake_processes=nofake_processes,
             data_process=data_process,
             aisoCut=Cut(
-                "byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5&&byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2>0.5",
+                "byTightDeepTau2017v2p1VSjet_2<0.5&&byVLooseDeepTau2017v2p1VSjet_2>0.5",
                 "tau_aiso"),
             fakeWeightstring="ff2_nom")
 
@@ -262,12 +262,10 @@ class NewFakeEstimationTT(NewFakeEstimationMethodTT):
             nofake_processes=nofake_processes,
             data_process=data_process,
             aisoCut=Cut(
-                "(byTightIsolationMVArun2017v2DBoldDMwLT2017_2>0.5&&byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5&&byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)||(byTightIsolationMVArun2017v2DBoldDMwLT2017_1>0.5&&byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5&&byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2>0.5)",
+                "(byTightDeepTau2017v2p1VSjet_2>0.5&&byTightDeepTau2017v2p1VSjet_1<0.5&&byVLooseDeepTau2017v2p1VSjet_1>0.5)||(byTightDeepTau2017v2p1VSjet_1>0.5&&byTightDeepTau2017v2p1VSjet_2<0.5&&byVLooseDeepTau2017v2p1VSjet_2>0.5)",
                 "tau_aiso"),
-            fakeWeightstring=
-            "(0.5*ff1_nom*(byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5)+0.5*ff2_nom*(byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5))"
+            fakeWeightstring="(0.5*ff1_nom*(byTightDeepTau2017v2p1VSjet_1<0.5)+0.5*ff2_nom*(byTightDeepTau2017v2p1VSjet_2<0.5))"
         )
-
 
 class FakeEstimationTT(DataEstimation):
     def __init__(
@@ -297,7 +295,7 @@ class FakeEstimationTT(DataEstimation):
     def get_weights(self):
         return Weights(
             Weight(
-                "(0.5*ff1_nom*(byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5)+0.5*ff2_nom*(byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5))",
+                "(0.5*ff1_nom*(byTightDeepTau2017v2p1VSjet_1<0.5)+0.5*ff2_nom*(byTightDeepTau2017v2p1VSjet_2<0.5))",
                 "fake_factor"))
 
     def create_root_objects(self, systematic):
@@ -306,7 +304,7 @@ class FakeEstimationTT(DataEstimation):
         aiso_systematic.category.cuts.remove("tau_2_iso")
         aiso_systematic.category.cuts.add(
             Cut(
-                "(byTightIsolationMVArun2017v2DBoldDMwLT2017_2>0.5&&byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5&&byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)||(byTightIsolationMVArun2017v2DBoldDMwLT2017_1>0.5&&byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5&&byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2>0.5)",
+                "(byTightDeepTau2017v2p1VSjet_2>0.5&&byTightDeepTau2017v2p1VSjet_1<0.5&&byVLooseDeepTau2017v2p1VSjet_1>0.5)||(byTightDeepTau2017v2p1VSjet_1>0.5&&byTightDeepTau2017v2p1VSjet_2<0.5&&byTightDeepTau2017v2p1VSjet_2>0.5)",
                 "tau_aiso"))
         return super(FakeEstimationTT,
                      self).create_root_objects(aiso_systematic)
@@ -853,7 +851,7 @@ class DYJetsToLLEstimation(EstimationMethod):
             Weight("idWeight_1*idWeight_2", "idWeight"),
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
-            Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
+            Weight("muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
             self.get_triggerweight_for_channel(self.channel._name),
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
@@ -2053,9 +2051,9 @@ class QCDEstimationTT(ABCDEstimationMethod):
             ],
             BD_cuts=
             [  # cuts to be applied to restrict to region for shape derivation
-                Cut("byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5",
+                Cut("byTightDeepTau2017v2p1VSjet_2<0.5",
                     "tau_2_iso"),
-                Cut("byLooseIsolationMVArun2017v2DBoldDMwLT2017_2>0.5",
+                Cut("byLooseDeepTau2017v2p1VSjet_2>0.5",
                     "tau_2_iso_loose")
             ],
             AB_cut_names=
