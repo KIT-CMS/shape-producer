@@ -101,7 +101,12 @@ def get_triggerweight_for_channel(channel):
     #     weight = Weight(
     #         "(trigger_23_data_Weight_2*trigger_12_data_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_data_Weight_1*trigger_8_data_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_data_Weight_2*trigger_23_data_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))/(trigger_23_mc_Weight_2*trigger_12_mc_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_mc_Weight_1*trigger_8_mc_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_mc_Weight_2*trigger_23_mc_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))",
     #         "trigger_lepton_sf")
-
+    elif "mm" in channel.name:
+        trig_sL = "(trg_singlemuon == 1)"
+        MuMuMC = "*".join([trig_sL, singleMC])
+        MuMuData = MuMuMC.replace("MC", "Data")
+        MuMu = "("+MuMuData+")/("+MuMuMC+")"
+        weight = Weight(MuMu, "triggerWeight")
     return weight
 
 
@@ -1219,7 +1224,8 @@ class ZTTEmbeddedEstimation(EstimationMethod):
             query["scenario"] = "inputDoubleMu_94X_Legacy_miniAOD"
         elif self.channel.name == "mm":
             query["campaign"] = "MuonEmbedding"
-
+            query["scenario"] = "inputDoubleMu_94X_Legacy_miniAOD"
+        files = self.era.datasets_helper.get_nicks_with_query(query)
         log_query(self.name, query, files)
         return self.artus_file_names(files)
 
