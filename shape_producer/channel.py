@@ -149,7 +149,7 @@ class MTSM2016(Channel):
             Cut("extramuon_veto<0.5", "extramuon_veto"),
             Cut("dilepton_veto<0.5", "dilepton_veto"),
             Cut("byTightDeepTau2017v2p1VSmu_2 > 0.5", "againstMuonDiscriminator"),
-            Cut("byLooseDeepTau2017v2p1VSe_2>0.5","againstElectronDiscriminator"),
+            Cut("byVLooseDeepTau2017v2p1VSe_2>0.5","againstElectronDiscriminator"),
             Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"), 
             Cut("iso_1<0.15", "muon_iso"),
             Cut("q_1*q_2<0", "os"),

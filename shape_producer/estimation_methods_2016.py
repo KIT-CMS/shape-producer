@@ -851,7 +851,7 @@ class DYJetsToLLEstimation(EstimationMethod):
             Weight("idWeight_1*idWeight_2", "idWeight"),
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
-            Weight("muTauFakeRateWeight",
+            Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
             self.get_triggerweight_for_channel(self.channel._name),
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
