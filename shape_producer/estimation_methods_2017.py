@@ -1010,8 +1010,8 @@ class TTEstimation(EstimationMethod):
             Weight("generatorWeight", "generatorWeight"),
             Weight("numberGeneratedEventsWeight",
                    "numberGeneratedEventsWeight"),
-            Weight("(abs(crossSectionPerEventWeight - 380.1) < 0.1)*377.96 + (abs(crossSectionPerEventWeight - 87.31) < 0.1)*88.29 + (abs(crossSectionPerEventWeight - 364.4) < 0.1)*365.35", "crossSectionPerEventWeight"),
-            #Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
+            # Weight("(abs(crossSectionPerEventWeight - 380.1) < 0.1)*377.96 + (abs(crossSectionPerEventWeight - 87.31) < 0.1)*88.29 + (abs(crossSectionPerEventWeight - 364.4) < 0.1)*365.35", "crossSectionPerEventWeight"),
+            Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
 
             # Weights for corrections
             Weight("puweight", "puweight"),
