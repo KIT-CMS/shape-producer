@@ -18,7 +18,7 @@ def get_triggerweight_for_channel(channel):
 
     singleMC = "singleTriggerMCEfficiencyWeightKIT_1"
     crossMCL = "crossTriggerMCEfficiencyWeight_1"
-    MCTau_1 = "((byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5 && byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_vloose_MVAv2_1 + (byTightIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_tight_MVAv2_1)"
+    MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1)"
     MCTau_2 = MCTau_1.replace("_1","_2")
 
     if "mt" in channel:
@@ -65,7 +65,7 @@ def get_triggerweight_for_channel(channel):
 def get_singlelepton_triggerweight_for_channel(channel):
     weight = Weight("1.0","triggerweight")
 
-    MCTau_1 = "((byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5 && byMediumIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_medium_MVAv2_1 + (byTightIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerMCEfficiencyWeight_tight_MVAv2_1)"
+    MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byMediumDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_medium_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1)"
     MCTau_2 = MCTau_1.replace("_1","_2")
 
     if "mt" in channel or "et" in channel:
@@ -166,8 +166,8 @@ class QCDEstimation_ABCD_TT_ISO2(ABCDEstimationMethod):
                 "tau_2_iso",
             ],
             BD_cuts=[      # cuts to be applied instead of cuts removed above
-                Cut("byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5", "tau_2_iso"),
-                Cut("byMediumIsolationMVArun2017v2DBoldDMwLT2017_2>0.5",
+                Cut("byTightDeepTau2017v2p1VSjet_2<0.5", "tau_2_iso"),
+                Cut("byMediumDeepTau2017v2p1VSjet_2>0.5",
                     "tau_2_iso_loose"),
             ],
             AB_cut_names=[ # cuts applied in AB, which should be removed in the CD control regions
@@ -209,8 +209,8 @@ class QCDEstimation_ABCD_TT_ISO2_TRANSPOSED(ABCDEstimationMethod):
                 "tau_2_iso"
             ],
             CD_cuts=[      # cuts to be applied instead of cuts removed above
-                Cut("byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5", "tau_2_iso"),
-                Cut("byMediumIsolationMVArun2017v2DBoldDMwLT2017_2>0.5",
+                Cut("byTightDeepTau2017v2p1VSjet_2<0.5", "tau_2_iso"),
+                Cut("byMediumDeepTau2017v2p1VSjet_2>0.5",
                     "tau_2_iso_loose"),
             ],
             AC_cut_names=[ # cuts applied in AC, which should be removed in the BD control regions
@@ -252,8 +252,8 @@ class QCDEstimation_ABCD_TT_ISO1(ABCDEstimationMethod):
                 "tau_1_iso"
             ],
             BD_cuts=[      # cuts to be applied instead of cuts removed above
-                Cut("byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5", "tau_1_iso"),
-                Cut("byLooseIsolationMVArun2v1DBoldDMwLT_1>0.5",
+                Cut("byTightDeepTau2017v2p1VSjet_1<0.5", "tau_1_iso"),
+                Cut("byLooseDeepTau2017v2p1VSjet_1>0.5",
                     "tau_1_iso_loose")
             ],
             AB_cut_names=[ # cuts applied in AB, which should be removed in the CD control regions
@@ -1224,16 +1224,27 @@ class ggHEstimation(HTTEstimation):
             channel=channel,
             mc_campaign="RunIIAutumn18MiniAOD")
 
-    # def get_weights(self):
-    #     weights = super(ggHEstimation, self).get_weights()
-    #     # weights.remove("numberGeneratedEventsWeight")
-    #     # weights.add(Weight("8.22976e-8", "numberGeneratedEventsWeight"))
-    #     weights.add(Weight("ggh_NNLO_weight", "gghNNLO"))
-    #     weights.add(Weight("1.01", "bbh_inclusion_weight"))
-    #     return weights
+    def get_weights(self):
+        weights = super(ggHEstimation, self).get_weights()
+        # weights.remove("numberGeneratedEventsWeight")
+        # weights.add(Weight("8.22976e-8", "numberGeneratedEventsWeight"))
+        weights.add(Weight("ggh_NNLO_weight", "gghNNLO"))
+        weights.add(Weight("1.01", "bbh_inclusion_weight"))
+        
+        weights.remove("numberGeneratedEventsWeight"),
+        weights.remove("crossSectionPerEventWeight"),
+        weights.add(Weight("((htxs_stage1p1cat==100||htxs_stage1p1cat==102||htxs_stage1p1cat==103)*crossSectionPerEventWeight*numberGeneratedEventsWeight+"
+             "(htxs_stage1p1cat==101)*2.09e-8+"
+             "(htxs_stage1p1cat==104||htxs_stage1p1cat==105)*4.28e-8+"
+             "(htxs_stage1p1cat==106)*1.39e-8+"
+             "(htxs_stage1p1cat>=107&&htxs_stage1p1cat<=109)*4.90e-8+"
+             "(htxs_stage1p1cat>=110&&htxs_stage1p1cat<=113)*9.69e-9"
+             ")","ggh_stitching_weight"))
+         
+        return weights
 
-    # def get_cuts(self):
-    #     return Cuts(Cut("(htxs_stage1p1cat>=101)&&(htxs_stage1p1cat<=111)", "htxs_match"))
+    def get_cuts(self):
+        return Cuts(Cut(self.htxs_dict.get(self.name, self.htxs_dict["ggH125"]), "htxs_match"))
 
     def get_files(self):
         query = {
@@ -1243,6 +1254,7 @@ class ggHEstimation(HTTEstimation):
             "generator": "powheg\-pythia8"
         }
         files = self.era.datasets_helper.get_nicks_with_query(query)
+        print files
         log_query(self.name, query, files)
         return self.artus_file_names(files)
 
@@ -1266,9 +1278,22 @@ class qqHEstimation(HTTEstimation):
             friend_directory=friend_directory,
             channel=channel,
             mc_campaign="RunIIAutumn18MiniAOD")
+    
+    def get_weights(self):
+        weights = super(qqHEstimation, self).get_weights()
+        
+        weights.remove("numberGeneratedEventsWeight"),
+        weights.remove("crossSectionPerEventWeight"),
+        weights.add(Weight("(((htxs_stage1p1cat>=200&&htxs_stage1p1cat<=202)||abs(crossSectionPerEventWeight-0.05544)<0.001||abs(crossSectionPerEventWeight-0.052685)<0.001||abs(crossSectionPerEventWeight-0.03342)<0.001)*crossSectionPerEventWeight*numberGeneratedEventsWeight+(abs(crossSectionPerEventWeight-0.05544)>=0.001&&abs(crossSectionPerEventWeight-0.052685)>=0.001&&abs(crossSectionPerEventWeight-0.03342)>=0.001)*("
+             "(htxs_stage1p1cat>=203&&htxs_stage1p1cat<=205)*9.41e-9+"
+             "(htxs_stage1p1cat==206)*8.52e-9+"
+             "(htxs_stage1p1cat>=207&&htxs_stage1p1cat<=210)*1.79e-8"
+             "))","qqh_stitching_weight"))
+         
+        return weights
 
-    # def get_cuts(self):
-    #     return Cuts(Cut("(htxs_stage1p1cat>=201)&&(htxs_stage1p1cat<=205)", "htxs_match"))
+    def get_cuts(self):
+        return Cuts(Cut(self.htxs_dict.get(self.name, self.htxs_dict["qqH125"]), "htxs_match"))
 
     def get_files(self):
         query = {
@@ -1872,7 +1897,7 @@ class FakeEstimationLT(DataEstimation2016):
         aiso_systematic.category.cuts.remove("tau_iso")
         aiso_systematic.category.cuts.add(
             Cut(
-                "byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5&&byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2>0.5",
+                "byTightDeepTau2017v2p1VSjet_2<0.5&&byVLooseDeepTau2017v2p1VSjet_2>0.5",
                 "tau_aiso"))
         return super(FakeEstimationLT,
                      self).create_root_objects(aiso_systematic)
@@ -1900,7 +1925,7 @@ class FakeEstimationTT(DataEstimation2016):
     def get_weights(self):
         return Weights(
             Weight(
-                "(0.5*ff1_nom*(byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5)+0.5*ff2_nom*(byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5))",
+                "(0.5*ff1_nom*(byTightDeepTau2017v2p1VSjet_1<0.5)+0.5*ff2_nom*(byTightDeepTau2017v2p1VSjet_2<0.5))",
                 "fake_factor"))
 
     def create_root_objects(self, systematic):
@@ -1909,7 +1934,7 @@ class FakeEstimationTT(DataEstimation2016):
         aiso_systematic.category.cuts.remove("tau_2_iso")
         aiso_systematic.category.cuts.add(
             Cut(
-                "(byTightIsolationMVArun2017v2DBoldDMwLT2017_2>0.5&&byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5&&byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)||(byTightIsolationMVArun2017v2DBoldDMwLT2017_1>0.5&&byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5&&byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2>0.5)",
+                "(byTightDeepTau2017v2p1VSjet_2>0.5&&byTightDeepTau2017v2p1VSjet_1<0.5&&byVLooseDeepTau2017v2p1VSjet_1>0.5)||(byTightDeepTau2017v2p1VSjet_1>0.5&&byTightDeepTau2017v2p1VSjet_2<0.5&&byVLooseDeepTau2017v2p1VSjet_2>0.5)",
                 "tau_aiso"))
         return super(FakeEstimationTT,
                      self).create_root_objects(aiso_systematic)
@@ -1942,7 +1967,7 @@ class NewFakeEstimationLT(NewFakeEstimationMethodLT):
             nofake_processes=nofake_processes,
             data_process=data_process,
             aisoCut=Cut(
-                "byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5&&byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2>0.5",
+                "byTightDeepTau2017v2p1VSjet_2<0.5&&byVLooseDeepTau2017v2p1VSjet_2>0.5",
                 "tau_aiso"),
             fakeWeightstring="ff2_nom")
 
@@ -1974,6 +1999,6 @@ class NewFakeEstimationTT(NewFakeEstimationMethodTT):
             nofake_processes=nofake_processes,
             data_process=data_process,
             aisoCut=Cut(
-                "(byTightIsolationMVArun2017v2DBoldDMwLT2017_2>0.5&&byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5&&byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)||(byTightIsolationMVArun2017v2DBoldDMwLT2017_1>0.5&&byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5&&byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2>0.5)",
+                "(byTightDeepTau2017v2p1VSjet_2>0.5&&byTightDeepTau2017v2p1VSjet_1<0.5&&byVLooseDeepTau2017v2p1VSjet_1>0.5)||(byTightDeepTau2017v2p1VSjet_1>0.5&&byTightDeepTau2017v2p1VSjet_2<0.5&&byVLooseDeepTau2017v2p1VSjet_2>0.5)",
                 "tau_aiso"),
-            fakeWeightstring="(0.5*ff1_nom*(byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5)+0.5*ff2_nom*(byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5))")
+            fakeWeightstring="(0.5*ff1_nom*(byTightDeepTau2017v2p1VSjet_1<0.5)+0.5*ff2_nom*(byTightDeepTau2017v2p1VSjet_2<0.5))")
