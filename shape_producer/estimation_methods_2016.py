@@ -71,7 +71,7 @@ def get_triggerweight_for_channel(channel):
         trig_sL = "(trg_singlemuon)"
         trig_X = "(pt_1 < 23 && trg_mutaucross)"
 
-        MuTauMC = "*".join([trig_sL, singleMC])  + "+" + "*".join([trig_X, crossMCL]) # , MCTau_2])  # TODO once crossTriggerMCEfficiencyWeight_vloose_DeepTau_1 are available but back in 
+        MuTauMC = "*".join([trig_sL, singleMC])  + "+" + "*".join([trig_X, crossMCL]) # , MCTau_2])  # TODO once crossTriggerMCEfficiencyWeight_vloose_DeepTau_1 are available but back in
         MuTauData = MuTauMC.replace("MC", "Data")
         MuTau = "(" + MuTauData + ")/(" + MuTauMC + ")"
         weight = Weight(MuTau, "triggerweight")
@@ -85,7 +85,7 @@ def get_triggerweight_for_channel(channel):
         ElTau = "(" + ElTauData + ")/(" + ElTauMC + ")"
         weight = Weight(ElTau, "triggerweight")
 
-    elif "tt" in channel:  
+    elif "tt" in channel:
         # TODO add TauTrigger SF iwth new ntuples
         #DiTauMC = "*".join([MCTau_1,MCTau_2])
         #DiTauData = DiTauMC.replace("MC","Data")
@@ -402,8 +402,7 @@ class ggHEstimation(HTTEstimation):
 
     def get_cuts(self):
         return Cuts(
-            Cut(self.htxs_dict.get(self.name, self.htxs_dict["ggH125"]),
-                "htxs_match"))
+            Cut(self.htxs_dict[self.name],"htxs_match"))
 
     def get_files(self):
         query = {
@@ -447,8 +446,7 @@ class qqHEstimation(HTTEstimation):
 
     def get_cuts(self):
         return Cuts(
-            Cut(self.htxs_dict.get(self.name, self.htxs_dict["qqH125"]),
-                "htxs_match"))
+            Cut(self.htxs_dict[self.name],"htxs_match"))
 
     def get_files(self):
         query = {
@@ -668,10 +666,10 @@ class ggHWWEstimation(EstimationMethod):
 
     def get_files(self):
         query = {
-            "process": "GluGluHToWWTo2L2Nu_M125", 
+            "process": "GluGluHToWWTo2L2Nu_M125",
             "data": False,
             "campaign": self._mc_campaign,
-            "generator": "powheg-JHUgenv628-pythia8", 
+            "generator": "powheg-JHUgenv628-pythia8",
         }
         files = self.era.datasets_helper.get_nicks_with_query(query)
         log_query(self.name, query, files)
@@ -727,10 +725,10 @@ class qqHWWEstimation(EstimationMethod):
 
     def get_files(self):
         query = {
-            "process": "VBFHToWWTo2L2Nu_M125", 
+            "process": "VBFHToWWTo2L2Nu_M125",
             "data": False,
             "campaign": self._mc_campaign,
-            "generator": "powheg-JHUgenv628-pythia8", 
+            "generator": "powheg-JHUgenv628-pythia8",
         }
         files = self.era.datasets_helper.get_nicks_with_query(query)
         log_query(self.name, query, files)
