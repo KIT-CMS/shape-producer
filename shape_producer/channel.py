@@ -83,7 +83,7 @@ class MMTauID2016(Channel):
             Cut("extramuon_veto<0.5", "extramuon_veto"),
             Cut("iso_1<0.15 && iso_2<0.15", "muon_iso"), Cut(
                 "q_1*q_2<0", "os"),
-            Cut("m_vis > 50","m_vis_cut"),
+            Cut("m_vis > 50 && m_vis < 150","m_vis_cut"),
             Cut("(pt_1 > 23 && trg_singlemuon==1)&&(0<1)", "trg_selection"))
 
 
@@ -95,7 +95,7 @@ class MMTauID2017(Channel):
             Cut("extramuon_veto<0.5", "extramuon_veto"),
             Cut("iso_1<0.15 && iso_2<0.15", "muon_iso"), Cut(
                 "q_1*q_2<0", "os"),
-            Cut("m_vis > 50","m_vis_cut"),
+            Cut("m_vis > 50 && m_vis < 150","m_vis_cut"),
             Cut("(trg_singlemuon_27==1 || trg_singlemuon_24==1)", "trg_selection"))
 
 
@@ -107,7 +107,7 @@ class MMTauID2018(Channel):
             Cut("extramuon_veto<0.5", "extramuon_veto"),
             Cut("iso_1<0.15 && iso_2<0.15", "muon_iso"), Cut(
                 "q_1*q_2<0", "os"),
-            Cut("m_vis > 50","m_vis_cut"),
+            Cut("m_vis > 50 && m_vis < 150","m_vis_cut"),
             Cut("(trg_singlemuon_27==1 || trg_singlemuon_24==1)", "trg_selection"))
 
 
