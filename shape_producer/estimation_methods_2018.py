@@ -304,7 +304,7 @@ class VVEstimation(EstimationMethod):
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel.name),
             # self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
-            Weight("118.7*(abs(crossSectionPerEventWeight - 63.21) < 0.01) + crossSectionPerEventWeight*(abs(crossSectionPerEventWeight - 63.21) > 0.01)", "crossSectionPerEventWeight"),
+            Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
 
             # Data related scale-factors
             self.era.lumi_weight)
@@ -753,7 +753,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("generatorWeight",
                        "simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
-                Weight("isoWeight_1*idWeight_1*((pt_1>=25)*(trigger_24_27_Weight_1*(trigger_24_27_Weight_1<2.0)+(trigger_24_27_Weight_1>2.0))+(pt_1<25)*(crossTriggerEmbeddedWeight_2*crossTriggerEmbeddedWeight_1))", "lepton_sf"),
+                Weight("isoWeight_1*idWeight_1*((pt_1>=25)*(trigger_24_27_Weight_1)+(pt_1<25)*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/crossTriggerEMBEfficiencyWeight_tight_DeepTau_2)*crossTriggerEmbeddedWeight_1)", "lepton_sf"),
                 Weight("(gen_match_2==5)*0.97+(gen_match_2!=5)", "emb_tau_id"),
                 Weight("embeddedDecayModeWeight", "decayMode_SF"),
                 Weight("gen_match_1==4 && gen_match_2==5","emb_veto"))
@@ -762,7 +762,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("generatorWeight",
                        "simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
-                Weight("idWeight_1*((crossTriggerEmbeddedWeight_2*(crossTriggerEmbeddedWeight_2<1)+(crossTriggerEmbeddedWeight_2>1))*(crossTriggerEmbeddedWeight_1*(crossTriggerEmbeddedWeight_1<10)+(crossTriggerEmbeddedWeight_1>10))*(pt_1<33)+(pt_1>=33)*trigger_32_35_Weight_1)*isoWeight_1", "lepton_sf"),
+                Weight("idWeight_1*isoWeight_1*(crossTriggerEmbeddedWeight_1*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/crossTriggerEMBEfficiencyWeight_tight_DeepTau_2)*(pt_1<33)+(pt_1>=33)*trigger_32_35_Weight_1)", "lepton_sf"),
                 Weight("(gen_match_2==5)*0.97+(gen_match_2!=5)", "emb_tau_id"),
                 Weight("gen_match_1==3 && gen_match_2==5","emb_veto"),
                 Weight("embeddedDecayModeWeight", "decayMode_SF"))
@@ -771,8 +771,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("generatorWeight",
                        "simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
-                Weight("triggerWeight_1*triggerWeight_2","tau1_leg_weight"),
-                #~ Weight("(0.104*(pt_2>=30 && pt_2<35) + 0.519*(pt_2>=35 && pt_2<40) + 0.682*(pt_2>=40 && pt_2<45) + 0.766*(pt_2>=45 && pt_2<50) + 0.786*(pt_2>=50 && pt_2<60) + 0.804*(pt_2>=60 && pt_2<80) + 0.735*(pt_2>=80 && pt_2<100) + 0.730*(pt_2>=100 && pt_2<150) + 0.683*(pt_2>=150 && pt_2<200) + (pt_2>=200))","tau2_leg_weight"),
+                Weight("(((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerDataEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerDataEfficiencyWeight_tight_DeepTau_1)*((byTightDeepTau2017v2p1VSjet_2<0.5 && byVLooseDeepTau2017v2p1VSjet_2>0.5)*crossTriggerDataEfficiencyWeight_vloose_DeepTau_2 + (byTightDeepTau2017v2p1VSjet_2>0.5)*crossTriggerDataEfficiencyWeight_tight_DeepTau_2))/(((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_1)*((byTightDeepTau2017v2p1VSjet_2<0.5 && byVLooseDeepTau2017v2p1VSjet_2>0.5)*crossTriggerEMBEfficiencyWeight_vloose_DeepTau_2 + (byTightDeepTau2017v2p1VSjet_2>0.5)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_2))","trg_sf"),
                 Weight("((gen_match_1==5)*0.97+(gen_match_1!=5))*((gen_match_2==5)*0.97+(gen_match_2!=5))", "emb_tau_id"),
                 Weight("gen_match_1==5 && gen_match_2==5","emb_veto"),
                 Weight("embeddedDecayModeWeight", "decayMode_SF"))
@@ -1254,7 +1253,6 @@ class ggHEstimation(HTTEstimation):
             "generator": "powheg\-pythia8"
         }
         files = self.era.datasets_helper.get_nicks_with_query(query)
-        print files
         log_query(self.name, query, files)
         return self.artus_file_names(files)
 
