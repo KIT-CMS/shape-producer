@@ -1534,7 +1534,7 @@ class qqHEstimation(HTTEstimation):
              "(htxs_stage1p1cat>=203&&htxs_stage1p1cat<=205)*8.70e-9+"
              "(htxs_stage1p1cat==206)*8.61e-9+"
              "(htxs_stage1p1cat>=207&&htxs_stage1p1cat<=210)*1.79e-8"
-             "))","ggh_stitching_weight"))
+             "))","qqh_stitching_weight"))
 
         return weights
 
