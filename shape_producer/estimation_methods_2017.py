@@ -783,7 +783,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                        "simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
                 Weight("((pt_1>28)+(pt_1<28)*(crossTriggerDataEfficiencyWeight_1*crossTriggerDataEfficiencyWeight_tight_DeepTau_2*(abs(eta_1)>=1.5)+crossTriggerEmbeddedWeight_1*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/crossTriggerEMBEfficiencyWeight_tight_DeepTau_2)*(abs(eta_1)<1.5)))","cross_trg_weight"),
-                Weight("(((pt_1>28)+(pt_1<28)*(crossTriggerDataEfficiencyWeight_1*crossTriggerDataEfficiencyWeight_tight_DeepTau_2*(abs(eta_1)>=1.5)+crossTriggerEmbeddedWeight_1*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/crossTriggerEMBEfficiencyWeight_tight_DeepTau_2)*(abs(eta_1)<1.5))))<2.0","cross_trg_cut"), 
+                Weight("(((pt_1>28)+(pt_1<28)*(crossTriggerDataEfficiencyWeight_1*crossTriggerDataEfficiencyWeight_tight_DeepTau_2*(abs(eta_1)>=1.5)+crossTriggerEmbeddedWeight_1*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/crossTriggerEMBEfficiencyWeight_tight_DeepTau_2)*(abs(eta_1)<1.5))))<2.0","cross_trg_cut"),
                 Weight("idWeight_1*((pt_1>28)*(trigger_27_32_35_Weight_1*(abs(eta_1) < 1.5) + singleTriggerDataEfficiencyWeightKIT_1*(abs(eta_1)>=1.5))+(pt_1<28))*isoWeight_1", "lepton_sf"),
                 Weight("(idWeight_1*((pt_1>28)*(trigger_27_32_35_Weight_1*(abs(eta_1) < 1.5) + singleTriggerDataEfficiencyWeightKIT_1*(abs(eta_1)>=1.5))+(pt_1<28))*isoWeight_1)<2.0", "lepton_cut"),
                 Weight("(gen_match_2==5)*0.97+(gen_match_2!=5)", "emb_tau_id"),
@@ -1490,7 +1490,7 @@ class ggHEstimation(HTTEstimation):
         return weights
 
     def get_cuts(self):
-        return Cuts(Cut(self.htxs_dict["ggH125"], "htxs_match"))
+        return Cuts(Cut(self.htxs_dict[self.name], "htxs_match"))
 
     def get_files(self):
         query = {
