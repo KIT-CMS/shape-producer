@@ -1479,12 +1479,12 @@ class ggHEstimation(HTTEstimation):
 
         weights.remove("numberGeneratedEventsWeight"),
         weights.remove("crossSectionPerEventWeight"),
-        weights.add(Weight("((htxs_stage1p1cat!=104&&htxs_stage1p1cat!=105&&htxs_stage1p1cat!=107&&htxs_stage1p1cat!=108&&htxs_stage1p1cat!=109)*crossSectionPerEventWeight*8.210e-8+"
-             #"(htxs_stage1p1cat==101)*XXX+"
+        weights.add(Weight("((htxs_stage1p1cat==100||htxs_stage1p1cat==102||htxs_stage1p1cat==103)*crossSectionPerEventWeight*8.210e-8+"
+             "(htxs_stage1p1cat==101)*2.17e-8+"
              "(htxs_stage1p1cat==104||htxs_stage1p1cat==105)*4.39e-8+"
-             #"(htxs_stage1p1cat==106)*XXX+"
-             "(htxs_stage1p1cat>=107&&htxs_stage1p1cat<=109)*4.91e-8" #+"
-             #"(htxs_stage1p1cat>=110&&htxs_stage1p1cat<=113)*XXX"
+             "(htxs_stage1p1cat==106)*1.19e-8+"
+             "(htxs_stage1p1cat>=107&&htxs_stage1p1cat<=109)*4.91e-8+"
+             "(htxs_stage1p1cat>=110&&htxs_stage1p1cat<=113)*7.90e-9"
              ")","ggh_stitching_weight"))
 
         return weights
