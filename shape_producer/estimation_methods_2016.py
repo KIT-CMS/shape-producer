@@ -125,11 +125,11 @@ def get_tauByIsoIdWeight_for_channel(channel):
     if "ID" in channel.__class__.__name__:  # this is used for the TauID measurements
         return weight
     elif "mt" in channel.name or "et" in channel.name:
-        weight = Weight("((gen_match_2 == 5)*0.87 + (gen_match_2 != 5))",
+        weight = Weight("((gen_match_2 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2 + (gen_match_2 != 5))",
                         "taubyIsoIdWeight")
     elif "tt" in channel.name:
         weight = Weight(
-            "((gen_match_1 == 5)*0.87 + (gen_match_1 != 5))*((gen_match_2 == 5)*0.87 + (gen_match_2 != 5))",
+            "((gen_match_1 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1 + (gen_match_1 != 5))*((gen_match_2 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2 + (gen_match_2 != 5))",
             "taubyIsoIdWeight")
     return weight
 
@@ -1131,27 +1131,21 @@ class ZTTEmbeddedEstimation(EstimationMethod):
             Weight("embeddedDecayModeWeight", "decayMode_SF"))
         if self.channel.name == "mt":
             emb_weights.add(Weight("idWeight_1*isoWeight_1","lepton_sf"))
-            emb_weights.add(Weight(
-                "((gen_match_2==5)*0.95+(gen_match_2!=5))",
-                "emb_tau_id"))
+            emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel))
             emb_weights.add(
                 Weight("gen_match_1==4 && gen_match_2==5", "emb_veto"))
                 #TODO add crosstrigger sf as soon as they are included
 
         elif self.channel.name == "et":
             emb_weights.add(Weight("idWeight_1*isoWeight_1","lepton_sf"))
-            emb_weights.add(Weight(
-                "((gen_match_2==5)*0.95+(gen_match_2!=5))",
-                "emb_tau_id")) 
+            emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel)),
             emb_weights.add(
                 Weight("gen_match_1==3 && gen_match_2==5", "emb_veto"))
                 #TODO add crosstrigger sf as soon as they are included
 
         elif self.channel.name == "tt":
             emb_weights.add(Weight("(crossTriggerDataEfficiencyWeight_tight_DeepTau_1/crossTriggerEMBEfficiencyWeight_tight_DeepTau_1)*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/crossTriggerEMBEfficiencyWeight_tight_DeepTau_2)","trg_sf"))
-            emb_weights.add(Weight(
-                "((gen_match_1==5)*0.95+(gen_match_1!=5))*((gen_match_2==5)*0.95+(gen_match_2!=5))",
-                "emb_tau_id"))
+            emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel))
             emb_weights.add(
                 Weight("gen_match_1==5 && gen_match_2==5", "emb_veto"))
         elif self.channel.name == "em":
@@ -1164,6 +1158,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
             emb_weights.remove(
                 "decayMode_SF"
             )  # embeddedDecayModeWeight is only for tau decay modes 
+        print emb_weights.extract()
         return emb_weights
 
     def get_files(self):
