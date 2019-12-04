@@ -753,8 +753,8 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("generatorWeight",
                        "simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
-                Weight("isoWeight_1*idWeight_1*((pt_1>=25)*(trigger_24_27_Weight_1)+(pt_1<25)*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/crossTriggerEMBEfficiencyWeight_tight_DeepTau_2)*crossTriggerEmbeddedWeight_1)", "lepton_sf"),
-                self.get_tauByIsoIdWeight_for_channel(self.channel.name),
+                Weight("isoWeight_1*idWeight_1*((pt_1>=25)*(trigger_24_27_Weight_1)+(pt_1<25)*(abs(eta_2)<2.1)*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/((pt_1<25)*(abs(eta_2)<2.1)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_2+(abs(eta_2)>=2.1)+(pt_1>=25)))*crossTriggerEmbeddedWeight_1)", "lepton_sf"),
+                Weight("(gen_match_2==5)*0.97+(gen_match_2!=5)", "emb_tau_id"),
                 Weight("embeddedDecayModeWeight", "decayMode_SF"),
                 Weight("gen_match_1==4 && gen_match_2==5","emb_veto"))
         elif self.channel.name in ["et"]:
@@ -762,8 +762,8 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("generatorWeight",
                        "simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
-                Weight("idWeight_1*isoWeight_1*(crossTriggerEmbeddedWeight_1*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/crossTriggerEMBEfficiencyWeight_tight_DeepTau_2)*(pt_1<33)+(pt_1>=33)*trigger_32_35_Weight_1)", "lepton_sf"),
-                self.get_tauByIsoIdWeight_for_channel(self.channel.name),
+                Weight("idWeight_1*isoWeight_1*(crossTriggerEmbeddedWeight_1*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/((pt_1<33)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_2+(pt_1>=33))*(pt_1<33)+(pt_1>=33)*trigger_32_35_Weight_1)", "lepton_sf"),
+                Weight("(gen_match_2==5)*0.97+(gen_match_2!=5)", "emb_tau_id"),
                 Weight("gen_match_1==3 && gen_match_2==5","emb_veto"),
                 Weight("embeddedDecayModeWeight", "decayMode_SF"))
         elif self.channel.name == "tt":
