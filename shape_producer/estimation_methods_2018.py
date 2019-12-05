@@ -85,7 +85,10 @@ def get_tauByIsoIdWeight_for_channel(channel):
     if "mt" in channel or "et" in channel:
         weight = Weight("((gen_match_2 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2+ (gen_match_2 != 5))", "taubyIsoIdWeight")
     elif "tt" in channel:
-        weight = Weight("((gen_match_1 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2 + (gen_match_1 != 5))*((gen_match_2 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2 + (gen_match_2 != 5))", "taubyIsoIdWeight")
+        dm11_nom = 0.96923059
+        # weight once dm11 is fixed:
+        # weight = Weight("((gen_match_1 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1 + (gen_match_1 != 5))*((gen_match_2 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2 + (gen_match_2 != 5))", "taubyIsoIdWeight")
+        weight = Weight("(((gen_match_1 == 5)*(((decayMode_1!=11)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1)+((decayMode_1==11)*{dm11_nom})) + (gen_match_1 != 5))*((gen_match_2 == 5)*(((decayMode_2!=11)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2)+((decayMode_2==11)*{dm11_nom})) + (gen_match_2 != 5)))".format(dm11_nom=dm11_nom), "taubyIsoIdWeight")
     return weight
 
 def get_eleHLTZvtxWeight_for_channel(channel):

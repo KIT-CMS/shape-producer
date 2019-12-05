@@ -127,10 +127,11 @@ def get_tauByIsoIdWeight_for_channel(channel):
     elif "mt" in channel.name or "et" in channel.name:
         weight = Weight("((gen_match_2 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2 + (gen_match_2 != 5))",
                         "taubyIsoIdWeight")
-    elif "tt" in channel.name:
-        weight = Weight(
-            "((gen_match_1 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1 + (gen_match_1 != 5))*((gen_match_2 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2 + (gen_match_2 != 5))",
-            "taubyIsoIdWeight")
+    elif "tt" in channel:
+        dm11_nom = 0.89484048
+        # weight once dm11 is fixed:
+        # weight = Weight("((gen_match_1 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1 + (gen_match_1 != 5))*((gen_match_2 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2 + (gen_match_2 != 5))", "taubyIsoIdWeight")
+        weight = Weight("(((gen_match_1 == 5)*(((decayMode_1!=11)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1)+((decayMode_1==11)*{dm11_nom})) + (gen_match_1 != 5))*((gen_match_2 == 5)*(((decayMode_2!=11)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2)+((decayMode_2==11)*{dm11_nom})) + (gen_match_2 != 5)))".format(dm11_nom=dm11_nom), "taubyIsoIdWeight")
     return weight
 
 def get_eleRecoWeight_for_channel(channel):
@@ -1158,7 +1159,6 @@ class ZTTEmbeddedEstimation(EstimationMethod):
             emb_weights.remove(
                 "decayMode_SF"
             )  # embeddedDecayModeWeight is only for tau decay modes 
-        print emb_weights.extract()
         return emb_weights
 
     def get_files(self):
