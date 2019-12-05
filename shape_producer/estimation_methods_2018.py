@@ -83,9 +83,12 @@ def get_tauByIsoIdWeight_for_channel(channel):
     # Source: https://indico.cern.ch/event/738043/contributions/3048471/attachments/1674773/2691664/TauId_26062018.pdf
     weight = Weight("1.0","taubyIsoIdWeight")
     if "mt" in channel or "et" in channel:
-        weight = Weight("((gen_match_2 == 5)*0.90 + (gen_match_2 != 5))", "taubyIsoIdWeight")
+        weight = Weight("((gen_match_2 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2+ (gen_match_2 != 5))", "taubyIsoIdWeight")
     elif "tt" in channel:
-        weight = Weight("((gen_match_1 == 5)*0.90 + (gen_match_1 != 5))*((gen_match_2 == 5)*0.90 + (gen_match_2 != 5))", "taubyIsoIdWeight")
+        dm11_nom = 0.96923059
+        # weight once dm11 is fixed:
+        # weight = Weight("((gen_match_1 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1 + (gen_match_1 != 5))*((gen_match_2 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2 + (gen_match_2 != 5))", "taubyIsoIdWeight")
+        weight = Weight("(((gen_match_1 == 5)*(((decayMode_1!=11)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1)+((decayMode_1==11)*{dm11_nom})) + (gen_match_1 != 5))*((gen_match_2 == 5)*(((decayMode_2!=11)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2)+((decayMode_2==11)*{dm11_nom})) + (gen_match_2 != 5)))".format(dm11_nom=dm11_nom), "taubyIsoIdWeight")
     return weight
 
 def get_eleHLTZvtxWeight_for_channel(channel):
@@ -754,7 +757,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                        "simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
                 Weight("isoWeight_1*idWeight_1*((pt_1>=25)*(trigger_24_27_Weight_1)+(pt_1<25)*(abs(eta_2)<2.1)*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/((pt_1<25)*(abs(eta_2)<2.1)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_2+(abs(eta_2)>=2.1)+(pt_1>=25)))*crossTriggerEmbeddedWeight_1)", "lepton_sf"),
-                Weight("(gen_match_2==5)*0.97+(gen_match_2!=5)", "emb_tau_id"),
+                self.get_tauByIsoIdWeight_for_channel(self.channel.name),
                 Weight("embeddedDecayModeWeight", "decayMode_SF"),
                 Weight("gen_match_1==4 && gen_match_2==5","emb_veto"))
         elif self.channel.name in ["et"]:
@@ -763,7 +766,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                        "simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
                 Weight("idWeight_1*isoWeight_1*(crossTriggerEmbeddedWeight_1*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/((pt_1<33)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_2+(pt_1>=33)))*(pt_1<33)+(pt_1>=33)*trigger_32_35_Weight_1)", "lepton_sf"),
-                Weight("(gen_match_2==5)*0.97+(gen_match_2!=5)", "emb_tau_id"),
+                self.get_tauByIsoIdWeight_for_channel(self.channel.name),
                 Weight("gen_match_1==3 && gen_match_2==5","emb_veto"),
                 Weight("embeddedDecayModeWeight", "decayMode_SF"))
         elif self.channel.name == "tt":
@@ -772,7 +775,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                        "simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
                 Weight("(((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerDataEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerDataEfficiencyWeight_tight_DeepTau_1)*((byTightDeepTau2017v2p1VSjet_2<0.5 && byVLooseDeepTau2017v2p1VSjet_2>0.5)*crossTriggerDataEfficiencyWeight_vloose_DeepTau_2 + (byTightDeepTau2017v2p1VSjet_2>0.5)*crossTriggerDataEfficiencyWeight_tight_DeepTau_2))/(((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_1)*((byTightDeepTau2017v2p1VSjet_2<0.5 && byVLooseDeepTau2017v2p1VSjet_2>0.5)*crossTriggerEMBEfficiencyWeight_vloose_DeepTau_2 + (byTightDeepTau2017v2p1VSjet_2>0.5)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_2))","trg_sf"),
-                Weight("((gen_match_1==5)*0.97+(gen_match_1!=5))*((gen_match_2==5)*0.97+(gen_match_2!=5))", "emb_tau_id"),
+                self.get_tauByIsoIdWeight_for_channel(self.channel.name),
                 Weight("gen_match_1==5 && gen_match_2==5","emb_veto"),
                 Weight("embeddedDecayModeWeight", "decayMode_SF"))
         elif self.channel.name == "em":
