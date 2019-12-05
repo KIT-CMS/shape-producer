@@ -776,8 +776,9 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("generatorWeight",
                        "simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
-                Weight("isoWeight_1*idWeight_1*((pt_1>=25)*(trigger_24_27_Weight_1)+(pt_1<25)*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/crossTriggerEMBEfficiencyWeight_tight_DeepTau_2)*crossTriggerEmbeddedWeight_1)", "lepton_sf"),
+                Weight("isoWeight_1*idWeight_1*((pt_1>=25)*(trigger_24_27_Weight_1)+(pt_1<25)*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/((pt_1<25)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_2+(pt_1>=25))*crossTriggerEmbeddedWeight_1))", "lepton_sf"),
                 self.get_tauByIsoIdWeight_for_channel(self.channel.name),
+                Weight("(gen_match_2==5)*0.97+(gen_match_2!=5)", "emb_tau_id"),
                 Weight("gen_match_1==4 && gen_match_2==5","emb_veto"),
                 Weight("embeddedDecayModeWeight", "decayMode_SF"))
         elif self.channel.name in ["et"]:
@@ -785,10 +786,10 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("generatorWeight",
                        "simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
-                Weight("((pt_1>28)+(pt_1<28)*(crossTriggerDataEfficiencyWeight_1*crossTriggerDataEfficiencyWeight_tight_DeepTau_2*(abs(eta_1)>=1.5)+crossTriggerEmbeddedWeight_1*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/crossTriggerEMBEfficiencyWeight_tight_DeepTau_2)*(abs(eta_1)<1.5)))","cross_trg_weight"),
-                Weight("(((pt_1>28)+(pt_1<28)*(crossTriggerDataEfficiencyWeight_1*crossTriggerDataEfficiencyWeight_tight_DeepTau_2*(abs(eta_1)>=1.5)+crossTriggerEmbeddedWeight_1*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/crossTriggerEMBEfficiencyWeight_tight_DeepTau_2)*(abs(eta_1)<1.5))))<2.0","cross_trg_cut"), 
+                Weight("(pt_1>=28)+(pt_1<28)*((abs(eta_1)>=1.5)*crossTriggerDataEfficiencyWeight_1*crossTriggerDataEfficiencyWeight_tight_DeepTau_2+(abs(eta_1)<1.5)*crossTriggerEmbeddedWeight_1*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/((pt_1<28)*(abs(eta_1)<1.5)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_2+(pt_1>=28)+(abs(eta_1)>=1.5))))","cross_trg_weight"),
+                Weight("((pt_1>=28)+(pt_1<28)*((abs(eta_1)>=1.5)*crossTriggerDataEfficiencyWeight_1*crossTriggerDataEfficiencyWeight_tight_DeepTau_2+(abs(eta_1)<1.5)*crossTriggerEmbeddedWeight_1*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/((pt_1<28)*(abs(eta_1)<1.5)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_2+(pt_1>=28)+(abs(eta_1)>=1.5)))))<10.0","cross_trg_cut"),
                 Weight("idWeight_1*((pt_1>28)*(trigger_27_32_35_Weight_1*(abs(eta_1) < 1.5) + singleTriggerDataEfficiencyWeightKIT_1*(abs(eta_1)>=1.5))+(pt_1<28))*isoWeight_1", "lepton_sf"),
-                Weight("(idWeight_1*((pt_1>28)*(trigger_27_32_35_Weight_1*(abs(eta_1) < 1.5) + singleTriggerDataEfficiencyWeightKIT_1*(abs(eta_1)>=1.5))+(pt_1<28))*isoWeight_1)<2.0", "lepton_cut"),
+                Weight("(idWeight_1*((pt_1>28)*(trigger_27_32_35_Weight_1*(abs(eta_1) < 1.5) + singleTriggerDataEfficiencyWeightKIT_1*(abs(eta_1)>=1.5))+(pt_1<28))*isoWeight_1)<10.0", "lepton_cut"),
                 self.get_tauByIsoIdWeight_for_channel(self.channel.name),
                 Weight("gen_match_1==3 && gen_match_2==5","emb_veto"),
                 Weight("embeddedDecayModeWeight", "decayMode_SF"))
@@ -1493,7 +1494,7 @@ class ggHEstimation(HTTEstimation):
         return weights
 
     def get_cuts(self):
-        return Cuts(Cut(self.htxs_dict["ggH125"], "htxs_match"))
+        return Cuts(Cut(self.htxs_dict[self.name], "htxs_match"))
 
     def get_files(self):
         query = {
@@ -1537,7 +1538,7 @@ class qqHEstimation(HTTEstimation):
              "(htxs_stage1p1cat>=203&&htxs_stage1p1cat<=205)*8.70e-9+"
              "(htxs_stage1p1cat==206)*8.61e-9+"
              "(htxs_stage1p1cat>=207&&htxs_stage1p1cat<=210)*1.79e-8"
-             "))","ggh_stitching_weight"))
+             "))","qqh_stitching_weight"))
 
         return weights
 
