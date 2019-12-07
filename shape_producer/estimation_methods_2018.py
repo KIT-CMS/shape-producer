@@ -528,10 +528,10 @@ class DYJetsToLLEstimation(EstimationMethod):
 
     def get_weights(self):
         if self.atNLO:
-            z_stitching_weight = Weight("((genbosonmass >= 50.0) * 3.3847e-05 + (genbosonmass < 50.0)*numberGeneratedEventsWeight*crossSectionPerEventWeight)","z_stitching_weight") # xsec_NNLO [pb] = 2075.14*3, N_inclusive_NLO = 183925831, xsec_NNLO/N_inclusive_NLO = 3.3847e-05; fraction of negative events in 'generatorWeight'
+            z_stitching_weight = Weight("((genbosonmass >= 50.0) * 3.3042e-05 + (genbosonmass < 50.0)*numberGeneratedEventsWeight*crossSectionPerEventWeight)","z_stitching_weight") # xsec_NNLO [pb] = 2025.74*3, N_inclusive_NLO = 183925831, xsec_NNLO/N_inclusive_NLO = 3.3042e-05; fraction of negative events in 'generatorWeight'
         else:
-            z_stitching_weight = Weight("((genbosonmass >= 50.0)*0.00005754202*((npartons == 0 || npartons >= 5)*1.0 + (npartons == 1)*0.194267667208 + (npartons == 2)*0.21727746547 + (npartons == 3)*0.26760465744 + (npartons == 4)*0.294078683662) + (genbosonmass < 50.0)*numberGeneratedEventsWeight*crossSectionPerEventWeight)", "z_stitching_weight")
-              # xsec_NNLO [pb] = 2075.14*3, N_inclusive = 100194597,  xsec_NNLO/N_inclusive = 0.00005754202 [pb] weights: [1.0, 0.194267667208, 0.21727746547, 0.26760465744, 0.294078683662]
+            z_stitching_weight = Weight("((genbosonmass >= 50.0)*0.0000606542*((npartons == 0 || npartons >= 5)*1.0 + (npartons == 1)*0.194267667208 + (npartons == 2)*0.21727746547 + (npartons == 3)*0.26760465744 + (npartons == 4)*0.294078683662) + (genbosonmass < 50.0)*numberGeneratedEventsWeight*crossSectionPerEventWeight)", "z_stitching_weight")
+              # xsec_NNLO [pb] = 2025.74*3, N_inclusive = 100194597,  xsec_NNLO/N_inclusive = 0.0000606542 [pb] weights: [1.0, 0.194267667208, 0.21727746547, 0.26760465744, 0.294078683662]
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -830,8 +830,8 @@ class WEstimation(EstimationMethod):
             Weight("generatorWeight", "generatorWeight"),
             # Weight("numberGeneratedEventsWeight","numberGeneratedEventsWeight"), # to be used only for one inclusive sample
             #Weight("crossSectionPerEventWeight","crossSectionPerEventWeight"), # to be used only for one inclusive sample
-            Weight("((0.00092600048*((npartons <= 0 || npartons >= 5)*1.0 + (npartons == 1)*0.1647043928 + (npartons == 2)*0.128547226623 + (npartons == 3)*0.0767138313139 + (npartons == 4)*0.0631529545476)) * (genbosonmass>=0.0) + numberGeneratedEventsWeight * crossSectionPerEventWeight * (genbosonmass<0.0))",
-                 "wj_stitching_weight"), # xsec_NNLO [pb] = 61526.7, N_inclusive = 66443486, xsec_NNLO/N_inclusive = 0.00092600048 [pb] weights: [1.0, 0.1647043928, 0.128547226623, 0.0767138313139, 0.0631529545476]
+            Weight("((0.0008662455*((npartons <= 0 || npartons >= 5)*1.0 + (npartons == 1)*0.174101755934 + (npartons == 2)*0.136212630745 + (npartons == 3)*0.0815667415121 + (npartons == 4)*0.06721295702670023)) * (genbosonmass>=0.0) + numberGeneratedEventsWeight * crossSectionPerEventWeight * (genbosonmass<0.0))",
+                 "wj_stitching_weight"), # xsec_NNLO [pb] = 61526.7, N_inclusive = 71026861, xsec_NNLO/N_inclusive = 0.0008662455 [pb] weights: [1.0, 0.1741017559343336, 0.13621263074538312, 0.08156674151214884, 0.06721295702670023]
 
             # Weights for corrections
             Weight("puweight", "puweight"),
