@@ -584,7 +584,7 @@ class DYJetsToLLEstimation(EstimationMethod):
             "data": False,
             "campaign": self._mc_campaign,
             "generator": "madgraph\-pythia8",
-            "version": "v1"
+            "version": "(v1|v2)"
         }
         queryM50_1jet_v1 = {
             "process": "DY1JetsToLL_M50",
