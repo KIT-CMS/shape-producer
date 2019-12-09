@@ -127,7 +127,7 @@ def get_tauByIsoIdWeight_for_channel(channel):
     elif "mt" in channel.name or "et" in channel.name:
         weight = Weight("((gen_match_2 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2 + (gen_match_2 != 5))",
                         "taubyIsoIdWeight")
-    elif "tt" in channel:
+    elif "tt" in channel.name:
         dm11_nom = 0.89484048
         # weight once dm11 is fixed:
         # weight = Weight("((gen_match_1 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1 + (gen_match_1 != 5))*((gen_match_2 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2 + (gen_match_2 != 5))", "taubyIsoIdWeight")
@@ -837,12 +837,12 @@ class DYJetsToLLEstimation(EstimationMethod):
         z_stitching_weight = Weight("(1.0)", "z_stitching_weight")
         if self.atNLO:
             z_stitching_weight = Weight(
-                "((genbosonmass >= 50.0) * 5.1551e-05 + (genbosonmass < 50.0)*((abs(crossSectionPerEventWeight - 3.987) < 0.01)*4.6936e-06 + (abs(crossSectionPerEventWeight - 10.01) < 0.01)*3.7568e-06))",
+                "((genbosonmass >= 50.0) * 5.0324e-05 + (genbosonmass < 50.0)*((abs(crossSectionPerEventWeight - 3.987) < 0.01)*4.6936e-06 + (abs(crossSectionPerEventWeight - 10.01) < 0.01)*3.7568e-06))",
                 "z_stitching_weight"
-            )  # xsec_NNLO [pb] = 2075.14*3, N_inclusive_NLO = 120762939, xsec_NNLO/N_inclusive_NLO = 5.1551e-05; fraction of negative events in 'generatorWeight'
+            )  # xsec_NNLO [pb] = 2025.74*3, N_inclusive_NLO = 120762939, xsec_NNLO/N_inclusive_NLO = 5.0324e-05; fraction of negative events in 'generatorWeight'
         else:
             z_stitching_weight = Weight(
-                "((genbosonmass >= 50.0) * 4.255812e-05*((npartons == 0 || npartons >= 5)*1.0+(npartons == 1)*0.32123574062076404+(npartons == 2)*0.3314444833963529+(npartons == 3)*0.3389929050626262+(npartons == 4)*0.2785338687268455) + (genbosonmass < 50.0)*(numberGeneratedEventsWeight * crossSectionPerEventWeight))",
+                "((genbosonmass >= 50.0) * 4.1545e-05*((npartons == 0 || npartons >= 5)*1.0+(npartons == 1)*0.32123574062076404+(npartons == 2)*0.3314444833963529+(npartons == 3)*0.3389929050626262+(npartons == 4)*0.2785338687268455) + (genbosonmass < 50.0)*(numberGeneratedEventsWeight * crossSectionPerEventWeight))",
                 "z_stitching_weight")
         return Weights(
             Weight("generatorWeight", "generatorWeight"),

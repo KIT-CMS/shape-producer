@@ -350,7 +350,7 @@ class EMSM2016(Channel):
             Cut("dilepton_veto<0.5", "dilepton_veto"),
             Cut("iso_1<0.15", "ele_iso"), Cut("iso_2<0.2", "muon_iso"),
             Cut("q_1*q_2<0", "os"),
-            Cut("nbtag==0 && pZetaMissVis>-35 && mTdileptonMET<60","dzeta"),
+            Cut("nbtag==0 && mTdileptonMET<60","bveto_mTdileptonMET"),
             Cut("pt_2>10 && ((pt_1>13 && pt_2>24 && trg_muonelectron_mu23ele12 == 1) || (pt_1>24 && pt_2>10 && trg_muonelectron_mu8ele23 == 1))","trg_selection"))
 
 class EMMSSM2017(Channel):
@@ -376,6 +376,7 @@ class EMSM2017(Channel):
             Cut("dilepton_veto<0.5", "dilepton_veto"),
             Cut("iso_1<0.15", "ele_iso"), Cut("iso_2<0.2", "muon_iso"),
             Cut("q_1*q_2<0", "os"),
+            Cut("nbtag==0 && mTdileptonMET<60","bveto_mTdileptonMET"),
             Cut("pt_2>10 && ((trg_muonelectron_mu23ele12 == 1) || (trg_muonelectron_mu8ele23 == 1))",
                 "trg_selection"))
 
@@ -389,6 +390,7 @@ class EMSM2018(Channel):
             Cut("dilepton_veto<0.5", "dilepton_veto"),
             Cut("iso_1<0.15", "ele_iso"), Cut("iso_2<0.2", "muon_iso"),
             Cut("q_1*q_2<0", "os"),
+            Cut("nbtag==0 && mTdileptonMET<60","bveto_mTdileptonMET"),
             Cut("(trg_muonelectron_mu23ele12 == 1 && pt_1>13 && pt_2 > 24) || (trg_muonelectron_mu8ele23 == 1 && pt_1>24 && pt_2>10)",
                 "trg_selection"))
 
