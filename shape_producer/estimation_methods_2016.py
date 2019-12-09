@@ -127,7 +127,7 @@ def get_tauByIsoIdWeight_for_channel(channel):
     elif "mt" in channel.name or "et" in channel.name:
         weight = Weight("((gen_match_2 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2 + (gen_match_2 != 5))",
                         "taubyIsoIdWeight")
-    elif "tt" in channel:
+    elif "tt" in channel.name:
         dm11_nom = 0.89484048
         # weight once dm11 is fixed:
         # weight = Weight("((gen_match_1 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1 + (gen_match_1 != 5))*((gen_match_2 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2 + (gen_match_2 != 5))", "taubyIsoIdWeight")
