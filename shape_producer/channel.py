@@ -235,7 +235,7 @@ class ETSM2016(Channel):
             Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
             Cut("iso_1<0.15", "ele_iso"),
             Cut("q_1*q_2<0", "os"),
-            Cut("(trg_singleelectron==1 && pt_1>26 && pt_2>30)","trg_singleelectron"))
+            Cut("pt_2>30 && ((pt_1>26 && (trg_singleelectron==1)) || (pt_1<26 && pt_1>25 && (trg_eletaucross==1)))", "trg_selection"))
 
 
 class TT(Channel):
