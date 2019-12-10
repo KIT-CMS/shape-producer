@@ -55,15 +55,12 @@ qqH_htxs = {
     "htxs_stage1p1cat == 210",
 }
 
-# TODO fix all the weights
-# Definition of global weights
-
 
 def get_triggerweight_for_channel(channel):
     weight = Weight("1.0", "triggerweight")
 
     singleMC = "singleTriggerMCEfficiencyWeightKIT_1"
-    crossMCL = "crossTriggerMCEfficiencyWeight_1"
+    crossMCL = "crossTriggerMCEfficiencyWeightKIT_1"
     MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1)"
     MCTau_2 = MCTau_1.replace("_1", "_2")
 
@@ -71,33 +68,31 @@ def get_triggerweight_for_channel(channel):
         trig_sL = "(trg_singlemuon)"
         trig_X = "(pt_1 < 23 && trg_mutaucross)"
 
-        MuTauMC = "*".join([trig_sL, singleMC])  + "+" + "*".join([trig_X, crossMCL]) # , MCTau_2])  # TODO once crossTriggerMCEfficiencyWeight_vloose_DeepTau_1 are available but back in
+        MuTauMC = "*".join([trig_sL, singleMC]) + "+" + "*".join([trig_X, crossMCL, MCTau_2])
         MuTauData = MuTauMC.replace("MC", "Data")
         MuTau = "(" + MuTauData + ")/(" + MuTauMC + ")"
         weight = Weight(MuTau, "triggerweight")
 
     elif "et" in channel:
-        trig_sL = "(trg_singleelectron)" # no etau crosstrigger in 2016
+        trig_sL = "(trg_singleelectron)"
+        trig_X = "(pt_1 > 25 && pt_1 < 26 && trg_eletaucross)"
 
-        ElTauMC = "*".join([trig_sL, singleMC
-                            ])
+        ElTauMC = "*".join([trig_sL, singleMC]) + "+" + "*".join([trig_X, crossMCL, MCTau_2])
         ElTauData = ElTauMC.replace("MC", "Data")
         ElTau = "(" + ElTauData + ")/(" + ElTauMC + ")"
         weight = Weight(ElTau, "triggerweight")
 
     elif "tt" in channel:
-        # TODO add TauTrigger SF iwth new ntuples
-        DiTauMC = "*".join([MCTau_1,MCTau_2])
-        DiTauData = DiTauMC.replace("MC","Data")
+        DiTauMC = "*".join([MCTau_1, MCTau_2])
+        DiTauData = DiTauMC.replace("MC", "Data")
         DiTau = "("+DiTauData+")/("+DiTauMC+")"
-        weight = Weight(DiTau,"triggerweight")
-        #weight = Weight("1.0", "triggerweight")
+        weight = Weight(DiTau, "triggerweight")
 
-    # elif "em" in channel:
-    #     weight = Weight(
-    #         "(trigger_23_data_Weight_2*trigger_12_data_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_data_Weight_1*trigger_8_data_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_data_Weight_2*trigger_23_data_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))/(trigger_23_mc_Weight_2*trigger_12_mc_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_mc_Weight_1*trigger_8_mc_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_mc_Weight_2*trigger_23_mc_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))",
-    #         "trigger_lepton_sf")
-
+    elif "em" in channel:
+        ElMuData = "(trigger_23_data_Weight_2*trigger_12_data_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_data_Weight_1*trigger_8_data_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_data_Weight_2*trigger_23_data_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))"
+        ElMuEmb = ElMuData.replace('data', 'mc')
+        ElMu = "("+ElMuData+")/("+ElMuEmb+")"
+        weight = Weight(ElMu, "triggerweight")
     return weight
 
 
@@ -1124,6 +1119,51 @@ class ZTTEmbeddedEstimation(EstimationMethod):
             channel=channel,
             mc_campaign=None)
 
+    def emb_triggerweights(self):
+        channel = self.channel.name
+        weight = Weight("1.0", "triggerweight")
+
+        singleEMB = "singleTriggerEmbeddedEfficiencyWeightKIT_1"
+        crossEMBL = "crossTriggerEmbeddedEfficiencyWeightKIT_1"
+        EMBTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_1)"
+        EMBTau_2 = EMBTau_1.replace("_1", "_2")
+
+        if "mt" in channel:
+            trig_sL = "(trg_singlemuon)"
+            trig_X = "(pt_1 < 23 && trg_mutaucross)"
+
+            MuTauEMB = "{singletrigger} + {crosstrigger}".format(
+                singletrigger="*".join([trig_sL, singleEMB]),
+                crosstrigger="*".join([trig_X, crossEMBL, EMBTau_2]))
+            MuTauData = MuTauEMB.replace("EMB", "Data").replace("Embedded", "Data")
+            MuTau = "(" + MuTauData + ")/(" + MuTauEMB + ")"
+            weight = Weight(MuTau, "triggerweight")
+
+        elif "et" in channel:
+            trig_sL = "(trg_singleelectron)"
+            trig_X = "(pt_1 > 25 && pt_1 < 26 && trg_eletaucross)"
+
+            ElTauEMB = "{singletrigger} + {crosstrigger}".format(
+                singletrigger="*".join([trig_sL, singleEMB]),
+                crosstrigger="*".join([trig_X, crossEMBL, EMBTau_2])
+                )
+            ElTauData = ElTauEMB.replace("EMB", "Data").replace("Embedded", "Data")
+            ElTau = "(" + ElTauData + ")/(" + ElTauEMB + ")"
+            weight = Weight(ElTau, "triggerweight")
+
+        elif "tt" in channel:
+            DiTauEMB = "*".join([EMBTau_1, EMBTau_2])
+            DiTauData = DiTauEMB.replace("EMB", "Data").replace("Embedded", "Data")
+            DiTau = "("+DiTauData+")/("+DiTauEMB+")"
+            weight = Weight(DiTau, "triggerweight")
+
+        elif "em" in channel:
+            ElMuData = "(trigger_23_data_Weight_2*trigger_12_data_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_data_Weight_1*trigger_8_data_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_data_Weight_2*trigger_23_data_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))"
+            ElMuEmb = ElMuData.replace('data', 'embed')
+            ElMu = "("+ElMuData+")/("+ElMuEmb+")"
+            weight = Weight(ElMu, "triggerweight")
+        return weight
+
     def get_weights(self):
         emb_weights = Weights(
             Weight("generatorWeight*(generatorWeight<=1.0)", "simulation_sf"),
@@ -1131,28 +1171,29 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                    "scale_factor"),
             Weight("embeddedDecayModeWeight", "decayMode_SF"))
         if self.channel.name == "mt":
-            emb_weights.add(Weight("idWeight_1*isoWeight_1","lepton_sf"))
+            emb_weights.add(Weight("idWeight_1*isoWeight_1", "lepton_sf"))
             emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel))
             emb_weights.add(
                 Weight("gen_match_1==4 && gen_match_2==5", "emb_veto"))
-                #TODO add crosstrigger sf as soon as they are included
+            emb_weights.add(self.emb_triggerweights())
 
         elif self.channel.name == "et":
-            emb_weights.add(Weight("idWeight_1*isoWeight_1","lepton_sf"))
+            emb_weights.add(Weight("idWeight_1*isoWeight_1", "lepton_sf"))
             emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel)),
             emb_weights.add(
                 Weight("gen_match_1==3 && gen_match_2==5", "emb_veto"))
-                #TODO add crosstrigger sf as soon as they are included
+            emb_weights.add(self.emb_triggerweights())
 
         elif self.channel.name == "tt":
-            emb_weights.add(Weight("(crossTriggerDataEfficiencyWeight_tight_DeepTau_1/crossTriggerEMBEfficiencyWeight_tight_DeepTau_1)*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/crossTriggerEMBEfficiencyWeight_tight_DeepTau_2)","trg_sf"))
+            emb_weights.add(self.emb_triggerweights())
             emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel))
             emb_weights.add(
                 Weight("gen_match_1==5 && gen_match_2==5", "emb_veto"))
         elif self.channel.name == "em":
             emb_weights.add(
                 Weight("(gen_match_1==3 && gen_match_2==4)", "emb_veto")
-            )  #TODO add trigger sf as soon as they are included
+            )
+            emb_weights.add(self.emb_triggerweights())
             emb_weights.add(
                 Weight("idWeight_1*isoWeight_1*idWeight_2*isoWeight_2",
                        "leptopn_sf"))
@@ -1548,7 +1589,6 @@ class TTEstimation(EstimationMethod):
 
     def get_weights(self):
         return Weights(
-            # Weight("0.989*topPtReweightWeightRun1", "topPtReweightWeight"), #TODO topPTRun1 reweight ?
             Weight("topPtReweightWeight", "topPtReweightWeight"),
             Weight("isoWeight_1*isoWeight_2", "isoWeight"),
             Weight("idWeight_1*idWeight_2", "idWeight"),
@@ -1725,7 +1765,6 @@ class VVEstimation(EstimationMethod):
             get_eleRecoWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
             # MC weights
-            #TODO doing stitching with cross-section as reference for WW, WZ, ZZ, so WATCH OUT after changing the cross-sections!!!
             Weight("1.252790591041545e-07*(abs(crossSectionPerEventWeight - 118.7) < 0.01) + 5.029933132068942e-07*(abs(crossSectionPerEventWeight - 12.14) < 0.01) + 2.501519047441559e-07*(abs(crossSectionPerEventWeight - 22.82) < 0.01) + numberGeneratedEventsWeight*(abs(crossSectionPerEventWeight - 118.7) > 0.01 && abs(crossSectionPerEventWeight - 12.14) > 0.01 && abs(crossSectionPerEventWeight - 22.82) > 0.01)","numberGeneratedEventsWeight"),
             Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
             Weight("generatorWeight", "generatorWeight"),
