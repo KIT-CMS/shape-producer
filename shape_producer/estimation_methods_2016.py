@@ -847,7 +847,9 @@ class DYJetsToLLEstimation(EstimationMethod):
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
-            self.get_triggerweight_for_channel(self.channel._name),
+		# TODO remove this temp fix for the eletaufakerate as soon as the updated weights are in th ntuple
+            Weight("(((eta_1 < 1.46) * (1./0.6) * 1.22) + ((eta_1 > 1.5588) * (1./0.88) * 1.47))","eletauFakeRateWeightFix"),
+	    self.get_triggerweight_for_channel(self.channel._name),
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
