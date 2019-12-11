@@ -276,6 +276,11 @@ class Systematics(object):
             if systematic.variation.is_nominal():
                 found = 0
                 for key, value in properties.iteritems():
+                    logger.debug(' '.join([
+                        "key, value in properties.iteritems():",
+                        str(key),
+                        str(value)
+                    ]))
                     if hasattr(systematic, key):
                         property_ = getattr(systematic, key)
                         if hasattr(property_, "name") and hasattr(value, "name"):
