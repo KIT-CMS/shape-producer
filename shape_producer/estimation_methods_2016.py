@@ -61,7 +61,7 @@ def get_triggerweight_for_channel(channel):
 
     singleMC = "singleTriggerMCEfficiencyWeightKIT_1"
     crossMCL = "crossTriggerMCEfficiencyWeightKIT_1"
-    MCTau_1 = "((abs(eta_2)<2.1)*((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1) + (abs(eta_2)>2.1))"
+    MCTau_1 = "((abs(eta_2)<2.1)*((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1))"
     MCTau_2 = MCTau_1.replace("_1", "_2")
 
     if "mt" in channel:
@@ -70,7 +70,7 @@ def get_triggerweight_for_channel(channel):
 
         MuTauMC = "*".join([trig_sL, singleMC]) + "+" + "*".join([trig_X, crossMCL, MCTau_2])
         MuTauData = MuTauMC.replace("MC", "Data")
-        MuTau = "(" + MuTauData + ")/(" + MuTauMC + ")"
+        MuTau = "(" + MuTauData + ")/(" + MuTauMC + "+((abs(eta_2)>2.1)))"
         weight = Weight(MuTau, "triggerweight")
 
     elif "et" in channel:
