@@ -133,6 +133,8 @@ class Histogram(TTreeContent):
                     logger.debug("------>friend_inputfiles: [" + ', '.join(friend_inputfiles) + ']')
                     friend_tree = ROOT.TChain()
                     for friend_inputfile in friend_inputfiles:
+                        if "FakeFactor" in friend_inputfile and not (("nominal" in self._folder) or ("tauEs" in self._folder)):
+                            continue
                         folder = self._folder
                         friend_tree.Add(friend_inputfile + "/" + folder)
                         logger.debug("-------->Add friend_inputfile:" + friend_inputfile + "/" + self._folder)

@@ -89,6 +89,12 @@ def get_triggerweight_for_channel(channel):
         weight = Weight(DiTau, "triggerweight")
 
     elif "em" in channel:
+        weight = Weight(
+            "(trigger_23_data_Weight_2*trigger_12_data_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_data_Weight_1*trigger_8_data_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_data_Weight_2*trigger_23_data_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))/(trigger_23_mc_Weight_2*trigger_12_mc_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_mc_Weight_1*trigger_8_mc_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_mc_Weight_2*trigger_23_mc_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))",
+            "trigger_lepton_sf")
+
+
+    elif "em" in channel:
         ElMuData = "(trigger_23_data_Weight_2*trigger_12_data_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_data_Weight_1*trigger_8_data_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_data_Weight_2*trigger_23_data_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))"
         ElMuEmb = ElMuData.replace('data', 'mc')
         ElMu = "("+ElMuData+")/("+ElMuEmb+")"
@@ -1195,7 +1201,9 @@ class ZTTEmbeddedEstimation(EstimationMethod):
             emb_weights.add(
                 Weight("(gen_match_1==3 && gen_match_2==4)", "emb_veto")
             )
-            emb_weights.add(self.emb_triggerweights())
+            emb_weights.add(                
+                Weight("(trigger_23_data_Weight_2*trigger_12_data_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_data_Weight_1*trigger_8_data_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_data_Weight_2*trigger_23_data_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))/(trigger_23_embed_Weight_2*trigger_12_embed_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_embed_Weight_1*trigger_8_embed_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_embed_Weight_2*trigger_23_embed_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))",
+                       "trigger_lepton_sf"))
             emb_weights.add(
                 Weight("idWeight_1*isoWeight_1*idWeight_2*isoWeight_2",
                        "leptopn_sf"))
