@@ -66,7 +66,7 @@ def get_triggerweight_for_channel(channel):
 
     if "mt" in channel:
         trig_sL = "(trg_singlemuon)"
-        trig_X = "(pt_1 < 23 && trg_mutaucross)"
+        trig_X = "(pt_1 < 23 && trg_mutaucross && abs(eta_1)<2.1)"
 
         MuTauMC = "*".join([trig_sL, singleMC]) + "+" + "*".join([trig_X, crossMCL, MCTau_2])
         MuTauData = MuTauMC.replace("MC", "Data")
