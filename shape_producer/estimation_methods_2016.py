@@ -847,9 +847,7 @@ class DYJetsToLLEstimation(EstimationMethod):
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
-		# TODO remove this temp fix for the eletaufakerate as soon as the updated weights are in th ntuple
-            Weight("(((gen_match_1==3 || gen_match_1==1) * ((eta_1 < 1.46) * (1./0.6) * 1.22) + ((eta_1 > 1.5588) * (1./0.88) * 1.47))+(gen_match_1!=3 && gen_match_1!=1))","eletauFakeRateWeightFix"),
-	    self.get_triggerweight_for_channel(self.channel._name),
+	        self.get_triggerweight_for_channel(self.channel._name),
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
@@ -1030,15 +1028,12 @@ class ZLEstimation(DYJetsToLLEstimation):
             channel=channel,
             mc_campaign="RunIISummer16MiniAODv3")
 
-    '''def get_cuts(self):
-        ct = ""
-        if "mt" in self.channel.name or "et" in self.channel.name:
-            ct = "gen_match_2<5"
-        elif "tt" in self.channel.name:
-            ct = "(gen_match_1<6&&gen_match_2<6&&!(gen_match_1==5&&gen_match_2==5))"
-        elif "em" in self.channel.name:
-            ct = "0 == 1"
-        return Cuts(Cut(ct, "zl_genmatch"))'''
+    def get_weights(self):
+        # TODO remove this temp fix for the eletaufakerate as soon as the updated weights are in th ntuple
+        weights = super(DYJetsToLLEstimation, self).get_weights()
+        weights.add(Weight("(gen_match_2==1 || gen_match_2==3)*(((abs(eta_1) < 1.46) * (1./0.6) * 1.22) + ((abs(eta_1) > 1.5588) * (1./0.88) * 1.47))+!(gen_match_2==1 || gen_match_2==3)", "eletauFakeRateWeightFix"))
+        return weights
+
     def get_cuts(self):
         if "mt" in self.channel.name:
             emb_veto = "!(gen_match_1==4 && gen_match_2==5)"
