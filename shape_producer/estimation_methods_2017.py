@@ -562,7 +562,7 @@ class DYJetsToLLEstimation(EstimationMethod):
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
-            weights.add(Weight("(gen_match_2==1 || gen_match_2==3)*(((abs(eta_1) < 1.46) * 0.88) + ((abs(eta_1) > 1.5588) * 0.51))+!(gen_match_2==1 || gen_match_2==3)", "eletauFakeRateWeightFix"))
+            weights.add(Weight("(gen_match_2==1 || gen_match_2==3)*(((abs(eta_1) < 1.46) * 0.88) + ((abs(eta_1) > 1.5588) * 0.51))+!(gen_match_2==1 || gen_match_2==3)", "eletauFakeRateWeightFix")),
             self.get_tauByIsoIdWeight_for_channel(self.channel.name),
             self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             Weight("zPtReweightWeight", "zPtReweightWeight"),
