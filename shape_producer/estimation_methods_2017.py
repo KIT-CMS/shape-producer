@@ -779,7 +779,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
                 Weight("isoWeight_1*idWeight_1*((pt_1>=25)*(trigger_24_27_Weight_1)+(pt_1<25)*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/((pt_1<25)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_2+(pt_1>=25))*crossTriggerEmbeddedWeight_1))", "lepton_sf"),
                 self.get_tauByIsoIdWeight_for_channel(self.channel.name),
-                Weight("(pt_2<=20)*1.0+(pt_2>20&&pt_2<=25)*1.08+(pt_2>25&&pt_2<=30)*1.05+(pt_2>30&&pt_2<=35)*1.11+(pt_2>35&&pt_2<=40)*1.09+(pt_2>40)*1.10", "emb_tauID_correction_weight")
+                Weight("(pt_2<=20)*1.0+(pt_2>20&&pt_2<=25)*1.08+(pt_2>25&&pt_2<=30)*1.05+(pt_2>30&&pt_2<=35)*1.11+(pt_2>35&&pt_2<=40)*1.09+(pt_2>40)*1.10", "emb_tauID_correction_weight"),
                 Weight("gen_match_1==4 && gen_match_2==5","emb_veto"),
                 Weight("embeddedDecayModeWeight", "decayMode_SF"))
         elif self.channel.name in ["et"]:
@@ -792,7 +792,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("idWeight_1*((pt_1>28)*(trigger_27_32_35_Weight_1*(abs(eta_1) < 1.5) + singleTriggerDataEfficiencyWeightKIT_1*(abs(eta_1)>=1.5))+(pt_1<28))*isoWeight_1", "lepton_sf"),
                 Weight("(idWeight_1*((pt_1>28)*(trigger_27_32_35_Weight_1*(abs(eta_1) < 1.5) + singleTriggerDataEfficiencyWeightKIT_1*(abs(eta_1)>=1.5))+(pt_1<28))*isoWeight_1)<10.0", "lepton_cut"),
                 self.get_tauByIsoIdWeight_for_channel(self.channel.name),
-                Weight("(pt_2<=20)*1.0+(pt_2>20&&pt_2<=25)*1.08+(pt_2>25&&pt_2<=30)*1.05+(pt_2>30&&pt_2<=35)*1.11+(pt_2>35&&pt_2<=40)*1.09+(pt_2>40)*1.10", "emb_tauID_correction_weight")
+                Weight("(pt_2<=20)*1.0+(pt_2>20&&pt_2<=25)*1.08+(pt_2>25&&pt_2<=30)*1.05+(pt_2>30&&pt_2<=35)*1.11+(pt_2>35&&pt_2<=40)*1.09+(pt_2>40)*1.10", "emb_tauID_correction_weight"),
                 Weight("gen_match_1==3 && gen_match_2==5","emb_veto"),
                 Weight("embeddedDecayModeWeight", "decayMode_SF"))
         elif self.channel.name == "tt":
