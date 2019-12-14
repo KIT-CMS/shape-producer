@@ -1030,7 +1030,7 @@ class ZLEstimation(DYJetsToLLEstimation):
 
     def get_weights(self):
         # TODO remove this temp fix for the eletaufakerate as soon as the updated weights are in th ntuple
-        weights = super(DYJetsToLLEstimation, self).get_weights()
+        weights = super(ZLEstimation, self).get_weights()
         weights.add(Weight("(gen_match_2==1 || gen_match_2==3)*(((abs(eta_1) < 1.46) * (1./0.6) * 1.22) + ((abs(eta_1) > 1.5588) * (1./0.88) * 1.47))+!(gen_match_2==1 || gen_match_2==3)", "eletauFakeRateWeightFix"))
         return weights
 
@@ -1169,7 +1169,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
             Weight("embeddedDecayModeWeight", "decayMode_SF"))
         if self.channel.name == "mt":
             emb_weights.add(Weight("idWeight_1*isoWeight_1", "lepton_sf"))
-            # emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel))
+            emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel))
             emb_weights.add(Weight("(pt_2<=20)*1.0+(pt_2>20&&pt_2<=25)*0.97+(pt_2>25&&pt_2<=30)*0.96+(pt_2>30&&pt_2<=35)*0.97+(pt_2>35&&pt_2<=40)*0.98+(pt_2>40)*0.94", "emb_tauID_correction_weight"))
             emb_weights.add(
                 Weight("gen_match_1==4 && gen_match_2==5", "emb_veto"))
@@ -1177,7 +1177,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
 
         elif self.channel.name == "et":
             emb_weights.add(Weight("idWeight_1*isoWeight_1", "lepton_sf"))
-            # emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel)),
+            emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel)),
             emb_weights.add(Weight("(pt_2<=20)*1.0+(pt_2>20&&pt_2<=25)*0.97+(pt_2>25&&pt_2<=30)*0.96+(pt_2>30&&pt_2<=35)*0.97+(pt_2>35&&pt_2<=40)*0.98+(pt_2>40)*0.94", "emb_tauID_correction_weight"))
             emb_weights.add(
                 Weight("gen_match_1==3 && gen_match_2==5", "emb_veto"))
@@ -1185,7 +1185,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
 
         elif self.channel.name == "tt":
             emb_weights.add(self.emb_triggerweights())
-            # emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel))
+            emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel))
             emb_weights.add(Weight("((decayMode_1==0)*0.92+(decayMode_1==1)*0.96+(decayMode_1==10)*0.98+(decayMode_1==11)*0.86)", "emb_tauID_correction_weight1"))
             emb_weights.add(Weight("((decayMode_2==0)*0.92+(decayMode_2==1)*0.96+(decayMode_2==10)*0.98+(decayMode_2==11)*0.86)", "emb_tauID_correction_weight2"))
             emb_weights.add(
