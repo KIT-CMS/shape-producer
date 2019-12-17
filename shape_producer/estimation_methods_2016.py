@@ -392,6 +392,8 @@ class ggHEstimation(HTTEstimation):
     def get_weights(self):
         weights = super(ggHEstimation, self).get_weights()
         # weights.add(Weight("8.8384e-8/numberGeneratedEventsWeight", "ggh_stitching_weight")),
+        weights.remove("numberGeneratedEventsWeight")
+        weithts.add("1.0/(9673200 + 19673200) ", "numberGeneratedEventsWeight")  # 9673200 for inclusive sample and 19673200 for extention
         weights.add(Weight("ggh_NNLO_weight", "gghNNLO"))
         weights.add(Weight("1.01", "bbh_inclusion_weight"))
         return weights
@@ -443,6 +445,12 @@ class qqHEstimation(HTTEstimation):
     def get_cuts(self):
         return Cuts(
             Cut(self.htxs_dict[self.name],"htxs_match"))
+
+    def get_weights(self):
+        weights = super(qqHEstimation, self).get_weights()
+        weights.remove("numberGeneratedEventsWeight")
+        weithts.add("1.0/(1499400 + 1999000) ", "numberGeneratedEventsWeight") # 1499400 for inclusive sample and 1999000 for extention
+        return weights
 
     def get_files(self):
         query = {
