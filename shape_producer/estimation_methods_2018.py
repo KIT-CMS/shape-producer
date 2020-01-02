@@ -793,6 +793,12 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("gen_match_1==3 && gen_match_2==4","emb_veto"))#,
                 # Weight("(trigger_23_data_Weight_2/trigger_23_embed_Weight_2)*(pt_2>24)+(trigger_8_data_Weight_2/trigger_8_embed_Weight_2)*(pt_2<24)+(trigger_12_data_Weight_1/trigger_12_embed_Weight_1)*(pt_1<24)+(trigger_23_data_Weight_1/trigger_23_embed_Weight_1)*(pt_1<24)",
                     #    "trigger_lepton_sf"))
+        elif self.channel.name == "mm":
+            return Weights(
+                Weight("generatorWeight", "simulation_sf"),
+                Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
+                Weight("idWeight_1*((pt_1>=25)*(trigger_24_27_Weight_1*(trigger_24_27_Weight_1<2.0)+(trigger_24_27_Weight_1>2.0))+(pt_1<25))*isoWeight_1", "lepton1_sf"),
+                Weight("idWeight_2*isoWeight_2", "lepton2_sf"))
 
 
     def get_files(self):
@@ -807,6 +813,9 @@ class ZTTEmbeddedEstimation(EstimationMethod):
         elif self.channel.name == "em":
             query["process"] = "Embedding2018"
             query["campaign"] = "ElMuFinalState"
+        elif self.channel.name == "mm":
+            query["process"] =  "Embedding2018"
+            query["campaign"] = "MuonEmbedding"
         files = self.era.datasets_helper.get_nicks_with_query(query)
         log_query(self.name, query, files)
         return self.artus_file_names(files)

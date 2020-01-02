@@ -1171,6 +1171,64 @@ class ZTTEmbeddedEstimation(EstimationMethod):
         else:
             return Weight("1.0", "emb_tau_id"),
 
+    def emb_triggerweights(self):
+        channel = self.channel.name
+        weight = Weight("1.0", "triggerweight")
+
+        singleEMB = "singleTriggerEmbeddedEfficiencyWeightKIT_1"
+        crossEMBL = "crossTriggerEmbeddedEfficiencyWeightKIT_1"
+        EMBTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_1)"
+        EMBTau_2 = EMBTau_1.replace("_1", "_2")
+
+        if "mt" in channel:
+            trig_sL = "(trg_singlemuon)"
+            trig_X = "(pt_1 < 23 && trg_mutaucross)"
+
+            # MuTauEMB = "{singletrigger} + {crosstrigger}".format(
+            #     singletrigger="*".join([trig_sL, singleEMB]),
+            #     crosstrigger="*".join([trig_X, crossEMBL, EMBTau_2]))
+            MuTauEMB = "{singletrigger}".format(
+                singletrigger="*".join([trig_sL, singleEMB]))
+            MuTauData = MuTauEMB.replace("EMB", "Data").replace("Embedded", "Data")
+            MuTau = "(" + MuTauData + ")/(" + MuTauEMB + ")"
+            weight = Weight(MuTau, "triggerweight")
+
+        elif "et" in channel:
+            trig_sL = "(trg_singleelectron)"
+            trig_X = "(pt_1 > 25 && pt_1 < 26 && trg_eletaucross)"
+
+            ElTauEMB = "{singletrigger} + {crosstrigger}".format(
+                singletrigger="*".join([trig_sL, singleEMB]),
+                crosstrigger="*".join([trig_X, crossEMBL, EMBTau_2])
+                )
+            ElTauData = ElTauEMB.replace("EMB", "Data").replace("Embedded", "Data")
+            ElTau = "(" + ElTauData + ")/(" + ElTauEMB + ")"
+            weight = Weight(ElTau, "triggerweight")
+
+        elif "tt" in channel:
+            DiTauEMB = "*".join([EMBTau_1, EMBTau_2])
+            DiTauData = DiTauEMB.replace("EMB", "Data").replace("Embedded", "Data")
+            DiTau = "("+DiTauData+")/("+DiTauEMB+")"
+            weight = Weight(DiTau, "triggerweight")
+
+        elif "em" in channel:
+            ElMuData = "(trigger_23_data_Weight_2*trigger_12_data_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_data_Weight_1*trigger_8_data_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_data_Weight_2*trigger_23_data_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))"
+            ElMuEmb = ElMuData.replace('data', 'embed')
+            ElMu = "("+ElMuData+")/("+ElMuEmb+")"
+            weight = Weight(ElMu, "triggerweight")
+
+        elif "mm" in channel:
+            trig_sL = "(trg_singlemuon)"
+
+            MuTauEMB = "{singletrigger}".format(
+                singletrigger="*".join([trig_sL, singleEMB]))
+            MuTauData = MuTauEMB.replace("EMB", "Data").replace("Embedded", "Data")
+            MuTau = "(" + MuTauData + ")/(" + MuTauEMB + ")"
+            weight = Weight(MuTau, "triggerweight")
+
+        return weight
+
+
     def get_weights(self):
         emb_weights = Weights(
             self.embedding_tauid(),
@@ -1185,6 +1243,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                     "lepton_sf"))
             emb_weights.add(
                 Weight("gen_match_1==4 && gen_match_2==5", "emb_veto"))
+            emb_weights.add(self.emb_triggerweights())
 
         elif self.channel.name == "et":
             emb_weights.add(Weight("idWeight_1*triggerWeight_1*isoWeight_1","lepton_sf"))
@@ -1203,6 +1262,14 @@ class ZTTEmbeddedEstimation(EstimationMethod):
             emb_weights.add(
                 Weight("idWeight_1*isoWeight_1*idWeight_2*isoWeight_2",
                        "leptopn_sf"))
+            emb_weights.remove(
+                "decayMode_SF"
+            )  # embeddedDecayModeWeight is only for tau decay modes
+        elif self.channel.name == "mm":
+            emb_weights.add(
+                Weight("idWeight_1*isoWeight_1*idWeight_2*isoWeight_2",
+                       "lepton_sf"))
+            emb_weights.add(self.emb_triggerweights())
             emb_weights.remove(
                 "decayMode_SF"
             )  # embeddedDecayModeWeight is only for tau decay modes
@@ -1230,6 +1297,8 @@ class ZTTEmbeddedEstimation(EstimationMethod):
         return self.artus_file_names(files)
 
     def get_cuts(self):
+        if self.channel.name == "mm":
+            return Cuts()
         return Cuts(
             Cut(
                 "((gen_match_1>2 && gen_match_1<6) &&  (gen_match_2>2 && gen_match_2<6))",
