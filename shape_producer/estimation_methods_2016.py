@@ -123,10 +123,10 @@ def get_tauByIsoIdWeight_for_channel(channel):
         weight = Weight("((gen_match_2 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2 + (gen_match_2 != 5))",
                         "taubyIsoIdWeight")
     elif "tt" in channel.name:
-        dm11_nom = 0.89484048
+        # dm11_nom = 0.89484048
         # weight once dm11 is fixed:
-        # weight = Weight("((gen_match_1 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1 + (gen_match_1 != 5))*((gen_match_2 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2 + (gen_match_2 != 5))", "taubyIsoIdWeight")
-        weight = Weight("(((gen_match_1 == 5)*(((decayMode_1!=11)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1)+((decayMode_1==11)*{dm11_nom})) + (gen_match_1 != 5))*((gen_match_2 == 5)*(((decayMode_2!=11)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2)+((decayMode_2==11)*{dm11_nom})) + (gen_match_2 != 5)))".format(dm11_nom=dm11_nom), "taubyIsoIdWeight")
+        weight = Weight("((gen_match_1 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1 + (gen_match_1 != 5))*((gen_match_2 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2 + (gen_match_2 != 5))", "taubyIsoIdWeight")
+        # weight = Weight("(((gen_match_1 == 5)*(((decayMode_1!=11)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1)+((decayMode_1==11)*{dm11_nom})) + (gen_match_1 != 5))*((gen_match_2 == 5)*(((decayMode_2!=11)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2)+((decayMode_2==11)*{dm11_nom})) + (gen_match_2 != 5)))".format(dm11_nom=dm11_nom), "taubyIsoIdWeight")
     return weight
 
 def get_eleRecoWeight_for_channel(channel):
@@ -1221,11 +1221,11 @@ class ZLEstimation(DYJetsToLLEstimation):
             channel=channel,
             mc_campaign="RunIISummer16MiniAODv3")
 
-    def get_weights(self):
-        # TODO remove this temp fix for the eletaufakerate as soon as the updated weights are in th ntuple
-        weights = super(ZLEstimation, self).get_weights()
-        weights.add(Weight("(gen_match_2==1 || gen_match_2==3)*(((abs(eta_1) < 1.46) * (1./0.6) * 1.22) + ((abs(eta_1) > 1.5588) * (1./0.88) * 1.47))+!(gen_match_2==1 || gen_match_2==3)", "eletauFakeRateWeightFix"))
-        return weights
+    # def get_weights(self):
+    #     # TODO remove this temp fix for the eletaufakerate as soon as the updated weights are in th ntuple
+    #     weights = super(ZLEstimation, self).get_weights()
+    #     weights.add(Weight("(gen_match_2==1 || gen_match_2==3)*(((abs(eta_1) < 1.46) * (1./0.6) * 1.22) + ((abs(eta_1) > 1.5588) * (1./0.88) * 1.47))+!(gen_match_2==1 || gen_match_2==3)", "eletauFakeRateWeightFix"))
+    #     return weights
 
     def get_cuts(self):
         if "mt" in self.channel.name:

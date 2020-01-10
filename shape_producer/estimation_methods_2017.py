@@ -92,10 +92,10 @@ def get_tauByIsoIdWeight_for_channel(channel):
     if "mt" in channel or "et" in channel:
         weight = Weight("((gen_match_2 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2 + (gen_match_2 != 5))", "taubyIsoIdWeight")
     elif "tt" in channel:
-        dm11_nom = 0.64049393
+        # dm11_nom = 0.64049393
         # weight once dm11 is fixed:
-        # weight = Weight("((gen_match_1 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1 + (gen_match_1 != 5))*((gen_match_2 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2 + (gen_match_2 != 5))", "taubyIsoIdWeight")
-        weight = Weight("(((gen_match_1 == 5)*(((decayMode_1!=11)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1)+((decayMode_1==11)*{dm11_nom})) + (gen_match_1 != 5))*((gen_match_2 == 5)*(((decayMode_2!=11)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2)+((decayMode_2==11)*{dm11_nom})) + (gen_match_2 != 5)))".format(dm11_nom=dm11_nom), "taubyIsoIdWeight")
+        weight = Weight("((gen_match_1 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1 + (gen_match_1 != 5))*((gen_match_2 == 5)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2 + (gen_match_2 != 5))", "taubyIsoIdWeight")
+        # weight = Weight("(((gen_match_1 == 5)*(((decayMode_1!=11)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1)+((decayMode_1==11)*{dm11_nom})) + (gen_match_1 != 5))*((gen_match_2 == 5)*(((decayMode_2!=11)*tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2)+((decayMode_2==11)*{dm11_nom})) + (gen_match_2 != 5)))".format(dm11_nom=dm11_nom), "taubyIsoIdWeight")
     return weight
 
 
@@ -562,7 +562,7 @@ class DYJetsToLLEstimation(EstimationMethod):
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
-            Weight("(gen_match_2==1 || gen_match_2==3)*(((abs(eta_1) < 1.46) * 0.88) + ((abs(eta_1) > 1.5588) * 0.51))+!(gen_match_2==1 || gen_match_2==3)", "eletauFakeRateWeightFix"),
+            # Weight("(gen_match_2==1 || gen_match_2==3)*(((abs(eta_1) < 1.46) * 0.88) + ((abs(eta_1) > 1.5588) * 0.51))+!(gen_match_2==1 || gen_match_2==3)", "eletauFakeRateWeightFix"),
             self.get_tauByIsoIdWeight_for_channel(self.channel.name),
             self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             Weight("zPtReweightWeight", "zPtReweightWeight"),
