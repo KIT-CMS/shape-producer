@@ -393,7 +393,9 @@ class ggHEstimation(HTTEstimation):
         weights = super(ggHEstimation, self).get_weights()
         # weights.add(Weight("8.8384e-8/numberGeneratedEventsWeight", "ggh_stitching_weight")),
         weights.remove("numberGeneratedEventsWeight")
-        weights.add(Weight("1.0/(9673200 + 19673200) ", "numberGeneratedEventsWeight"))  # 9673200 for inclusive sample and 19673200 for extention
+        weights.remove("crossSectionPerEventWeight")
+        weights.add(Weight("1.0/(9673200 + 19673200) ", "numberGeneratedEventsWeight"))  # 9673200 for inclusive sample and 19673200 for extension
+        weights.add(Weight("(abs(crossSectionPerEventWeight - 0.538017) > 1e-5)*crossSectionPerEventWeight + (abs(crossSectionPerEventWeight - 0.538017) < 1e-5)*crossSectionPerEventWeight/100.", "crossSectionPerEventWeight"))  # TODO: Hotfix for wrong cross sections in datasets.json, remove once those are corrected
         weights.add(Weight("ggh_NNLO_weight", "gghNNLO"))
         weights.add(Weight("1.01", "bbh_inclusion_weight"))
         return weights
@@ -404,7 +406,7 @@ class ggHEstimation(HTTEstimation):
 
     def get_files(self):
         query = {
-            "process": "^GluGluHToTauTau.*125.*",
+            "process": "(^GluGluHToTauTau.*125.*|ggZH.*ZToQQ.*125.*)",
             "data": False,
             "campaign": self._mc_campaign,
             "generator": "powheg\-pythia8"
@@ -449,7 +451,9 @@ class qqHEstimation(HTTEstimation):
     def get_weights(self):
         weights = super(qqHEstimation, self).get_weights()
         weights.remove("numberGeneratedEventsWeight")
-        weights.add(Weight("1.0/(1499400 + 1999000) ", "numberGeneratedEventsWeight")) # 1499400 for inclusive sample and 1999000 for extention
+        weights.remove("crossSectionPerEventWeight")
+        weights.add(Weight("1.0/(1499400 + 1999000) ", "numberGeneratedEventsWeight")) # 1499400 for inclusive sample and 1999000 for extension
+        weights.add(Weight("(abs(crossSectionPerEventWeight - 0.05544)>1e-4)*crossSectionPerEventWeight + (abs(crossSectionPerEventWeight - 0.05544)<1e-4)*0.05005983", "crossSectionPerEventWeight"))  # TODO: Hotfix for wrong cross sections in datasets.json, remove once those are corrected
         return weights
 
     def get_files(self):
@@ -491,12 +495,18 @@ class VHEstimation(HTTEstimation):
 
     def get_cuts(self):
         return Cuts(
-            Cut("(htxs_stage1p1cat>=300)&&(htxs_stage1p1cat<=404)",
+            Cut("(htxs_stage1p1cat>=300)&&(htxs_stage1p1cat<=505)",
                 "htxs_match"))
+
+    def get_weights(self):
+        weights = super(VHEstimation, self).get_weights()
+        weights.remove("crossSectionPerEventWeight")
+        weights.add(Weight("(abs(crossSectionPerEventWeight - 0.052685)<1e-5)*crossSectionPerEventWeight + (abs(crossSectionPerEventWeight - 0.03342)<1e-4)*crossSectionPerEventWeight + (abs(crossSectionPerEventWeight - 0.05544)<1e-4)*0.05005983 + (abs(crossSectionPerEventWeight - 0.153915)<1e-5)*crossSectionPerEventWeight/100. + (abs(crossSectionPerEventWeight - 0.538017)<1e-5)*crossSectionPerEventWeight/100.", "crossSectionPerEventWeight"))  # TODO: Hotfix for wrong cross sections in datasets.json, remove once those are corrected
+        return weights
 
     def get_files(self):
         query = {
-            "process": "(^W(minus|plus)HToTauTau.*125.*|^ZHToTauTau.*125.*)",
+            "process": "(^W(minus|plus)HToTauTau.*125.*|^ZHToTauTau.*125.*|^ggZH.*ZToNuNu.*125.*|^ggZH.*ZToLL.*125.*)",
             "data": False,
             "campaign": self._mc_campaign,
             "generator": "powheg\-pythia8"
@@ -531,7 +541,7 @@ class WHEstimation(HTTEstimation):
 
     def get_cuts(self):
         return Cuts(
-            Cut("(htxs_stage1p1cat>=300)&&(htxs_stage1p1cat<=304)",
+            Cut("(htxs_stage1p1cat>=300)&&(htxs_stage1p1cat<=305)",
                 "htxs_match"))
 
     def get_files(self):
@@ -571,12 +581,18 @@ class ZHEstimation(HTTEstimation):
 
     def get_cuts(self):
         return Cuts(
-            Cut("(htxs_stage1p1cat>=400)&&(htxs_stage1p1cat<=404)",
+            Cut("(htxs_stage1p1cat>=400)&&(htxs_stage1p1cat<=505)",
                 "htxs_match"))
+
+    def get_weights(self):
+        weights = super(ZHEstimation, self).get_weights()
+        weights.remove("crossSectionPerEventWeight")
+        weights.add(Weight("(abs(crossSectionPerEventWeight - 0.05544)<1e-4)*0.05005983 + (abs(crossSectionPerEventWeight - 0.153915)<1e-5)*crossSectionPerEventWeight/100. + (abs(crossSectionPerEventWeight - 0.538017)<1e-5)*crossSectionPerEventWeight/100.", "crossSectionPerEventWeight"))  # TODO: Hotfix for wrong cross sections in datasets.json, remove once those are corrected
+        return weights
 
     def get_files(self):
         query = {
-            "process": "(^ZHToTauTau.*125.*)",
+            "process": "(^ZHToTauTau.*125.*|^ggZH.*ZToNuNu.*125.*|^ggZH.*ZToLL.*125.*)",
             "data": False,
             "campaign": self._mc_campaign,
             "generator": "powheg\-pythia8"
