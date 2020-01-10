@@ -394,7 +394,7 @@ class ggHEstimation(HTTEstimation):
         # weights.add(Weight("8.8384e-8/numberGeneratedEventsWeight", "ggh_stitching_weight")),
         weights.remove("numberGeneratedEventsWeight")
         weights.remove("crossSectionPerEventWeight")
-        weights.add(Weight("1.0/(9673200 + 19673200) ", "numberGeneratedEventsWeight"))  # 9673200 for inclusive sample and 19673200 for extension
+        weights.add(Weight("1.0/(9673200 + 19939500) ", "numberGeneratedEventsWeight"))  # 9673200 for inclusive sample and 19673200 for extension
         weights.add(Weight("(abs(crossSectionPerEventWeight - 0.538017) > 1e-5)*crossSectionPerEventWeight + (abs(crossSectionPerEventWeight - 0.538017) < 1e-5)*crossSectionPerEventWeight/100.", "crossSectionPerEventWeight"))  # TODO: Hotfix for wrong cross sections in datasets.json, remove once those are corrected
         weights.add(Weight("ggh_NNLO_weight", "gghNNLO"))
         weights.add(Weight("1.01", "bbh_inclusion_weight"))
@@ -452,7 +452,7 @@ class qqHEstimation(HTTEstimation):
         weights = super(qqHEstimation, self).get_weights()
         weights.remove("numberGeneratedEventsWeight")
         weights.remove("crossSectionPerEventWeight")
-        weights.add(Weight("1.0/(1499400 + 1999000) ", "numberGeneratedEventsWeight")) # 1499400 for inclusive sample and 1999000 for extension
+        weights.add(Weight("1.0/(1499400 + 400000) ", "numberGeneratedEventsWeight")) # 1499400 for inclusive sample and 1999000 for extension
         weights.add(Weight("(abs(crossSectionPerEventWeight - 0.05544)>1e-4)*crossSectionPerEventWeight + (abs(crossSectionPerEventWeight - 0.05544)<1e-4)*0.04774349", "crossSectionPerEventWeight"))  # TODO: Hotfix for wrong cross sections in datasets.json, remove once those are corrected
         return weights
 
