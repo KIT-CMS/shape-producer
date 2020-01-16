@@ -1463,7 +1463,7 @@ class qqHEstimation(HTTEstimation):
              "(htxs_stage1p1cat==206)*8.52e-9+"
              "(htxs_stage1p1cat>=207&&htxs_stage1p1cat<=210)*1.79e-8"
              ")","qqh_stitching_weight"))
-        weights.append(Weight("(abs(crossSectionPerEventWeight - 0.05544) < 1e-4)*0.04774349/0.05544)", "zh_correction_weight"))  # TODO: Hotfix for wrong cross sections in datasets.json, remove once those are corrected
+        weights.add(Weight("(abs(crossSectionPerEventWeight - 0.05544) < 1e-4)*0.04774349/0.05544 + (abs(crossSectionPerEventWeight - 0.05544) > 1e-4)*1.", "zh_correction_weight"))  # TODO: Hotfix for wrong cross sections in datasets.json, remove once those are corrected
 
         return weights
 
