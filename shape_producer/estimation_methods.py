@@ -397,9 +397,9 @@ class ABCDEstimationMethod(EstimationMethod):
             logger.warning("No data in C or D region in ABCD method for systematic %s. Setting extrapolation factor to 0.0", systematic.name)
             extrapolation_factor = 0.0
         elif not D_yield > 0.0:
-            logger.fatal("D_yield in ABCD method for systematic %s is %f.",
+            logger.warning("D_yield in ABCD method for systematic %s is %f.",
                          systematic.name, D_yield)
-            raise Exception
+            extrapolation_factor = 0.0
         else:
             extrapolation_factor = C_yield / D_yield
         logger.debug("D to C extrapolation factor: %s",
