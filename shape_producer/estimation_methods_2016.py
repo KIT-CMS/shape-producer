@@ -61,7 +61,8 @@ def get_triggerweight_for_channel(channel):
 
     singleMC = "singleTriggerMCEfficiencyWeightKIT_1"
     crossMCL = "crossTriggerMCEfficiencyWeightKIT_1"
-    MCTau_1 = "((abs(eta_2)<2.1)*((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1))"
+    # MCTau_1 = "((abs(eta_2)<2.1)*((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1))"
+    MCTau_1 = "((abs(eta_2)<2.1)*((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedMCEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedMCEfficiencyWeight_tight_DeepTau_1))"  # Hotfix for old trigger weights.
     MCTau_2 = MCTau_1.replace("_1", "_2")
 
     if "mt" in channel:
@@ -99,7 +100,8 @@ def get_triggerweight_for_channel(channel):
 def get_singlelepton_triggerweight_for_channel(channel):
     weight = Weight("1.0", "triggerweight_sl")
 
-    MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byMediumDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_medium_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1)"
+    # MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byMediumDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_medium_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1)"
+    MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byMediumDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedMCEfficiencyWeight_medium_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedMCEfficiencyWeight_tight_DeepTau_1)"
     MCTau_2 = MCTau_1.replace("_1", "_2")
 
     # if "mt" in channel or "et" in channel:
@@ -687,7 +689,7 @@ class HWWEstimation(EstimationMethod):
             "process": "(VBF|GluGlu).*HToWWTo2L2Nu_M125",
             "data": False,
             "campaign": self._mc_campaign,
-            "generator": "powheg\-pythia8"
+            "generator": "powheg-JHUgenv628-pythia8"
         }
         files = self.era.datasets_helper.get_nicks_with_query(query)
         log_query(self.name, query, files)
@@ -1315,7 +1317,8 @@ class ZTTEmbeddedEstimation(EstimationMethod):
 
         singleEMB = "singleTriggerEmbeddedEfficiencyWeightKIT_1"
         crossEMBL = "crossTriggerEmbeddedEfficiencyWeightKIT_1"
-        EMBTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_1)"
+        EMBTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedEMBEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedEMBEfficiencyWeight_tight_DeepTau_1)" # hotfix
+        # EMBTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_1)"
         EMBTau_2 = EMBTau_1.replace("_1", "_2")
 
         if "mt" in channel:
@@ -1362,7 +1365,8 @@ class ZTTEmbeddedEstimation(EstimationMethod):
             Weight("embeddedDecayModeWeight", "decayMode_SF"))
         if self.channel.name == "mt":
             emb_weights.add(Weight("idWeight_1*isoWeight_1", "lepton_sf"))
-            emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel))
+            emb_weights.add(Weight("((pt_2<=20.0)*0+(pt_2>20.0&&pt_2<=25.0)*0.957493126392+(pt_2>25.0&&pt_2<=30.0)*0.935592770576+(pt_2>30.0&&pt_2<=35.0)*0.938238978386+(pt_2>35.0&&pt_2<=40.0)*0.936523973942+0.933579729906*(pt_2>40.))*(gen_match_2==5)+(gen_match_2!=5)", "tauid_weight"))
+            # emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel))
             # emb_weights.add(Weight("(pt_2<=20)*1.0+(pt_2>20&&pt_2<=25)*0.97+(pt_2>25&&pt_2<=30)*0.96+(pt_2>30&&pt_2<=35)*0.97+(pt_2>35&&pt_2<=40)*0.98+(pt_2>40)*0.94", "emb_tauID_correction_weight"))
             emb_weights.add(
                 Weight("gen_match_1==4 && gen_match_2==5", "emb_veto"))
@@ -1370,7 +1374,8 @@ class ZTTEmbeddedEstimation(EstimationMethod):
 
         elif self.channel.name == "et":
             emb_weights.add(Weight("idWeight_1*isoWeight_1", "lepton_sf"))
-            emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel)),
+            #emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel)),
+            emb_weights.add(Weight("((pt_2<=20.0)*0+(pt_2>20.0&&pt_2<=25.0)*0.910910189152+(pt_2>25.0&&pt_2<=30.0)*0.914702177048+(pt_2>30.0&&pt_2<=35.0)*0.891808986664+(pt_2>35.0&&pt_2<=40.0)*0.897880613804+0.886464495618*(pt_2>40.))*(gen_match_2==5)+(gen_match_2!=5)", "tauid_weight"))
             # emb_weights.add(Weight("(pt_2<=20)*1.0+(pt_2>20&&pt_2<=25)*0.97+(pt_2>25&&pt_2<=30)*0.96+(pt_2>30&&pt_2<=35)*0.97+(pt_2>35&&pt_2<=40)*0.98+(pt_2>40)*0.94", "emb_tauID_correction_weight"))
             emb_weights.add(
                 Weight("gen_match_1==3 && gen_match_2==5", "emb_veto"))
@@ -1378,7 +1383,10 @@ class ZTTEmbeddedEstimation(EstimationMethod):
 
         elif self.channel.name == "tt":
             emb_weights.add(self.emb_triggerweights())
-            emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel))
+            # emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel))
+            w_tau1 = "(0.911051*(decayMode_1==0)+0.957154*(decayMode_1==1||decayMode_1==2)+0.921861*(decayMode_1==10)+0.83207*(decayMode_1==11))"
+            w_tau2 = w_tau1.replace("decayMode_1", "decayMode_2")
+            emb_weights.add(Weight("((gen_match_1==5)*"+w_tau1+"+(gen_match_1!=5))*((gen_match_2==5)*"+w_tau2+"+(gen_match_2!=5))", "tauid_weight"))
             # emb_weights.add(Weight("((decayMode_1==0)*0.92+(decayMode_1==1)*0.96+(decayMode_1==10)*0.98+(decayMode_1==11)*0.86)", "emb_tauID_correction_weight1"))
             # emb_weights.add(Weight("((decayMode_2==0)*0.92+(decayMode_2==1)*0.96+(decayMode_2==10)*0.98+(decayMode_2==11)*0.86)", "emb_tauID_correction_weight2"))
             emb_weights.add(

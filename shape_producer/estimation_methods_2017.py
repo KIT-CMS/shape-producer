@@ -18,7 +18,8 @@ def get_triggerweight_for_channel(channel):
 
     singleMC = "singleTriggerMCEfficiencyWeightKIT_1"
     crossMCL = "crossTriggerMCEfficiencyWeight_1"
-    MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1)"
+    # MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1)"
+    MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedMCEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedMCEfficiencyWeight_tight_DeepTau_1)"  # hotfix to use newer trigger weights.
     MCTau_2 = MCTau_1.replace("_1","_2")
 
     if "mt" in channel:
@@ -71,7 +72,8 @@ def get_triggerweight_for_channel(channel):
 def get_singlelepton_triggerweight_for_channel(channel):
     weight = Weight("1.0","triggerweight")
 
-    MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byMediumDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_medium_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1)"
+    # MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byMediumDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_medium_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1)"
+    MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byMediumDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedMCEfficiencyWeight_medium_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedMCEfficiencyWeight_tight_DeepTau_1)"  # hotfix to correct for old trigger weights.
     MCTau_2 = MCTau_1.replace("_1","_2")
 
     if "mt" in channel or "et" in channel:
@@ -777,7 +779,9 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("generatorWeight",
                        "simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
-                Weight("isoWeight_1*idWeight_1*((pt_1>=25)*(trigger_24_27_Weight_1)+(pt_1<25)*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/((pt_1<25)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_2+(pt_1>=25))*crossTriggerEmbeddedWeight_1))", "lepton_sf"),
+                # Weight("isoWeight_1*idWeight_1*((pt_1>=25)*(trigger_24_27_Weight_1)+(pt_1<25)*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/((pt_1<25)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_2+(pt_1>=25))*crossTriggerEmbeddedWeight_1))", "lepton_sf"),
+
+                Weight("isoWeight_1*idWeight_1*((pt_1>=25)*(trigger_24_27_Weight_1)+(pt_1<25)*(crossTriggerCorrectedDataEfficiencyWeight_tight_DeepTau_2/((pt_1<25)*crossTriggerCorrectedEMBEfficiencyWeight_tight_DeepTau_2+(pt_1>=25))*crossTriggerEmbeddedWeight_1))", "lepton_sf"),  # hotfix for old trigger weight
                 self.get_tauByIsoIdWeight_for_channel(self.channel.name),
                 # Weight("(pt_2<=20)*1.0+(pt_2>20&&pt_2<=25)*1.08+(pt_2>25&&pt_2<=30)*1.05+(pt_2>30&&pt_2<=35)*1.11+(pt_2>35&&pt_2<=40)*1.09+(pt_2>40)*1.10", "emb_tauID_correction_weight"),
                 Weight("gen_match_1==4 && gen_match_2==5","emb_veto"),
@@ -787,8 +791,16 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("generatorWeight",
                        "simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
-                Weight("(pt_1>=28)+(pt_1<28)*((abs(eta_1)>=1.5)*crossTriggerDataEfficiencyWeight_1*crossTriggerDataEfficiencyWeight_tight_DeepTau_2+(abs(eta_1)<1.5)*crossTriggerEmbeddedWeight_1*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/((pt_1<28)*(abs(eta_1)<1.5)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_2+(pt_1>=28)+(abs(eta_1)>=1.5))))","cross_trg_weight"),
-                Weight("((pt_1>=28)+(pt_1<28)*((abs(eta_1)>=1.5)*crossTriggerDataEfficiencyWeight_1*crossTriggerDataEfficiencyWeight_tight_DeepTau_2+(abs(eta_1)<1.5)*crossTriggerEmbeddedWeight_1*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/((pt_1<28)*(abs(eta_1)<1.5)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_2+(pt_1>=28)+(abs(eta_1)>=1.5)))))<10.0","cross_trg_cut"),
+
+                Weight("(pt_1>=28)+(pt_1<28)*((abs(eta_1)>=1.5)*crossTriggerDataEfficiencyWeight_1*crossTriggerCorrectedDataEfficiencyWeight_tight_DeepTau_2+(abs(eta_1)<1.5)*crossTriggerEmbeddedWeight_1*(crossTriggerCorrectedDataEfficiencyWeight_tight_DeepTau_2/((pt_1<28)*(abs(eta_1)<1.5)*crossTriggerCorrectedEMBEfficiencyWeight_tight_DeepTau_2+(pt_1>=28)+(abs(eta_1)>=1.5))))","cross_trg_weight"),
+                Weight("((pt_1>=28)+(pt_1<28)*((abs(eta_1)>=1.5)*crossTriggerDataEfficiencyWeight_1*crossTriggerCorrectedDataEfficiencyWeight_tight_DeepTau_2+(abs(eta_1)<1.5)*crossTriggerEmbeddedWeight_1*(crossTriggerCorrectedDataEfficiencyWeight_tight_DeepTau_2/((pt_1<28)*(abs(eta_1)<1.5)*crossTriggerCorrectedEMBEfficiencyWeight_tight_DeepTau_2+(pt_1>=28)+(abs(eta_1)>=1.5)))))<10.0","cross_trg_cut"),
+
+                # TODO: Only for cross check purposes, remove afterwards
+                # Weight("((abs(eta_1)>=1.5)*crossTriggerDataEfficiencyWeight_1*crossTriggerCorrectedDataEfficiencyWeight_tight_DeepTau_2+(abs(eta_1)<1.5)*crossTriggerEmbeddedWeight_1*(crossTriggerCorrectedDataEfficiencyWeight_tight_DeepTau_2/((abs(eta_1)<1.5)*crossTriggerCorrectedEMBEfficiencyWeight_tight_DeepTau_2+(abs(eta_1)>=1.5))))","cross_trg_weight"),
+                # Weight("(((abs(eta_1)>=1.5)*crossTriggerDataEfficiencyWeight_1*crossTriggerCorrectedDataEfficiencyWeight_tight_DeepTau_2+(abs(eta_1)<1.5)*crossTriggerEmbeddedWeight_1*(crossTriggerCorrectedDataEfficiencyWeight_tight_DeepTau_2/((abs(eta_1)<1.5)*crossTriggerCorrectedEMBEfficiencyWeight_tight_DeepTau_2+(abs(eta_1)>=1.5)))))<10.0","cross_trg_cut"),
+
+                # Weight("(pt_1>=28)+(pt_1<28)*((abs(eta_1)>=1.5)*crossTriggerDataEfficiencyWeight_1*crossTriggerDataEfficiencyWeight_tight_DeepTau_2+(abs(eta_1)<1.5)*crossTriggerEmbeddedWeight_1*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/((pt_1<28)*(abs(eta_1)<1.5)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_2+(pt_1>=28)+(abs(eta_1)>=1.5))))","cross_trg_weight"),
+                # Weight("((pt_1>=28)+(pt_1<28)*((abs(eta_1)>=1.5)*crossTriggerDataEfficiencyWeight_1*crossTriggerDataEfficiencyWeight_tight_DeepTau_2+(abs(eta_1)<1.5)*crossTriggerEmbeddedWeight_1*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/((pt_1<28)*(abs(eta_1)<1.5)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_2+(pt_1>=28)+(abs(eta_1)>=1.5)))))<10.0","cross_trg_cut"),
                 Weight("idWeight_1*((pt_1>28)*(trigger_27_32_35_Weight_1*(abs(eta_1) < 1.5) + singleTriggerDataEfficiencyWeightKIT_1*(abs(eta_1)>=1.5))+(pt_1<28))*isoWeight_1", "lepton_sf"),
                 Weight("(idWeight_1*((pt_1>28)*(trigger_27_32_35_Weight_1*(abs(eta_1) < 1.5) + singleTriggerDataEfficiencyWeightKIT_1*(abs(eta_1)>=1.5))+(pt_1<28))*isoWeight_1)<10.0", "lepton_cut"),
                 self.get_tauByIsoIdWeight_for_channel(self.channel.name),
@@ -800,7 +812,8 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("generatorWeight",
                        "simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
-                Weight("(((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerDataEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerDataEfficiencyWeight_tight_DeepTau_1)*((byTightDeepTau2017v2p1VSjet_2<0.5 && byVLooseDeepTau2017v2p1VSjet_2>0.5)*crossTriggerDataEfficiencyWeight_vloose_DeepTau_2 + (byTightDeepTau2017v2p1VSjet_2>0.5)*crossTriggerDataEfficiencyWeight_tight_DeepTau_2))/(((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_1)*((byTightDeepTau2017v2p1VSjet_2<0.5 && byVLooseDeepTau2017v2p1VSjet_2>0.5)*crossTriggerEMBEfficiencyWeight_vloose_DeepTau_2 + (byTightDeepTau2017v2p1VSjet_2>0.5)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_2))","trg_sf"),
+                # Weight("(((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerDataEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerDataEfficiencyWeight_tight_DeepTau_1)*((byTightDeepTau2017v2p1VSjet_2<0.5 && byVLooseDeepTau2017v2p1VSjet_2>0.5)*crossTriggerDataEfficiencyWeight_vloose_DeepTau_2 + (byTightDeepTau2017v2p1VSjet_2>0.5)*crossTriggerDataEfficiencyWeight_tight_DeepTau_2))/(((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_1)*((byTightDeepTau2017v2p1VSjet_2<0.5 && byVLooseDeepTau2017v2p1VSjet_2>0.5)*crossTriggerEMBEfficiencyWeight_vloose_DeepTau_2 + (byTightDeepTau2017v2p1VSjet_2>0.5)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_2))","trg_sf"),
+                Weight("(((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedDataEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedDataEfficiencyWeight_tight_DeepTau_1)*((byTightDeepTau2017v2p1VSjet_2<0.5 && byVLooseDeepTau2017v2p1VSjet_2>0.5)*crossTriggerCorrectedDataEfficiencyWeight_vloose_DeepTau_2 + (byTightDeepTau2017v2p1VSjet_2>0.5)*crossTriggerCorrectedDataEfficiencyWeight_tight_DeepTau_2))/(((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedEMBEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedEMBEfficiencyWeight_tight_DeepTau_1)*((byTightDeepTau2017v2p1VSjet_2<0.5 && byVLooseDeepTau2017v2p1VSjet_2>0.5)*crossTriggerCorrectedEMBEfficiencyWeight_vloose_DeepTau_2 + (byTightDeepTau2017v2p1VSjet_2>0.5)*crossTriggerCorrectedEMBEfficiencyWeight_tight_DeepTau_2))","trg_sf"),
                 self.get_tauByIsoIdWeight_for_channel(self.channel.name),
                 # Weight("((decayMode_1==0)*1.06+(decayMode_1==1)*1.13+(decayMode_1==10)*1.20+(decayMode_1==11)*1.23)", "emb_tauID_correction_weight1"),
                 # Weight("((decayMode_2==0)*1.06+(decayMode_2==1)*1.13+(decayMode_2==10)*1.20+(decayMode_2==11)*1.23)", "emb_tauID_correction_weight2"),
