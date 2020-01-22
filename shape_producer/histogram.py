@@ -207,7 +207,7 @@ class Histogram(TTreeContent):
 
         if norm_all < 0.0:
             logger.fatal(
-                "Aborted renormalization because initial normalization is negative. Check histogram %s ",
+                "Aborted renormalization because initial normalization is negative: %f. Check histogram %s ",
                 norm_all, self.name)
             raise Exception
 

@@ -90,9 +90,9 @@ def get_tauByIsoIdWeight_for_channel(channel):
     # Source: https://indico.cern.ch/event/738043/contributions/3048471/attachments/1674773/2691664/TauId_26062018.pdf
     weight = Weight("1.0","taubyIsoIdWeight")
     if "mt" in channel or "et" in channel:
-        weight = Weight("((gen_match_2 == 5)*0.89 + (gen_match_2 != 5))", "taubyIsoIdWeight")
+        weight = Weight("((gen_match_2 == 5)*tauIDScaleFactorWeight_tight_MVAoldDM2017v2_2 + (gen_match_2 != 5))", "taubyIsoIdWeight")
     elif "tt" in channel:
-        weight = Weight("((gen_match_1 == 5)*0.89 + (gen_match_1 != 5))*((gen_match_2 == 5)*0.89 + (gen_match_2 != 5))", "taubyIsoIdWeight")
+        weight = Weight("((gen_match_1 == 5)*tauIDScaleFactorWeight_tight_MVAoldDM2017v2_1 + (gen_match_1 != 5))*((gen_match_2 == 5)*tauIDScaleFactorWeight_tight_MVAoldDM2017v2_2 + (gen_match_2 != 5))", "taubyIsoIdWeight")
     return weight
 
 
@@ -265,7 +265,7 @@ class QCDEstimation_ABCD_TT_ISO1(ABCDEstimationMethod):
             ],
             BD_cuts=[      # cuts to be applied instead of cuts removed above
                 Cut("byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5", "tau_1_iso"),
-                Cut("byLooseIsolationMVArun2v1DBoldDMwLT_1>0.5",
+                Cut("byLooseIsolationMVArun2017v2DBoldDMwLT2017_1>0.5",
                     "tau_1_iso_loose")
             ],
             AB_cut_names=[ # cuts applied in AB, which should be removed in the CD control regions
@@ -543,10 +543,10 @@ class DYJetsToLLEstimation(EstimationMethod):
 
     def get_weights(self):
         if self.atNLO:
-            z_stitching_weight = Weight("((genbosonmass >= 50.0) * 2.9688e-05 + (genbosonmass < 50.0)*numberGeneratedEventsWeight*crossSectionPerEventWeight)","z_stitching_weight") # xsec_NNLO [pb] = 2075.14*3, N_inclusive_NLO = 209694262, xsec_NNLO/N_inclusive_NLO = 2.9688e-05; fraction of negative events in 'generatorWeight'
+            z_stitching_weight = Weight("((genbosonmass >= 50.0) * 2.8982e-05 + (genbosonmass < 50.0)*numberGeneratedEventsWeight*crossSectionPerEventWeight)","z_stitching_weight") # xsec_NNLO [pb] = 2025.74*3, N_inclusive_NLO = 209694262, xsec_NNLO/N_inclusive_NLO = 2.8981e-05; fraction of negative events in 'generatorWeight'
         else:
-            z_stitching_weight = Weight("((genbosonmass >= 50.0)*6.3654e-05*((npartons == 0 || npartons >= 5)*1.0 + (npartons == 1)*0.1743 + (npartons == 2)*0.3556 + (npartons == 3)*0.2273 + (npartons == 4)*0.2104) + (genbosonmass < 50.0)*numberGeneratedEventsWeight*crossSectionPerEventWeight)","z_stitching_weight")
-              # xsec_NNLO [pb] = 2075.14*3, N_inclusive = 97800939, xsec_NNLO/N_inclusive = 6.3654e-05 [pb] weights: [1.0, 0.1743347690195873, 0.3556373947627093, 0.22728901609456784, 0.21040417678899315]
+            z_stitching_weight = Weight("((genbosonmass >= 50.0)*6.2139e-05*((npartons == 0 || npartons >= 5)*1.0 + (npartons == 1)*0.1743 + (npartons == 2)*0.3556 + (npartons == 3)*0.2273 + (npartons == 4)*0.2104) + (genbosonmass < 50.0)*numberGeneratedEventsWeight*crossSectionPerEventWeight)","z_stitching_weight")
+              # xsec_NNLO [pb] = 2025.74*3, N_inclusive = 97800939, xsec_NNLO/N_inclusive = 6.2139e-05 [pb] weights: [1.0, 0.1743347690195873, 0.3556373947627093, 0.22728901609456784, 0.21040417678899315]
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -581,7 +581,7 @@ class DYJetsToLLEstimation(EstimationMethod):
             "data": False,
             "campaign": self._mc_campaign,
             "generator": "madgraph\-pythia8",
-            "version": "v1"
+            "version": "(v1|v2)"
         }
         queryM50_1jet_v1 = {
             "process": "DY1JetsToLL_M50",
@@ -773,9 +773,9 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("generatorWeight",
                        "simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
-                Weight("idWeight_1*(trigger_24_27_Weight_1*(pt_1>25)+((0.81*(pt_1>=21 && pt_1<22) + 0.82*(pt_1>=22 && pt_1<23) + 0.83*(pt_1>=23))*(pt_1<25)))*isoWeight_1", "lepton_sf"),
-                Weight("(pt_1>25)+(pt_1 >= 21 && pt_1<25)*((pt_2>=20 && pt_2<25)*0.12714+(pt_2>=25 && pt_2<30)*0.46930+0.71983*(pt_2>=30 && pt_2<35) + 0.75209*(pt_2>=35 && pt_2<40) + 0.78164*(pt_2>=40 && pt_2<45) + 0.83241*(pt_2>=45 && pt_2<50) + 0.86694*(pt_2>=50 && pt_2<60) + 0.89966*(pt_2>=60 && pt_2<80) + 0.88534*(pt_2>=80 && pt_2<100) + 0.90095*(pt_2>=100 && pt_2<150) + 0.84402*(pt_2>=150 && pt_2<200) + (pt_2>=200))","tau_leg_weight"),
-                Weight("(gen_match_2==5)*0.97+(gen_match_2!=5)", "emb_tau_id"),
+                Weight("isoWeight_1*idWeight_1*((pt_1>=25)*(trigger_24_27_Weight_1)+(pt_1<25)*(crossTriggerDataEfficiencyWeight_tight_MVAv2_2/((pt_1<25)*crossTriggerEMBEfficiencyWeight_tight_MVAv2_2+(pt_1>=25))*crossTriggerEmbeddedWeight_1))", "lepton_sf"),
+                self.get_tauByIsoIdWeight_for_channel(self.channel.name),
+                Weight("(pt_2<=20)*1.0+(pt_2>20&&pt_2<=25)*1.08+(pt_2>25&&pt_2<=30)*1.05+(pt_2>30&&pt_2<=35)*1.11+(pt_2>35&&pt_2<=40)*1.09+(pt_2>40)*1.10", "emb_tauID_correction_weight"),
                 Weight("gen_match_1==4 && gen_match_2==5","emb_veto"),
                 Weight("embeddedDecayModeWeight", "decayMode_SF"))
         elif self.channel.name in ["et"]:
@@ -783,10 +783,12 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("generatorWeight",
                        "simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
-                Weight("(pt_1>28)+(pt_1<28)*(crossTriggerDataEfficiencyWeight_tight_MVAv2_2*(abs(eta_1)>=1.5)+((1.29079*(pt_2>=30 && pt_2<35) + 1.06504*(pt_2>=35 && pt_2<40) + 0.93972*(pt_2>=40 && pt_2<45) + 0.91923*(pt_2>=45 && pt_2<50) + 0.89598*(pt_2>=50 && pt_2<60) + 0.90597*(pt_2>=60 && pt_2<80) + 0.88761*(pt_2>=80 && pt_2<100) + 0.90210*(pt_2>=100 && pt_2<150) + 0.84939*(pt_2>=150 && pt_2<200) + (pt_2>=200))*(abs(eta_1)<1.5)))","tau_leg_weight"),
-                Weight("(pt_1>28)+(pt_1<28)*(crossTriggerDataEfficiencyWeight_1*(abs(eta_1)>=1.5)+((0.39*(pt_1>=25 && pt_1<26) + 0.46*(pt_1>=26 && pt_1<27) + 0.48*(pt_1>=27 && pt_1<28))*(abs(eta_1)<1.5)))","lepton_leg_weight"),
+                Weight("(pt_1>=28)+(pt_1<28)*((abs(eta_1)>=1.5)*crossTriggerDataEfficiencyWeight_1*crossTriggerDataEfficiencyWeight_tight_MVAv2_2+(abs(eta_1)<1.5)*crossTriggerEmbeddedWeight_1*(crossTriggerDataEfficiencyWeight_tight_MVAv2_2/((pt_1<28)*(abs(eta_1)<1.5)*crossTriggerEMBEfficiencyWeight_tight_MVAv2_2+(pt_1>=28)+(abs(eta_1)>=1.5))))","cross_trg_weight"),
+                Weight("((pt_1>=28)+(pt_1<28)*((abs(eta_1)>=1.5)*crossTriggerDataEfficiencyWeight_1*crossTriggerDataEfficiencyWeight_tight_MVAv2_2+(abs(eta_1)<1.5)*crossTriggerEmbeddedWeight_1*(crossTriggerDataEfficiencyWeight_tight_MVAv2_2/((pt_1<28)*(abs(eta_1)<1.5)*crossTriggerEMBEfficiencyWeight_tight_MVAv2_2+(pt_1>=28)+(abs(eta_1)>=1.5)))))<10.0","cross_trg_cut"),
                 Weight("idWeight_1*((pt_1>28)*(trigger_27_32_35_Weight_1*(abs(eta_1) < 1.5) + singleTriggerDataEfficiencyWeightKIT_1*(abs(eta_1)>=1.5))+(pt_1<28))*isoWeight_1", "lepton_sf"),
-                Weight("(gen_match_2==5)*0.97+(gen_match_2!=5)", "emb_tau_id"),
+                Weight("(idWeight_1*((pt_1>28)*(trigger_27_32_35_Weight_1*(abs(eta_1) < 1.5) + singleTriggerDataEfficiencyWeightKIT_1*(abs(eta_1)>=1.5))+(pt_1<28))*isoWeight_1)<10.0", "lepton_cut"),
+                self.get_tauByIsoIdWeight_for_channel(self.channel.name),
+                Weight("(pt_2<=20)*1.0+(pt_2>20&&pt_2<=25)*1.08+(pt_2>25&&pt_2<=30)*1.05+(pt_2>30&&pt_2<=35)*1.11+(pt_2>35&&pt_2<=40)*1.09+(pt_2>40)*1.10", "emb_tauID_correction_weight"),
                 Weight("gen_match_1==3 && gen_match_2==5","emb_veto"),
                 Weight("embeddedDecayModeWeight", "decayMode_SF"))
         elif self.channel.name == "tt":
@@ -794,14 +796,15 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("generatorWeight",
                        "simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
-                Weight("(0.18321*(pt_1>=30 && pt_1<35) + 0.53906*(pt_1>=35 && pt_1<40) + 0.63658*(pt_1>=40 && pt_1<45) + 0.73152*(pt_1>=45 && pt_1<50) + 0.79002*(pt_1>=50 && pt_1<60) + 0.84666*(pt_1>=60 && pt_1<80) + 0.84919*(pt_1>=80 && pt_1<100) + 0.86819*(pt_1>=100 && pt_1<150) + 0.88206*(pt_1>=150 && pt_1<200) + (pt_1>=200))","tau1_leg_weight"),
-                Weight("(0.18321*(pt_2>=30 && pt_2<35) + 0.53906*(pt_2>=35 && pt_2<40) + 0.63658*(pt_2>=40 && pt_2<45) + 0.73152*(pt_2>=45 && pt_2<50) + 0.79002*(pt_2>=50 && pt_2<60) + 0.84666*(pt_2>=60 && pt_2<80) + 0.84919*(pt_2>=80 && pt_2<100) + 0.86819*(pt_2>=100 && pt_2<150) + 0.88206*(pt_2>=150 && pt_2<200) + (pt_2>=200))","tau2_leg_weight"),
-                Weight("((gen_match_1==5)*0.97+(gen_match_1!=5))*((gen_match_2==5)*0.97+(gen_match_2!=5))", "emb_tau_id"),
+                Weight("(((byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5 && byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerDataEfficiencyWeight_vloose_MVAv2_1 + (byTightIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerDataEfficiencyWeight_tight_MVAv2_1)*((byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5 && byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2>0.5)*crossTriggerDataEfficiencyWeight_vloose_MVAv2_2 + (byTightIsolationMVArun2017v2DBoldDMwLT2017_2>0.5)*crossTriggerDataEfficiencyWeight_tight_MVAv2_2))/(((byTightIsolationMVArun2017v2DBoldDMwLT2017_1<0.5 && byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerEMBEfficiencyWeight_vloose_MVAv2_1 + (byTightIsolationMVArun2017v2DBoldDMwLT2017_1>0.5)*crossTriggerEMBEfficiencyWeight_tight_MVAv2_1)*((byTightIsolationMVArun2017v2DBoldDMwLT2017_2<0.5 && byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2>0.5)*crossTriggerEMBEfficiencyWeight_vloose_MVAv2_2 + (byTightIsolationMVArun2017v2DBoldDMwLT2017_2>0.5)*crossTriggerEMBEfficiencyWeight_tight_MVAv2_2))","trg_sf"),
+                self.get_tauByIsoIdWeight_for_channel(self.channel.name),
+                Weight("((decayMode_1==0)*1.06+(decayMode_1==1)*1.13+(decayMode_1==10)*1.20+(decayMode_1==11)*1.23)", "emb_tauID_correction_weight1"),
+                Weight("((decayMode_2==0)*1.06+(decayMode_2==1)*1.13+(decayMode_2==10)*1.20+(decayMode_2==11)*1.23)", "emb_tauID_correction_weight2"),
                 Weight("gen_match_1==5 && gen_match_2==5","emb_veto"),
                 Weight("embeddedDecayModeWeight", "decayMode_SF"))
         elif self.channel.name == "em":
             return Weights(
-                Weight("1.043*generatorWeight", "simulation_sf"), # 1.043 for event loss in ntuple production, to be removed with new ntuples
+                Weight("generatorWeight", "simulation_sf"),
                 Weight("(gen_match_1==3 && gen_match_2==4)", "emb_gen_match"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
                 Weight("0.99*trackWeight_1*trackWeight_2*idWeight_1*isoWeight_1*idWeight_2*looseIsoWeight_2",
@@ -947,8 +950,8 @@ class WEstimation(EstimationMethod):
             Weight("generatorWeight", "generatorWeight"),
             #Weight("numberGeneratedEventsWeight","numberGeneratedEventsWeight"), # to be used only for one inclusive sample
             #Weight("crossSectionPerEventWeight","crossSectionPerEventWeight"), # to be used only for one inclusive sample
-            Weight("((0.0010062794683*((npartons <= 0 || npartons >= 5)*1.0 + (npartons == 1)*0.1448 + (npartons == 2)*0.0887 + (npartons == 3)*0.0540 + (npartons == 4)*0.0535)) * (genbosonmass>=0.0) + numberGeneratedEventsWeight * crossSectionPerEventWeight * (genbosonmass<0.0))",
-                "wj_stitching_weight"), # xsec_NNLO [pb] = 61526.7, N_inclusive = 61142756, xsec_NNLO/N_inclusive = 0.0010062794683314568 [pb] weights: [1.0, 0.14475938461191984, 0.08870222431187946, 0.05403112360513076, 0.05350733471645885]
+            Weight("((0.000824363*((npartons <= 0 || npartons >= 5)*1.0 + (npartons == 1)*0.1713 + (npartons == 2)*0.1062 + (npartons == 3)*0.0652 + (npartons == 4)*0.0645)) * (genbosonmass>=0.0) + numberGeneratedEventsWeight * crossSectionPerEventWeight * (genbosonmass<0.0))",
+                "wj_stitching_weight"), # xsec_NNLO [pb] = 61526.7, N_inclusive = 74635450, xsec_NNLO/N_inclusive = 0.000824363 [pb] weights: [1.0, 0.17130790070213678, 0.10621353263705156, 0.0651931323853371, 0.06454171311164039]
 
             # Weights for corrections
             Weight("puweight", "puweight"),
