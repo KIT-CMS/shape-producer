@@ -300,7 +300,7 @@ class FakeEstimationTT(DataEstimation):
         aiso_systematic.category.cuts.remove("tau_2_iso")
         aiso_systematic.category.cuts.add(
             Cut(
-                "(byTightDeepTau2017v2p1VSjet_2>0.5&&byTightDeepTau2017v2p1VSjet_1<0.5&&byVLooseDeepTau2017v2p1VSjet_1>0.5)||(byTightDeepTau2017v2p1VSjet_1>0.5&&byTightDeepTau2017v2p1VSjet_2<0.5&&byTightDeepTau2017v2p1VSjet_2>0.5)",
+                "(byTightDeepTau2017v2p1VSjet_2>0.5&&byTightDeepTau2017v2p1VSjet_1<0.5&&byVLooseDeepTau2017v2p1VSjet_1>0.5)||(byTightDeepTau2017v2p1VSjet_1>0.5&&byTightDeepTau2017v2p1VSjet_2<0.5&&byVLooseDeepTau2017v2p1VSjet_2>0.5)",
                 "tau_aiso"))
         return super(FakeEstimationTT,
                      self).create_root_objects(aiso_systematic)
