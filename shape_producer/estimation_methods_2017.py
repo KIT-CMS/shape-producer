@@ -824,7 +824,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                     Weight("generatorWeight", "simulation_sf"),
                     # TODO: Maybe gen match necessary here?
                     Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
-                    Weight("idWeight_1*(trigger_24_27_Weight_1*isoWeight_1", "lepton_sf_1"),
+                    Weight("idWeight_1*trigger_24_27_Weight_1*isoWeight_1", "lepton_sf_1"),
                     Weight("idWeight_2*isoWeight_2", "lepton_sf_2"),)
 
 

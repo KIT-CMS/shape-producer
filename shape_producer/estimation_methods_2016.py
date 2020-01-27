@@ -1175,7 +1175,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
         channel = self.channel.name
         weight = Weight("1.0", "triggerweight")
 
-        singleEMB = "singleTriggerEmbeddedEfficiencyWeightKIT_1"
+        singleEMB = "singleTriggerMCEfficiencyWeightKIT_1"
         crossEMBL = "crossTriggerEmbeddedEfficiencyWeightKIT_1"
         EMBTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_1)"
         EMBTau_2 = EMBTau_1.replace("_1", "_2")
@@ -1189,7 +1189,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
             #     crosstrigger="*".join([trig_X, crossEMBL, EMBTau_2]))
             MuTauEMB = "{singletrigger}".format(
                 singletrigger="*".join([trig_sL, singleEMB]))
-            MuTauData = MuTauEMB.replace("EMB", "Data").replace("Embedded", "Data")
+            MuTauData = MuTauEMB.replace("EMB", "Data").replace("MC", "Data")
             MuTau = "(" + MuTauData + ")/(" + MuTauEMB + ")"
             weight = Weight(MuTau, "triggerweight")
 
@@ -1220,10 +1220,10 @@ class ZTTEmbeddedEstimation(EstimationMethod):
         elif "mm" in channel:
             trig_sL = "(trg_singlemuon)"
 
-            MuTauEMB = "{singletrigger}".format(
+            MuMuEMB = "{singletrigger}".format(
                 singletrigger="*".join([trig_sL, singleEMB]))
-            MuTauData = MuTauEMB.replace("EMB", "Data").replace("Embedded", "Data")
-            MuTau = "(" + MuTauData + ")/(" + MuTauEMB + ")"
+            MuMuData = MuMuEMB.replace("EMB", "Data").replace("MC", "Data")
+            MuTau = "(" + MuMuData + ")/(" + MuMuEMB + ")"
             weight = Weight(MuTau, "triggerweight")
 
         return weight
