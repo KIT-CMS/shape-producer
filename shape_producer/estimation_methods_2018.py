@@ -941,7 +941,7 @@ class TTEstimation(EstimationMethod):
             Weight("idWeight_1*idWeight_2","idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
-            Weight("topPtReweightWeight", "topPtReweightWeight"),
+            Weight("topPtReweightWeightRun2", "topPtReweightWeight"),
             self.get_triggerweight_for_channel(self.channel._name),
             # self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),

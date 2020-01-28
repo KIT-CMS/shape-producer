@@ -1791,7 +1791,7 @@ class TTEstimation(EstimationMethod):
 
     def get_weights(self):
         return Weights(
-            Weight("topPtReweightWeight", "topPtReweightWeight"),
+            Weight("topPtReweightWeightRun2", "topPtReweightWeight"),
             Weight("isoWeight_1*isoWeight_2", "isoWeight"),
             Weight("idWeight_1*idWeight_2", "idWeight"),
             Weight("puweight", "puweight"),
