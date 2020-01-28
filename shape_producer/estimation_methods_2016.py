@@ -2220,6 +2220,10 @@ class WEstimationWithQCD(EstimationMethod):
                                era=self.era,
                                variation=systematic.variation,
                                mass=125)
+                if process == self._data_process:
+                    direction = s.variation._direction
+                    s.variation = Nominal()
+                    s.variation._direction = direction
                 systematic._WandQCD_systematics.append(s)
                 s.create_root_objects()
                 root_objects += s.root_objects
@@ -2476,6 +2480,10 @@ class QCDEstimationWithW(EstimationMethod):
                                era=self.era,
                                variation=systematic.variation,
                                mass=125)
+                if process == self._data_process:
+                    direction = s.variation._direction
+                    s.variation = Nominal()
+                    s.variation._direction = direction
                 systematic._WandQCD_systematics.append(s)
                 s.create_root_objects()
                 root_objects += s.root_objects
@@ -2489,8 +2497,13 @@ class QCDEstimationWithW(EstimationMethod):
                            era=self.era,
                            variation=systematic.variation,
                            mass=125)
+            if process == self._data_process:
+                direction = s.variation._direction
+                s.variation = Nominal()
+                s.variation._direction = direction
             systematic._WandQCD_systematics.append(s)
             s.create_root_objects()
+
             root_objects += s.root_objects
 
         return root_objects
