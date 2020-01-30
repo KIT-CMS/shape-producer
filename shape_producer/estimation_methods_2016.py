@@ -1365,30 +1365,21 @@ class ZTTEmbeddedEstimation(EstimationMethod):
             Weight("embeddedDecayModeWeight", "decayMode_SF"))
         if self.channel.name == "mt":
             emb_weights.add(Weight("idWeight_1*isoWeight_1", "lepton_sf"))
-            emb_weights.add(Weight("((pt_2<=20.0)*0+(pt_2>20.0&&pt_2<=25.0)*0.957493126392+(pt_2>25.0&&pt_2<=30.0)*0.935592770576+(pt_2>30.0&&pt_2<=35.0)*0.938238978386+(pt_2>35.0&&pt_2<=40.0)*0.936523973942+0.933579729906*(pt_2>40.))*(gen_match_2==5)+(gen_match_2!=5)", "taubyIsoIdWeight"))
-            # emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel))
-            # emb_weights.add(Weight("(pt_2<=20)*1.0+(pt_2>20&&pt_2<=25)*0.97+(pt_2>25&&pt_2<=30)*0.96+(pt_2>30&&pt_2<=35)*0.97+(pt_2>35&&pt_2<=40)*0.98+(pt_2>40)*0.94", "emb_tauID_correction_weight"))
+            emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel))
             emb_weights.add(
                 Weight("gen_match_1==4 && gen_match_2==5", "emb_veto"))
             emb_weights.add(self.emb_triggerweights())
 
         elif self.channel.name == "et":
             emb_weights.add(Weight("idWeight_1*isoWeight_1", "lepton_sf"))
-            #emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel)),
-            emb_weights.add(Weight("((pt_2<=20.0)*0+(pt_2>20.0&&pt_2<=25.0)*0.910910189152+(pt_2>25.0&&pt_2<=30.0)*0.914702177048+(pt_2>30.0&&pt_2<=35.0)*0.891808986664+(pt_2>35.0&&pt_2<=40.0)*0.897880613804+0.886464495618*(pt_2>40.))*(gen_match_2==5)+(gen_match_2!=5)", "taubyIsoIdWeight"))
-            # emb_weights.add(Weight("(pt_2<=20)*1.0+(pt_2>20&&pt_2<=25)*0.97+(pt_2>25&&pt_2<=30)*0.96+(pt_2>30&&pt_2<=35)*0.97+(pt_2>35&&pt_2<=40)*0.98+(pt_2>40)*0.94", "emb_tauID_correction_weight"))
+            emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel)),
             emb_weights.add(
                 Weight("gen_match_1==3 && gen_match_2==5", "emb_veto"))
             emb_weights.add(self.emb_triggerweights())
 
         elif self.channel.name == "tt":
             emb_weights.add(self.emb_triggerweights())
-            # emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel))
-            w_tau1 = "(0.911051*(decayMode_1==0)+0.957154*(decayMode_1==1||decayMode_1==2)+0.921861*(decayMode_1==10)+0.83207*(decayMode_1==11))"
-            w_tau2 = w_tau1.replace("decayMode_1", "decayMode_2")
-            emb_weights.add(Weight("((gen_match_1==5)*"+w_tau1+"+(gen_match_1!=5))*((gen_match_2==5)*"+w_tau2+"+(gen_match_2!=5))", "taubyIsoIdWeight"))
-            # emb_weights.add(Weight("((decayMode_1==0)*0.92+(decayMode_1==1)*0.96+(decayMode_1==10)*0.98+(decayMode_1==11)*0.86)", "emb_tauID_correction_weight1"))
-            # emb_weights.add(Weight("((decayMode_2==0)*0.92+(decayMode_2==1)*0.96+(decayMode_2==10)*0.98+(decayMode_2==11)*0.86)", "emb_tauID_correction_weight2"))
+            emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel))
             emb_weights.add(
                 Weight("gen_match_1==5 && gen_match_2==5", "emb_veto"))
         elif self.channel.name == "em":
