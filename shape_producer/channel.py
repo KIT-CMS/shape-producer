@@ -85,7 +85,7 @@ class MT(Channel):
             Cut("byTightDeepTau2017v2p1VSmu_2>0.5", "againstMuonDiscriminator"),
             Cut("byVVLooseDeepTau2017v2p1VSe_2>0.5",
                 "againstElectronDiscriminator"),
-            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
+            Cut("byMediumDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
             Cut("iso_1<0.15", "muon_iso"),
             Cut("q_1*q_2<0", "os"),
             Cut("trg_singlemuon==1", "trg_singlemuon"))
@@ -102,7 +102,7 @@ class MTMSSM2017(Channel):
             Cut("byTightDeepTau2017v2p1VSmu_2>0.5", "againstMuonDiscriminator"),
             Cut("byVVLooseDeepTau2017v2p1VSe_2>0.5",
                 "againstElectronDiscriminator"),
-            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
+            Cut("byMediumDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
             Cut("iso_1<0.15", "muon_iso"), Cut("q_1*q_2<0", "os"),
             Cut("pt_2>30 && ((trg_singlemuon_27 == 1) || (trg_singlemuon_24 == 1) || (pt_1 < 25 && trg_crossmuon_mu20tau27 == 1))",
                 "trg_selection"))
@@ -119,7 +119,7 @@ class MTSM2017(Channel):
             Cut("byTightDeepTau2017v2p1VSmu_2>0.5", "againstMuonDiscriminator"),
             Cut("byVVLooseDeepTau2017v2p1VSe_2>0.5",
                 "againstElectronDiscriminator"),
-            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
+            Cut("byMediumDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
             Cut("iso_1<0.15", "muon_iso"), Cut("q_1*q_2<0", "os"),
             Cut("pt_2>30 && ((trg_singlemuon_27 == 1) || (trg_singlemuon_24 == 1) || (pt_1 < 25 && trg_crossmuon_mu20tau27 == 1))",
                 "trg_selection"))
@@ -135,7 +135,7 @@ class MTSM2018(Channel):
             Cut("byTightDeepTau2017v2p1VSmu_2>0.5", "againstMuonDiscriminator"),
             Cut("byVVLooseDeepTau2017v2p1VSe_2>0.5",
                 "againstElectronDiscriminator"),
-            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
+            Cut("byMediumDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
             Cut("iso_1<0.15", "muon_iso"), Cut("q_1*q_2<0", "os"),
             Cut("pt_2>30 && ((trg_singlemuon_27 == 1) || (trg_singlemuon_24 == 1)) || (pt_1 < 25 && (trg_crossmuon_mu20tau27_hps == 1 || trg_crossmuon_mu20tau27 == 1))",
                 "trg_selection"))
@@ -151,7 +151,7 @@ class MTMSSM2018(Channel):
             Cut("byTightDeepTau2017v2p1VSmu_2>0.5", "againstMuonDiscriminator"),
             Cut("byVVLooseDeepTau2017v2p1VSe_2>0.5",
                 "againstElectronDiscriminator"),
-            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
+            Cut("byMediumDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
             Cut("iso_1<0.15", "muon_iso"), Cut("q_1*q_2<0", "os"),
             Cut("pt_2>30 && ((trg_singlemuon_27 == 1) || (trg_singlemuon_24 == 1)) || (pt_1 < 25 && (trg_crossmuon_mu20tau27_hps == 1 || trg_crossmuon_mu20tau27 == 1))",
                 "trg_selection"))
@@ -166,7 +166,7 @@ class MTSM2016(Channel):
             Cut("dilepton_veto<0.5", "dilepton_veto"),
             Cut("byTightDeepTau2017v2p1VSmu_2 > 0.5", "againstMuonDiscriminator"),
             Cut("byVVLooseDeepTau2017v2p1VSe_2>0.5","againstElectronDiscriminator"),
-            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"), 
+            Cut("byMediumDeepTau2017v2p1VSjet_2>0.5", "tau_iso"), 
             Cut("iso_1<0.15", "muon_iso"),
             Cut("q_1*q_2<0", "os"),
             Cut("pt_2>30 && ((trg_singlemuon == 1) || (trg_mutaucross == 1 && pt_1 < 23 && abs(eta_2)<2.1))","trg_selection")
@@ -182,7 +182,7 @@ class MTMSSM2016(Channel):
             Cut("dilepton_veto<0.5", "dilepton_veto"),
             Cut("byTightDeepTau2017v2p1VSmu_2 > 0.5", "againstMuonDiscriminator"),
             Cut("byVVLooseDeepTau2017v2p1VSe_2>0.5","againstElectronDiscriminator"),
-            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"), 
+            Cut("byMediumDeepTau2017v2p1VSjet_2>0.5", "tau_iso"), 
             Cut("iso_1<0.15", "muon_iso"),
             Cut("q_1*q_2<0", "os"),
             Cut("pt_2>30 && ((trg_singlemuon == 1) || (trg_mutaucross == 1 && pt_1 < 23 && abs(eta_2)<2.1))","trg_selection")
@@ -198,7 +198,7 @@ class ET(Channel):
             Cut("byVLooseDeepTau2017v2p1VSmu_2>0.5", "againstMuonDiscriminator"),
             Cut("byTightDeepTau2017v2p1VSe_2>0.5",
                 "againstElectronDiscriminator"),
-            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
+            Cut("byMediumDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
             Cut("iso_1<0.1", "ele_iso"),
             Cut("q_1*q_2<0", "os"),
             Cut("trg_singleelectron==1", "trg_singleelectron"))
@@ -215,7 +215,7 @@ class ETMSSM2017(Channel):
             Cut("byVLooseDeepTau2017v2p1VSmu_2>0.5", "againstMuonDiscriminator"),
             Cut("byTightDeepTau2017v2p1VSe_2>0.5",
                 "againstElectronDiscriminator"),
-            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
+            Cut("byMediumDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
             Cut("iso_1<0.15", "ele_iso"), Cut("q_1*q_2<0", "os"),
             Cut("pt_2>30 && pt_1 > 25 && (((trg_singleelectron_35 == 1) || (trg_singleelectron_32 == 1) || ((trg_singleelectron_27 == 1))) || (abs(eta_1)>1.5 && isEmbedded)) || (pt_1>25 && pt_1<28 && pt_2>35 && ((isEmbedded && (abs(eta_1)>1.5)) || (trg_crossele_ele24tau30 == 1)))",
                 "trg_selection"))
@@ -232,7 +232,7 @@ class ETSM2017(Channel):
             Cut("byVLooseDeepTau2017v2p1VSmu_2>0.5", "againstMuonDiscriminator"),
             Cut("byTightDeepTau2017v2p1VSe_2>0.5",
                 "againstElectronDiscriminator"),
-            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
+            Cut("byMediumDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
             Cut("iso_1<0.15", "ele_iso"), Cut("q_1*q_2<0", "os"),
             Cut("pt_2>30 && pt_1 > 25 && (((trg_singleelectron_35 == 1) || (trg_singleelectron_32 == 1) || ((trg_singleelectron_27 == 1))) || (abs(eta_1)>1.5 && pt_1 >= 28 && pt_1 < 35 && isEmbedded)) || (pt_1>25 && pt_1<28 && pt_2>35 && ((isEmbedded && (abs(eta_1)>1.5)) || (trg_crossele_ele24tau30 == 1)))",
                 "trg_selection"))
@@ -248,7 +248,7 @@ class ETSM2018(Channel):
             Cut("byVLooseDeepTau2017v2p1VSmu_2>0.5", "againstMuonDiscriminator"),
             Cut("byTightDeepTau2017v2p1VSe_2>0.5",
                 "againstElectronDiscriminator"),
-            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
+            Cut("byMediumDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
             Cut("iso_1<0.15", "ele_iso"), Cut("q_1*q_2<0", "os"),
             Cut("pt_2>30 && ((trg_singleelectron_35 == 1) || (trg_singleelectron_32 == 1) || (pt_1>25 && pt_1<33 && pt_2>35 && (trg_crossele_ele24tau30_hps == 1 || trg_crossele_ele24tau30 == 1)))",
                 "trg_selection"))
@@ -264,7 +264,7 @@ class ETMSSM2018(Channel):
             Cut("byVLooseDeepTau2017v2p1VSmu_2>0.5", "againstMuonDiscriminator"),
             Cut("byTightDeepTau2017v2p1VSe_2>0.5",
                 "againstElectronDiscriminator"),
-            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
+            Cut("byMediumDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
             Cut("iso_1<0.15", "ele_iso"), Cut("q_1*q_2<0", "os"),
             Cut("pt_2>30 && ((trg_singleelectron_35 == 1) || (trg_singleelectron_32 == 1) || (pt_1>25 && pt_1<33 && pt_2>35 && (trg_crossele_ele24tau30_hps == 1 || trg_crossele_ele24tau30 == 1)))",
                 "trg_selection"))
@@ -280,7 +280,7 @@ class ETSM2016(Channel):
             Cut("byVLooseDeepTau2017v2p1VSmu_2>0.5", "againstMuonDiscriminator"),
             Cut("byTightDeepTau2017v2p1VSe_2>0.5",
                 "againstElectronDiscriminator"),
-            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
+            Cut("byMediumDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
             Cut("iso_1<0.15", "ele_iso"),
             Cut("q_1*q_2<0", "os"),
             Cut("pt_2>30 && ((pt_1>26 && (trg_singleelectron==1)) || (pt_1<26 && pt_1>25 && (trg_eletaucross==1)))", "trg_selection"))
@@ -296,7 +296,7 @@ class ETMSSM2016(Channel):
             Cut("byVLooseDeepTau2017v2p1VSmu_2>0.5", "againstMuonDiscriminator"),
             Cut("byTightDeepTau2017v2p1VSe_2>0.5",
                 "againstElectronDiscriminator"),
-            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
+            Cut("byMediumDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
             Cut("iso_1<0.15", "ele_iso"), Cut("q_1*q_2<0", "os"),
             Cut("pt_2>30 && ((pt_1>26 && (trg_singleelectron==1)) || (pt_1<26 && pt_1>25 && (trg_eletaucross==1)))",
                 "trg_selection"))
@@ -313,8 +313,8 @@ class TT(Channel):
                 "againstMuonDiscriminator"),
             Cut("byVVLooseDeepTau2017v2p1VSe_1>0.5 && byVVLooseDeepTau2017v2p1VSe_2>0.5",
                 "againstElectronDiscriminator"),
-            Cut("byTightDeepTau2017v2p1VSjet_1>0.5", "tau_1_iso"),
-            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_2_iso"),
+            Cut("byMediumDeepTau2017v2p1VSjet_1>0.5", "tau_1_iso"),
+            Cut("byMediumDeepTau2017v2p1VSjet_2>0.5", "tau_2_iso"),
             Cut("q_1*q_2<0", "os"), Cut("trg_doubletau==1", "trg_doubletau"))
 
 
@@ -328,8 +328,8 @@ class TTSM2016(Channel):
             Cut("dilepton_veto<0.5", "dilepton_veto"),
             Cut("byVLooseDeepTau2017v2p1VSmu_1>0.5 && byVLooseDeepTau2017v2p1VSmu_2>0.5", "againstMuonDiscriminator"),
             Cut("byVVLooseDeepTau2017v2p1VSe_1>0.5 && byVVLooseDeepTau2017v2p1VSe_2>0.5", "againstElectronDiscriminator"),
-            Cut("byTightDeepTau2017v2p1VSjet_1>0.5", "tau_1_iso"),
-            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_2_iso"),
+            Cut("byMediumDeepTau2017v2p1VSjet_1>0.5", "tau_1_iso"),
+            Cut("byMediumDeepTau2017v2p1VSjet_2>0.5", "tau_2_iso"),
             Cut("q_1*q_2<0", "os"),
             # Cut("pt_tt>50", "pt_h"),
             Cut("trg_doubletau==1", "trg_doubletau"))
@@ -345,8 +345,8 @@ class TTMSSM2016(Channel):
             Cut("dilepton_veto<0.5", "dilepton_veto"),
             Cut("byVLooseDeepTau2017v2p1VSmu_1>0.5 && byVLooseDeepTau2017v2p1VSmu_2>0.5", "againstMuonDiscriminator"),
             Cut("byVVLooseDeepTau2017v2p1VSe_1>0.5 && byVVLooseDeepTau2017v2p1VSe_2>0.5", "againstElectronDiscriminator"),
-            Cut("byTightDeepTau2017v2p1VSjet_1>0.5", "tau_1_iso"),
-            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_2_iso"),
+            Cut("byMediumDeepTau2017v2p1VSjet_1>0.5", "tau_1_iso"),
+            Cut("byMediumDeepTau2017v2p1VSjet_2>0.5", "tau_2_iso"),
             Cut("q_1*q_2<0", "os"),
             # Cut("pt_tt>50", "pt_h"),
             Cut("trg_doubletau==1", "trg_doubletau"))
@@ -364,9 +364,9 @@ class TTMSSM2017(Channel):
                 "againstMuonDiscriminator"),
             Cut("byVVLooseDeepTau2017v2p1VSe_1>0.5 && byVVLooseDeepTau2017v2p1VSe_2>0.5",
                 "againstElectronDiscriminator"),
-            Cut("byTightDeepTau2017v2p1VSjet_1>0.5",
+            Cut("byMediumDeepTau2017v2p1VSjet_1>0.5",
                 "tau_1_iso"),
-            Cut("byTightDeepTau2017v2p1VSjet_2>0.5",
+            Cut("byMediumDeepTau2017v2p1VSjet_2>0.5",
                 "tau_2_iso"), Cut("q_1*q_2<0", "os"),
             Cut("(trg_doubletau_35_tightiso_tightid == 1) || (trg_doubletau_40_mediso_tightid == 1) || (trg_doubletau_40_tightiso == 1)",
                 "trg_selection"))
@@ -384,9 +384,9 @@ class TTSM2017(Channel):
                 "againstMuonDiscriminator"),
             Cut("byVVLooseDeepTau2017v2p1VSe_1>0.5 && byVVLooseDeepTau2017v2p1VSe_2>0.5",
                 "againstElectronDiscriminator"),
-            Cut("byTightDeepTau2017v2p1VSjet_1>0.5",
+            Cut("byMediumDeepTau2017v2p1VSjet_1>0.5",
                 "tau_1_iso"),
-            Cut("byTightDeepTau2017v2p1VSjet_2>0.5",
+            Cut("byMediumDeepTau2017v2p1VSjet_2>0.5",
                 "tau_2_iso"), Cut("q_1*q_2<0", "os"),
             Cut("(trg_doubletau_35_tightiso_tightid == 1) || (trg_doubletau_40_mediso_tightid == 1) || (trg_doubletau_40_tightiso == 1)",
                 "trg_selection"))
@@ -404,9 +404,9 @@ class TTSM2018(Channel):
                 "againstMuonDiscriminator"),
             Cut("byVVLooseDeepTau2017v2p1VSe_1>0.5 && byVVLooseDeepTau2017v2p1VSe_2>0.5",
                 "againstElectronDiscriminator"),
-            Cut("byTightDeepTau2017v2p1VSjet_1>0.5",
+            Cut("byMediumDeepTau2017v2p1VSjet_1>0.5",
                 "tau_1_iso"),
-            Cut("byTightDeepTau2017v2p1VSjet_2>0.5",
+            Cut("byMediumDeepTau2017v2p1VSjet_2>0.5",
                 "tau_2_iso"), Cut("q_1*q_2<0", "os"),
             Cut("(((!(isMC||isEmbedded) && run>=317509) || (isMC||isEmbedded)) && (trg_doubletau_35_mediso_hps == 1)) || (!(isMC||isEmbedded) && (run<317509) && ((trg_doubletau_35_tightiso_tightid == 1) || (trg_doubletau_40_mediso_tightid == 1) || (trg_doubletau_40_tightiso == 1)))",
                 "trg_selection"))
@@ -424,9 +424,9 @@ class TTMSSM2018(Channel):
                 "againstMuonDiscriminator"),
             Cut("byVVLooseDeepTau2017v2p1VSe_1>0.5 && byVVLooseDeepTau2017v2p1VSe_2>0.5",
                 "againstElectronDiscriminator"),
-            Cut("byTightDeepTau2017v2p1VSjet_1>0.5",
+            Cut("byMediumDeepTau2017v2p1VSjet_1>0.5",
                 "tau_1_iso"),
-            Cut("byTightDeepTau2017v2p1VSjet_2>0.5",
+            Cut("byMediumDeepTau2017v2p1VSjet_2>0.5",
                 "tau_2_iso"), Cut("q_1*q_2<0", "os"),
             Cut("(((!(isMC||isEmbedded) && run>=317509) || (isMC||isEmbedded)) && (trg_doubletau_35_mediso_hps == 1)) || (!(isMC||isEmbedded) && (run<317509) && ((trg_doubletau_35_tightiso_tightid == 1) || (trg_doubletau_40_mediso_tightid == 1) || (trg_doubletau_40_tightiso == 1)))",
                 "trg_selection"))
