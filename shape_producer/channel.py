@@ -394,6 +394,27 @@ class EMSM2018(Channel):
             Cut("(trg_muonelectron_mu23ele12 == 1 && pt_1>13 && pt_2 > 24) || (trg_muonelectron_mu8ele23 == 1 && pt_1>24 && pt_2>10)",
                 "trg_selection"))
 
+
+class ETMSSM2018(ETSM2018):
+    def __init__(self, **kvargs):
+        super(ETMSSM2018, self).__init__(**kvargs)
+
+
+class MTMSSM2018(MTSM2018):
+    def __init__(self, **kvargs):
+        super(MTMSSM2018, self).__init__(**kvargs)
+
+
+class TTMSSM2018(TTSM2018):
+    def __init__(self, **kvargs):
+        super(TTMSSM2018, self).__init__(**kvargs)
+
+
+class EMMSSM2018(EMSM2018):
+    def __init__(self, **kvargs):
+        super(EMMSSM2018, self).__init__(**kvargs)
+
+
 class PU(Channel):
     def __init__(self):
         self._name = "pu"
