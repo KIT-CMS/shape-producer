@@ -5,6 +5,8 @@ from array import array
 import hashlib
 import logging
 import binning
+import os
+from XRootD import client
 logger = logging.getLogger(__name__)
 """
 """
@@ -123,7 +125,7 @@ class Histogram(TTreeContent):
             for inputfile in self._inputfiles:
                 folder = self._folder
                 logger.debug("------>inputfile: " + inputfile + " / " + self._folder)
-
+                check_filepath(inputfile)
                 tree.Add(inputfile + "/" + folder)
             # repeat this for friends if applicable
             friend_trees = []
@@ -134,8 +136,9 @@ class Histogram(TTreeContent):
                     friend_tree = ROOT.TChain()
                     for friend_inputfile in friend_inputfiles:
                         folder = self._folder
-                        friend_tree.Add(friend_inputfile + "/" + folder)
                         logger.debug("-------->Add friend_inputfile:" + friend_inputfile + "/" + self._folder)
+                        check_filepath(friend_inputfile)
+                        friend_tree.Add(friend_inputfile + "/" + folder)
                     tree.AddFriend(friend_tree)
                     friend_trees.append(friend_tree)
 
@@ -264,6 +267,7 @@ class Count(TTreeContent):
         else:  # classic way
             tree = ROOT.TChain()
             for inputfile in self._inputfiles:
+                check_filepath(inputfile)
                 tree.Add(inputfile + "/" + self._folder)
             # repeat this for friends if applicable
             friend_trees = []
@@ -271,6 +275,7 @@ class Count(TTreeContent):
                 for friend_inputfiles in self._friend_inputfiles_collection:
                     friend_tree = ROOT.TChain()
                     for friend_inputfile in friend_inputfiles:
+                        check_filepath(friend_inputfile)
                         friend_tree.Add(friend_inputfile + "/" + self._folder)
                     tree.AddFriend(friend_tree)
                     friend_trees.append(friend_tree)
@@ -297,6 +302,24 @@ class Count(TTreeContent):
     def update(self):
         if not isinstance(self._result, float):
             self._result = self._result.GetBinContent(59)
+
+
+def check_filepath(inputfile):
+    logger.debug("Checking if file is available:{}".format(inputfile))
+    if "root://" in inputfile:
+        # check if file exists via xrootd
+        serverurl = inputfile.split("/")[0] + "//"+inputfile.split("/")[2]
+        filepath = "//"+inputfile.strip(serverurl) + ".root"
+        myclient = client.FileSystem(serverurl)
+        status, info = myclient.stat(filepath)
+        if info is None:
+            logger.fatal("File not found: {}".format(inputfile))
+            raise Exception
+    else:
+        # check is file is available locally
+        if os.path.isfile(inputfile) is False:
+            logger.fatal("File not found: {}".format(inputfile))
+            raise Exception
 
 
 # automatic determination of the type
