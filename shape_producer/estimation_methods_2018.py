@@ -1369,7 +1369,7 @@ class ZHEstimation(HTTEstimation):
     def get_weights(self):
         weights = super(ZHEstimation, self).get_weights()
         weights.remove("crossSectionPerEventWeight")
-        weights.add(Weight("(abs(crossSectionPerEventWeight - 0.05544)<1e-4)*0.04774349 + (abs(crossSectionPerEventWeight - 0.153915)<1e-5)*crossSectionPerEventWeight/100. + (abs(crossSectionPerEventWeight - 0.538017)<1e-5)*crossSectionPerEventWeight/100.", "crossSectionPerEventWeight"))  # TODO: Hotfix for wrong cross sections in datasets.json, remove once those are corrected
+        weights.add(Weight("(abs(crossSectionPerEventWeight - 0.05544)<1e-4)*0.04774349 + (abs(crossSectionPerEventWeight - 0.153915)<1e-5)*crossSectionPerEventWeight/100. + (abs(crossSectionPerEventWeight - 0.077719)<1e-5)*crossSectionPerEventWeight/100.", "crossSectionPerEventWeight"))  # TODO: Hotfix for wrong cross sections in datasets.json, remove once those are corrected
         return weights
 
     def get_files(self):
@@ -1419,7 +1419,7 @@ class ggHEstimation(HTTEstimation):
              "(htxs_stage1p1cat==106)*1.39e-8+"
              "(htxs_stage1p1cat>=107&&htxs_stage1p1cat<=109)*4.90e-8+"
              "(htxs_stage1p1cat>=110&&htxs_stage1p1cat<=113)*9.69e-9"
-             ")*(abs(crossSectionPerEventWeight - 0.539017) > 1e-5) + crossSectionPerEventWeight/100.*(abs(crossSectionPerEventWeight - 0.539017) < 1e-5))","ggh_stitching_weight"))  # TODO: Hotfix for wrong cross sections in datasets.json, remove once those are corrected
+             ")*(abs(crossSectionPerEventWeight - 0.538017) > 1e-5) + numberGeneratedEventsWeight*crossSectionPerEventWeight/100.*(abs(crossSectionPerEventWeight - 0.538017) < 1e-5))","ggh_stitching_weight"))  # TODO: Hotfix for wrong cross sections in datasets.json, remove once those are corrected
 
         return weights
 
