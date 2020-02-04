@@ -1458,7 +1458,13 @@ class ZHEstimation(HTTEstimation):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_cuts(self):
-        return Cuts(Cut("(htxs_stage1p1cat>=400)&&(htxs_stage1p1cat<=405)", "htxs_match"))
+        return Cuts(Cut("(htxs_stage1p1cat>=400)&&(htxs_stage1p1cat<=505)", "htxs_match"))
+
+    def get_weights(self):
+        weights = super(ZHEstimation, self).get_weights()
+        weights.remove("crossSectionPerEventWeight")
+        weights.add(Weight("(abs(crossSectionPerEventWeight - 0.05544)<1e-4)*0.04774349 + (abs(crossSectionPerEventWeight - 0.153915)<1e-5)*crossSectionPerEventWeight/100. + (abs(crossSectionPerEventWeight - 0.077719)<1e-5)*crossSectionPerEventWeight/100.", "crossSectionPerEventWeight"))  # TODO: Hotfix for wrong cross sections in datasets.json, remove once those are corrected
+        return weights
 
     def get_files(self):
         query = {
@@ -1499,6 +1505,17 @@ class ggHEstimation(HTTEstimation):
         weights.add(Weight("8.22976e-8", "numberGeneratedEventsWeight"))
         weights.add(Weight("ggh_NNLO_weight", "gghNNLO"))
         weights.add(Weight("1.01", "bbh_inclusion_weight"))
+
+        weights.remove("numberGeneratedEventsWeight"),
+        weights.remove("crossSectionPerEventWeight"),
+        weights.add(Weight("(((htxs_stage1p1cat==100||htxs_stage1p1cat==102||htxs_stage1p1cat==103)*crossSectionPerEventWeight*8.210e-8+"
+             "(htxs_stage1p1cat==101)*2.17e-8+"
+             "(htxs_stage1p1cat==104||htxs_stage1p1cat==105)*4.39e-8+"
+             "(htxs_stage1p1cat==106)*1.19e-8+"
+             "(htxs_stage1p1cat>=107&&htxs_stage1p1cat<=109)*4.91e-8+"
+             "(htxs_stage1p1cat>=110&&htxs_stage1p1cat<=113)*7.90e-9"
+             ")*(abs(crossSectionPerEventWeight - 0.538017) > 1e-5) + numberGeneratedEventsWeight*crossSectionPerEventWeight/100.*(abs(crossSectionPerEventWeight - 0.538017) < 1e-5))", "ggh_stitching_weight"))  # TODO: Hotfix for wrong cross sections in datasets.json, remove once those are corrected
+
         return weights
 
     def get_cuts(self):
