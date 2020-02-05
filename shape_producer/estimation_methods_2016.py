@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+hm# -*- coding: utf-8 -*-
 
 import copy
 import os
@@ -484,6 +484,12 @@ class VHEstimation(HTTEstimation):
         return Cuts(
             Cut("(htxs_stage1p1cat>=300)&&(htxs_stage1p1cat<=404)",
                 "htxs_match"))
+
+    def get_weights(self):
+        weights = super(VHEstimation, self).get_weights()
+        weights.remove("crossSectionPerEventWeight")
+        weights.add(Weight("(abs(crossSectionPerEventWeight - 0.052685)<1e-5)*crossSectionPerEventWeight + (abs(crossSectionPerEventWeight - 0.03342)<1e-4)*crossSectionPerEventWeight + (abs(crossSectionPerEventWeight - 0.05544)<1e-4)*0.04774349 + (abs(crossSectionPerEventWeight - 0.153915)<1e-5)*crossSectionPerEventWeight/100. + (abs(crossSectionPerEventWeight - 0.077719)<1e-5)*crossSectionPerEventWeight/100.", "crossSectionPerEventWeight"))  # TODO: Hotfix for wrong cross sections in datasets.json, remove once those are corrected
+        return weights
 
     def get_files(self):
         query = {
