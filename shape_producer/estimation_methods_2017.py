@@ -1398,6 +1398,7 @@ class VHEstimation(HTTEstimation):
         weights = super(VHEstimation, self).get_weights()
         weights.remove("crossSectionPerEventWeight")
         weights.add(Weight("(abs(crossSectionPerEventWeight - 0.052685)<1e-5)*crossSectionPerEventWeight + (abs(crossSectionPerEventWeight - 0.03342)<1e-4)*crossSectionPerEventWeight + (abs(crossSectionPerEventWeight - 0.05544)<1e-4)*0.04774349 + (abs(crossSectionPerEventWeight - 0.153915)<1e-5)*crossSectionPerEventWeight/100. + (abs(crossSectionPerEventWeight - 0.077719)<1e-5)*crossSectionPerEventWeight/100.", "crossSectionPerEventWeight"))  # TODO: Hotfix for wrong cross sections in datasets.json, remove once those are corrected
+        weights.add(Weight("1./0.941", "generatorWeightFix"))
         return weights
 
     def get_files(self):
@@ -1433,6 +1434,11 @@ class WHEstimation(HTTEstimation):
 
     def get_cuts(self):
         return Cuts(Cut("(htxs_stage1p1cat>=300)&&(htxs_stage1p1cat<=305)", "htxs_match"))
+
+    def get_weights(self):
+        weights = super(WHEstimation, self).get_weights()
+        weights.add(Weight("1./0.941", "generatorWeightFix"))
+        return weights
 
     def get_files(self):
         query = {
@@ -1471,7 +1477,7 @@ class ZHEstimation(HTTEstimation):
     def get_weights(self):
         weights = super(ZHEstimation, self).get_weights()
         weights.remove("crossSectionPerEventWeight")
-        weights.add(Weight("(abs(crossSectionPerEventWeight - 0.05544)<1e-4)*0.04774349 + (abs(crossSectionPerEventWeight - 0.153915)<1e-5)*crossSectionPerEventWeight/100. + (abs(crossSectionPerEventWeight - 0.077719)<1e-5)*crossSectionPerEventWeight/100.", "crossSectionPerEventWeight"))  # TODO: Hotfix for wrong cross sections in datasets.json, remove once those are corrected
+        weights.add(Weight("(abs(crossSectionPerEventWeight - 0.05544)<1e-4)*0.04774349/0.941 + (abs(crossSectionPerEventWeight - 0.153915)<1e-5)*crossSectionPerEventWeight/100. + (abs(crossSectionPerEventWeight - 0.077719)<1e-5)*crossSectionPerEventWeight/100.", "crossSectionPerEventWeight"))  # TODO: Hotfix for wrong cross sections in datasets.json, remove once those are corrected  #0.941 corresponds to generatorWeight
         return weights
 
     def get_files(self):
@@ -1570,7 +1576,7 @@ class qqHEstimation(HTTEstimation):
              "(htxs_stage1p1cat==206)*8.61e-9+"
              "(htxs_stage1p1cat>=207&&htxs_stage1p1cat<=210)*1.79e-8"
              ")" ,"qqh_stitching_weight"))  # TODO: Hotfix for wrong cross sections in datasets.json, remove once those are corrected
-        weights.add(Weight("(abs(crossSectionPerEventWeight - 0.05544) < 1e-4)*0.04774349/0.05544 + (abs(crossSectionPerEventWeight - 0.05544) > 1e-4)*1.", "zh_correction_weight"))
+        weights.add(Weight("(abs(crossSectionPerEventWeight - 0.05544) < 1e-4)*0.04774349/0.05544/0.941 + (abs(crossSectionPerEventWeight - 0.05544) > 1e-4)*1.", "zh_correction_weight")) #0.941 corresponds to generatorWeight
 
         return weights
 
@@ -1779,6 +1785,11 @@ class ttHEstimation(HTTEstimation):
             friend_directory=friend_directory,
             channel=channel,
             mc_campaign="RunIIFall17MiniAODv2")
+
+    def get_weights(self):
+        weights = super(ttHEstimation, self).get_weights()
+        weights.add(Weight("1./0.979", "generatorWeightFix"))
+        return weights
 
     def get_files(self):
         query = {
