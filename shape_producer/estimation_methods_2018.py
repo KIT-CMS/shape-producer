@@ -48,6 +48,10 @@ def get_triggerweight_for_channel(channel):
         ElTauData = ElTauMC.replace("MC","Data")
         ElTau = "("+ElTauData+")/("+ElTauMC+")"
         weight = Weight("(crossTriggerMCWeight_1*(crossTriggerMCWeight_1<10)+(crossTriggerMCWeight_1>10))*(pt_1<33)+((pt_1>=33)*trigger_32_35_Weight_1)","triggerweight")
+    elif "em" in channel:
+        weight = Weight(
+            "(trigger_23_data_Weight_2*trigger_12_data_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_data_Weight_1*trigger_8_data_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_data_Weight_2*trigger_23_data_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))/(trigger_23_mc_Weight_2*trigger_12_mc_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_mc_Weight_1*trigger_8_mc_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_mc_Weight_2*trigger_23_mc_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))",
+            "trigger_lepton_sf")
 
     elif "tt" in channel:
         DiTauMC = "*".join([MCTau_1,MCTau_2])
@@ -785,9 +789,9 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
                 Weight("idWeight_1*isoWeight_1*idWeight_2*isoWeight_2",
                        "idiso_lepton_sf"),
-                Weight("gen_match_1==3 && gen_match_2==4","emb_veto"))#,
-                # Weight("(trigger_23_data_Weight_2/trigger_23_embed_Weight_2)*(pt_2>24)+(trigger_8_data_Weight_2/trigger_8_embed_Weight_2)*(pt_2<24)+(trigger_12_data_Weight_1/trigger_12_embed_Weight_1)*(pt_1<24)+(trigger_23_data_Weight_1/trigger_23_embed_Weight_1)*(pt_1<24)",
-                    #    "trigger_lepton_sf"))
+                Weight("gen_match_1==3 && gen_match_2==4","emb_veto"),
+                Weight("(trigger_23_data_Weight_2*trigger_12_data_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_data_Weight_1*trigger_8_data_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_data_Weight_2*trigger_23_data_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))/(trigger_23_embed_Weight_2*trigger_12_embed_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_embed_Weight_1*trigger_8_embed_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_embed_Weight_2*trigger_23_embed_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))",
+                       "trigger_lepton_sf"))
 
 
     def get_files(self):
