@@ -302,7 +302,7 @@ class FakeEstimationTT(DataEstimation):
         aiso_systematic.category.cuts.remove("tau_2_iso")
         aiso_systematic.category.cuts.add(
             Cut(
-                "(byTightDeepTau2017v2p1VSjet_2>0.5&&byTightDeepTau2017v2p1VSjet_1<0.5&&byVLooseDeepTau2017v2p1VSjet_1>0.5)||(byTightDeepTau2017v2p1VSjet_1>0.5&&byTightDeepTau2017v2p1VSjet_2<0.5&&byTightDeepTau2017v2p1VSjet_2>0.5)",
+                "(byTightDeepTau2017v2p1VSjet_2>0.5&&byTightDeepTau2017v2p1VSjet_1<0.5&&byVLooseDeepTau2017v2p1VSjet_1>0.5)||(byTightDeepTau2017v2p1VSjet_1>0.5&&byTightDeepTau2017v2p1VSjet_2<0.5&&byVLooseDeepTau2017v2p1VSjet_2>0.5)",
                 "tau_aiso"))
         return super(FakeEstimationTT,
                      self).create_root_objects(aiso_systematic)
@@ -2402,6 +2402,10 @@ class WEstimationWithQCD(EstimationMethod):
                                era=self.era,
                                variation=systematic.variation,
                                mass=125)
+                if process == self._data_process:
+                    direction = s.variation._direction
+                    s.variation = Nominal()
+                    s.variation._direction = direction
                 systematic._WandQCD_systematics.append(s)
                 s.create_root_objects()
                 root_objects += s.root_objects
@@ -2658,6 +2662,10 @@ class QCDEstimationWithW(EstimationMethod):
                                era=self.era,
                                variation=systematic.variation,
                                mass=125)
+                if process == self._data_process:
+                    direction = s.variation._direction
+                    s.variation = Nominal()
+                    s.variation._direction = direction
                 systematic._WandQCD_systematics.append(s)
                 s.create_root_objects()
                 root_objects += s.root_objects
@@ -2671,8 +2679,13 @@ class QCDEstimationWithW(EstimationMethod):
                            era=self.era,
                            variation=systematic.variation,
                            mass=125)
+            if process == self._data_process:
+                direction = s.variation._direction
+                s.variation = Nominal()
+                s.variation._direction = direction
             systematic._WandQCD_systematics.append(s)
             s.create_root_objects()
+
             root_objects += s.root_objects
 
         return root_objects
