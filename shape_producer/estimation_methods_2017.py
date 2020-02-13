@@ -1394,12 +1394,6 @@ class VHEstimation(HTTEstimation):
     def get_cuts(self):
         return Cuts(Cut("(htxs_stage1p1cat>=300)&&(htxs_stage1p1cat<=505)", "htxs_match"))
 
-    def get_weights(self):
-        weights = super(VHEstimation, self).get_weights()
-        weights.remove("crossSectionPerEventWeight")
-        weights.add(Weight("(abs(crossSectionPerEventWeight - 0.052685)<1e-5)*crossSectionPerEventWeight + (abs(crossSectionPerEventWeight - 0.03342)<1e-4)*crossSectionPerEventWeight + (abs(crossSectionPerEventWeight - 0.05544)<1e-4)*0.04774349 + (abs(crossSectionPerEventWeight - 0.153915)<1e-5)*crossSectionPerEventWeight/100. + (abs(crossSectionPerEventWeight - 0.077719)<1e-5)*crossSectionPerEventWeight/100.", "crossSectionPerEventWeight"))  # TODO: Hotfix for wrong cross sections in datasets.json, remove once those are corrected
-        return weights
-
     def get_files(self):
         query = {
             "process": "(^W(minus|plus)HToTauTau.*125.*|^ZHToTauTau.*125.*|^ggZH.*ZToNuNu.*125.*|^ggZH.*ZToLL.*125.*)",
@@ -1468,12 +1462,6 @@ class ZHEstimation(HTTEstimation):
     def get_cuts(self):
         return Cuts(Cut("(htxs_stage1p1cat>=400)&&(htxs_stage1p1cat<=505)", "htxs_match"))
 
-    def get_weights(self):
-        weights = super(ZHEstimation, self).get_weights()
-        weights.remove("crossSectionPerEventWeight")
-        weights.add(Weight("(abs(crossSectionPerEventWeight - 0.05544)<1e-4)*0.04774349 + (abs(crossSectionPerEventWeight - 0.153915)<1e-5)*crossSectionPerEventWeight/100. + (abs(crossSectionPerEventWeight - 0.077719)<1e-5)*crossSectionPerEventWeight/100.", "crossSectionPerEventWeight"))  # TODO: Hotfix for wrong cross sections in datasets.json, remove once those are corrected
-        return weights
-
     def get_files(self):
         query = {
             "process": "(^ZHToTauTau.*125.*|^ggZH.*ZToNuNu.*125.*|^ggZH.*ZToLL.*125.*)",
@@ -1520,7 +1508,7 @@ class ggHEstimation(HTTEstimation):
              "(htxs_stage1p1cat==106)*1.19e-8+"
              "(htxs_stage1p1cat>=107&&htxs_stage1p1cat<=109)*4.91e-8+"
              "(htxs_stage1p1cat>=110&&htxs_stage1p1cat<=113)*7.90e-9"
-             ")*(abs(crossSectionPerEventWeight - 0.538017) > 1e-5) + numberGeneratedEventsWeight*crossSectionPerEventWeight/100.*(abs(crossSectionPerEventWeight - 0.538017) < 1e-5))","ggh_stitching_weight"))  # TODO: Hotfix for wrong cross sections in datasets.json, remove once those are corrected
+             ")*(abs(crossSectionPerEventWeight - 0.00538017) > 1e-5) + numberGeneratedEventsWeight*crossSectionPerEventWeight*(abs(crossSectionPerEventWeight - 0.00538017) < 1e-5))","ggh_stitching_weight"))
 
         return weights
 
@@ -1565,12 +1553,11 @@ class qqHEstimation(HTTEstimation):
 
         weights.remove("numberGeneratedEventsWeight"),
         weights.remove("crossSectionPerEventWeight"),
-        weights.add(Weight("((htxs_stage1p1cat>=200&&htxs_stage1p1cat<=202)||abs(crossSectionPerEventWeight-0.05544)<0.001||abs(crossSectionPerEventWeight-0.052685)<0.001||abs(crossSectionPerEventWeight-0.03342)<0.001)*crossSectionPerEventWeight*numberGeneratedEventsWeight+(abs(crossSectionPerEventWeight-0.05544)>=0.001&&abs(crossSectionPerEventWeight-0.052685)>=0.001&&abs(crossSectionPerEventWeight-0.03342)>=0.001)*("
+        weights.add(Weight("((htxs_stage1p1cat>=200&&htxs_stage1p1cat<=202)||abs(crossSectionPerEventWeight-0.04774)<0.001||abs(crossSectionPerEventWeight-0.052685)<0.001||abs(crossSectionPerEventWeight-0.03342)<0.001)*crossSectionPerEventWeight*numberGeneratedEventsWeight+(abs(crossSectionPerEventWeight-0.04774)>=0.001&&abs(crossSectionPerEventWeight-0.052685)>=0.001&&abs(crossSectionPerEventWeight-0.03342)>=0.001)*("
              "(htxs_stage1p1cat>=203&&htxs_stage1p1cat<=205)*8.70e-9+"
              "(htxs_stage1p1cat==206)*8.61e-9+"
              "(htxs_stage1p1cat>=207&&htxs_stage1p1cat<=210)*1.79e-8"
-             ")" ,"qqh_stitching_weight"))  # TODO: Hotfix for wrong cross sections in datasets.json, remove once those are corrected
-        weights.add(Weight("(abs(crossSectionPerEventWeight - 0.05544) < 1e-4)*0.04774349/0.05544 + (abs(crossSectionPerEventWeight - 0.05544) > 1e-4)*1.", "zh_correction_weight"))
+             ")" ,"qqh_stitching_weight"))
 
         return weights
 
