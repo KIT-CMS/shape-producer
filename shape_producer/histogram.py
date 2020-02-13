@@ -129,14 +129,14 @@ class Histogram(TTreeContent):
             friend_trees = []
             if self._friend_inputfiles_collection is not None:
                 logger.debug(self._friend_inputfiles_collection)
-                for friend_inputfiles in self._friend_inputfiles_collection:
+                for i, friend_inputfiles in enumerate(self._friend_inputfiles_collection):
                     logger.debug("------>friend_inputfiles: [" + ', '.join(friend_inputfiles) + ']')
                     friend_tree = ROOT.TChain()
                     for friend_inputfile in friend_inputfiles:
                         folder = self._folder
                         friend_tree.Add(friend_inputfile + "/" + folder)
-                        logger.debug("-------->Add friend_inputfile:" + friend_inputfile + "/" + self._folder)
-                    tree.AddFriend(friend_tree)
+                        logger.debug("-------->Add friend_inputfile:" + friend_inputfile + " / " + self._folder)
+                    tree.AddFriend(friend_tree, 'fr%d' % i)
                     friend_trees.append(friend_tree)
 
             # create unfilled template histogram
