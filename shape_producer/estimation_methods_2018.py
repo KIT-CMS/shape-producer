@@ -1879,14 +1879,20 @@ class SUSYggHEstimation(EstimationMethod):
             friend_directory=friend_directory,
             mc_campaign="RunIIAutumn18MiniAOD")
         self.mass = mass
+        self.contribution = contribution
 
     def get_weights(self):
+        contribution_weight = "1.0"
+        if self.contribution in ["A_i", "A_t", "A_b", "H_i", "H_t", "H_b", "h_i", "h_t", "h_b"]:
+            contribution_weight = "gg%s_weight"%self.contribution
+
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
+            Weight(contribution_weight, "contributionWeight"),
             Weight("numberGeneratedEventsWeight",
                    "numberGeneratedEventsWeight"),
-            Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
+            # Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"), # not needed, since should be at 1.0
 
             # Weights for corrections
             Weight("puweight", "puweight"),
@@ -1897,7 +1903,7 @@ class SUSYggHEstimation(EstimationMethod):
             # self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel.name),
-            # self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
+            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
 
             # Data related scale-factors
             self.era.lumi_weight)
@@ -1938,7 +1944,7 @@ class SUSYbbHEstimation(EstimationMethod):
             Weight("generatorWeight", "generatorWeight"),
             Weight("numberGeneratedEventsWeight",
                    "numberGeneratedEventsWeight"),
-            Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
+            # Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"), # not needed, since should be at 1.0
 
             # Weights for corrections
             Weight("puweight", "puweight"),
@@ -1949,7 +1955,7 @@ class SUSYbbHEstimation(EstimationMethod):
             # self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel.name),
-            # self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
+            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
 
             # Data related scale-factors
             self.era.lumi_weight)
@@ -1958,7 +1964,8 @@ class SUSYbbHEstimation(EstimationMethod):
         query = {
             "process": "^SUSYGluGluToBBHToTauTau_M{MASS}$".format(MASS=self.mass),
             "data": False,
-            "campaign": self._mc_campaign
+            "campaign": self._mc_campaign,
+            "generator": "amcatnlo-pythia8",
         }
         files = self.era.datasets_helper.get_nicks_with_query(query)
         log_query(self.name, query, files)
