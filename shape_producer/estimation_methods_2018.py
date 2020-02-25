@@ -1861,13 +1861,13 @@ class qqHEstimation_PTJET1_GT200(qqHEstimation):
 
 
 class SUSYggHEstimation(EstimationMethod):
-    def __init__(self, era, directory, channel, mass, friend_directory=None, folder="nominal",
+    def __init__(self, era, directory, channel, mass, contribution, friend_directory=None, folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
             get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,):
         super(SUSYggHEstimation, self).__init__(
-            name="_".join(["ggH",str(mass)]),
+            name="_".join(["gg"+contribution,str(mass)]),
             folder=folder,
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
@@ -1917,6 +1917,7 @@ class SUSYggHEstimation(EstimationMethod):
         files = self.era.datasets_helper.get_nicks_with_query(query)
         log_query(self.name, query, files)
         return self.artus_file_names(files)
+
 
 class SUSYbbHEstimation(EstimationMethod):
     def __init__(self, era, directory, channel, mass, friend_directory=None, folder="nominal",
@@ -1970,6 +1971,7 @@ class SUSYbbHEstimation(EstimationMethod):
         files = self.era.datasets_helper.get_nicks_with_query(query)
         log_query(self.name, query, files)
         return self.artus_file_names(files)
+
 
 class bbH120Estimation(HTTEstimation):
     def __init__(self, era, directory, channel, friend_directory=None, folder="nominal",
