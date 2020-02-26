@@ -2224,16 +2224,11 @@ class SUSYbbHEstimation(EstimationMethod):
             self.era.lumi_weight)
 
     def get_files(self):
-        query = {
-            "process": "^SUSYGluGluToBBHToTauTau_M{MASS}$".format(MASS=self.mass),
-            "data": False,
-            "campaign": self._mc_campaign,
-            "generator": "amcatnlo-pythia8",
-        }
-        files = self.era.datasets_helper.get_nicks_with_query(query)
+        files = []
+        for query in self.queries:
+            files += self.era.datasets_helper.get_nicks_with_query(query)
         log_query(self.name, query, files)
         return self.artus_file_names(files)
-
 
 class bbH120Estimation(HTTEstimation):
     def __init__(self, era, directory, channel, friend_directory=None, folder="nominal",
