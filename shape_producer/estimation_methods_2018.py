@@ -2130,6 +2130,13 @@ class SUSYggHEstimation(EstimationMethod):
             mc_campaign="RunIIAutumn18MiniAOD")
         self.mass = mass
         self.contribution = contribution
+        self.queries = [
+            {
+                "process": "^SUSYGluGluToHToTauTau_M{MASS}$".format(MASS=self.mass),
+                "data": False,
+                "campaign": self._mc_campaign
+            }
+        ]
 
     def get_weights(self):
         contribution_weight = "1.0"
@@ -2159,12 +2166,9 @@ class SUSYggHEstimation(EstimationMethod):
             self.era.lumi_weight)
 
     def get_files(self):
-        query = {
-            "process": "^SUSYGluGluToHToTauTau_M{MASS}$".format(MASS=self.mass),
-            "data": False,
-            "campaign": self._mc_campaign
-        }
-        files = self.era.datasets_helper.get_nicks_with_query(query)
+        files = []
+        for query in self.queries:
+            files += self.era.datasets_helper.get_nicks_with_query(query)
         log_query(self.name, query, files)
         return self.artus_file_names(files)
 
@@ -2188,6 +2192,14 @@ class SUSYbbHEstimation(EstimationMethod):
             friend_directory=friend_directory,
             mc_campaign="RunIIAutumn18MiniAOD")
         self.mass = mass
+        self.queries = [
+            {
+                "process": "^SUSYGluGluToBBHToTauTau_M{MASS}$".format(MASS=self.mass),
+                "data": False,
+                "campaign": self._mc_campaign,
+                "generator": "amcatnlo-pythia8",
+            }
+        ]
 
     def get_weights(self):
         return Weights(
