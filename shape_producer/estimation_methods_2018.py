@@ -787,7 +787,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
             return Weights(
                 Weight("generatorWeight", "simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
-                Weight("idWeight_1*isoWeight_1*idWeight_2*isoWeight_2",
+                Weight("idWeight_1*isoWeight_1*idWeight_2*looseIsoWeight_2",
                        "idiso_lepton_sf"),
                 Weight("gen_match_1==3 && gen_match_2==4","emb_veto"),
                 Weight("(trigger_23_data_Weight_2*trigger_12_data_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_data_Weight_1*trigger_8_data_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_data_Weight_2*trigger_23_data_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))/(trigger_23_embed_Weight_2*trigger_12_embed_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_embed_Weight_1*trigger_8_embed_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_embed_Weight_2*trigger_23_embed_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))",
