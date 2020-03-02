@@ -1054,7 +1054,7 @@ class HWWEstimation(EstimationMethod):
             directory=directory,
             channel=channel,
             friend_directory=friend_directory,
-            mc_campaign="RunIIFall18MiniAODv2")
+            mc_campaign="RunIIAutumn18MiniAOD")
 
     def get_weights(self):
         return Weights(
@@ -1106,7 +1106,7 @@ class ggHWWEstimation(EstimationMethod):
             directory=directory,
             channel=channel,
             friend_directory=friend_directory,
-            mc_campaign="RunIIFall18MiniAODv2")
+            mc_campaign="RunIIAutumn18MiniAOD")
 
     def get_weights(self):
         return Weights(
@@ -1158,7 +1158,7 @@ class qqHWWEstimation(EstimationMethod):
             directory=directory,
             channel=channel,
             friend_directory=friend_directory,
-            mc_campaign="RunIIFall18MiniAODv2")
+            mc_campaign="RunIIAutumn18MiniAOD")
 
     def get_weights(self):
         return Weights(
@@ -1210,7 +1210,7 @@ class WHWWEstimation(EstimationMethod):
             directory=directory,
             channel=channel,
             friend_directory=friend_directory,
-            mc_campaign="RunIIFall18MiniAODv2")
+            mc_campaign="RunIIAutumn18MiniAOD")
 
     def get_weights(self):
         return Weights(
@@ -1262,7 +1262,7 @@ class ZHWWEstimation(EstimationMethod):
             directory=directory,
             channel=channel,
             friend_directory=friend_directory,
-            mc_campaign="RunIIFall18MiniAODv2")
+            mc_campaign="RunIIAutumn18MiniAOD")
 
     def get_weights(self):
         return Weights(
