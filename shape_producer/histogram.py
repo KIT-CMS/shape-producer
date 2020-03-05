@@ -11,7 +11,6 @@ logger = logging.getLogger(__name__)
 """
 """
 
-
 # Base class for Histogram and Count
 class TTreeContent(object):
     def __init__(self,
@@ -272,12 +271,12 @@ class Count(TTreeContent):
             # repeat this for friends if applicable
             friend_trees = []
             if self._friend_inputfiles_collection != None:
-                for friend_inputfiles in self._friend_inputfiles_collection:
+                for i, friend_inputfiles in enumerate(self._friend_inputfiles_collection):
                     friend_tree = ROOT.TChain()
                     for friend_inputfile in friend_inputfiles:
                         check_filepath(friend_inputfile)
                         friend_tree.Add(friend_inputfile + "/" + self._folder)
-                    tree.AddFriend(friend_tree)
+                    tree.AddFriend(friend_tree, 'fr%d' % i)
                     friend_trees.append(friend_tree)
 
             counthist = ROOT.TH1D(self._name, self._name, 1, 0.0,2.0)
