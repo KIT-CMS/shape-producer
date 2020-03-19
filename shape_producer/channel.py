@@ -445,6 +445,214 @@ class EMMSSM2018(EM2018):
     def __init__(self, **kvargs):
         super(EMMSSM2018, self).__init__(**kvargs)
 
+###########################################
+# MSSM vs SM block (Artur's cut-based analysis)
+###########################################
+
+# MSSM vs SM MT
+class MSSMvsSMMT2016(Channel):
+    def __init__(self):
+        self._name = "mt"
+        self._cuts = Cuts(
+            Cut("flagMETFilter == 1", "METFilter"),
+            Cut("extraelec_veto<0.5", "extraelec_veto"),
+            Cut("extramuon_veto<0.5", "extramuon_veto"),
+            Cut("dilepton_veto<0.5", "dilepton_veto"),
+            Cut("byTightDeepTau2017v2p1VSmu_2>0.5", "againstMuonDiscriminator"),
+            Cut("byVVLooseDeepTau2017v2p1VSe_2>0.5", "againstElectronDiscriminator"),
+            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
+            Cut("iso_1<0.15", "muon_iso"),
+            Cut("q_1*q_2<0", "os"),
+            Cut("pt_1 > 20 && abs(eta_1) < 2.1 && pt_2 > 30 && abs(eta_2) < 2.3","kinematics"),
+            #Cut("(trg_singlemuon == 1 && pt_1 > 23)","trg_selection"))
+            #Cut("(trg_mutaucross == 1 && pt_1 <= 23 && abs(eta_2) < 2.1)","trg_selection"))
+            Cut("(trg_singlemuon == 1 && pt_1 > 23) || (trg_mutaucross == 1 && pt_1 <= 23 && abs(eta_2) < 2.1)","trg_selection"))
+
+class MSSMvsSMMT2017(Channel):
+    def __init__(self):
+        self._name = "mt"
+        self._cuts = Cuts(
+            Cut("flagMETFilter == 1", "METFilter"),
+            Cut("extraelec_veto<0.5", "extraelec_veto"),
+            Cut("extramuon_veto<0.5", "extramuon_veto"),
+            Cut("dilepton_veto<0.5", "dilepton_veto"),
+            Cut("byTightDeepTau2017v2p1VSmu_2>0.5", "againstMuonDiscriminator"),
+            Cut("byVVLooseDeepTau2017v2p1VSe_2>0.5", "againstElectronDiscriminator"),
+            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
+            Cut("iso_1<0.15", "muon_iso"),
+            Cut("q_1*q_2<0", "os"),
+            Cut("pt_1 > 20 && abs(eta_1) < 2.1 && pt_2 > 30 && abs(eta_2) < 2.3","kinematics"),
+            #Cut("(trg_singlemuon_27 == 1 && pt_1 > 28)","trg_selection"))
+            #Cut("(trg_crossmuon_mu20tau27 == 1 && pt_1 <= 28 && pt_1 > 21 && pt_2 > 32 && abs(eta_2) < 2.1)","trg_selection"))
+            Cut("(trg_singlemuon_27 == 1 && pt_1 > 28) || (trg_crossmuon_mu20tau27 == 1 && pt_1 <= 28 && pt_1 > 21 && pt_2 > 32 && abs(eta_2) < 2.1)","trg_selection"))
+
+class MSSMvsSMMT2018(Channel):
+    def __init__(self):
+        self._name = "mt"
+        self._cuts = Cuts(
+            Cut("flagMETFilter == 1", "METFilter"),
+            Cut("extraelec_veto<0.5", "extraelec_veto"),
+            Cut("extramuon_veto<0.5", "extramuon_veto"),
+            Cut("dilepton_veto<0.5", "dilepton_veto"),
+            Cut("byTightDeepTau2017v2p1VSmu_2>0.5", "againstMuonDiscriminator"),
+            Cut("byVVLooseDeepTau2017v2p1VSe_2>0.5", "againstElectronDiscriminator"),
+            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
+            Cut("iso_1<0.15", "muon_iso"),
+            Cut("q_1*q_2<0", "os"),
+            Cut("pt_1 > 20 && abs(eta_1) < 2.1 && pt_2 > 30 && abs(eta_2) < 2.3","kinematics"),
+            #Cut("(trg_singlemuon_27 == 1 && pt_1 > 28)","trg_selection"))
+            #Cut("((trg_crossmuon_mu20tau27 == 1 || trg_crossmuon_mu20tau27_hps == 1) && pt_1 <= 28 && pt_1 > 21 && pt_2 > 32 && abs(eta_2) < 2.1)","trg_selection"))
+            Cut("(trg_singlemuon_27 == 1 && pt_1 > 28) || ((trg_crossmuon_mu20tau27 == 1 || trg_crossmuon_mu20tau27_hps == 1) && pt_1 <= 28 && pt_1 > 21 && pt_2 > 32 && abs(eta_2) < 2.1)","trg_selection"))
+
+
+# MSSM vs SM ET
+class MSSMvsSMET2016(Channel):
+    def __init__(self):
+        self._name = "et"
+        self._cuts = Cuts(
+            Cut("flagMETFilter==1", "met_filter"),
+            Cut("extraelec_veto<0.5", "extraelec_veto"),
+            Cut("extramuon_veto<0.5", "extramuon_veto"),
+            Cut("dilepton_veto<0.5", "dilepton_veto"),
+            Cut("byVLooseDeepTau2017v2p1VSmu_2>0.5", "againstMuonDiscriminator"),
+            Cut("byTightDeepTau2017v2p1VSe_2>0.5", "againstElectronDiscriminator"),
+            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
+            Cut("iso_1<0.15", "ele_iso"),
+            Cut("q_1*q_2<0", "os"),
+            Cut("pt_1 > 29 && abs(eta_1) < 2.1 && pt_2 > 30 && abs(eta_2) < 2.3","kinematics"),
+            Cut("(trg_singleelectron==1 && pt_1 > 30) || (pt_1<=29 && trg_eletaucross==1 && abs(eta_2) < 2.1)", "trg_selection"))
+
+class MSSMvsSMET2017(Channel):
+    def __init__(self):
+        self._name = "et"
+        self._cuts = Cuts(
+            Cut("flagMETFilter==1", "met_filter"),
+            Cut("extraelec_veto<0.5", "extraelec_veto"),
+            Cut("extramuon_veto<0.5", "extramuon_veto"),
+            Cut("dilepton_veto<0.5", "dilepton_veto"),
+            Cut("byVLooseDeepTau2017v2p1VSmu_2>0.5", "againstMuonDiscriminator"),
+            Cut("byTightDeepTau2017v2p1VSe_2>0.5", "againstElectronDiscriminator"),
+            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
+            Cut("iso_1<0.15", "ele_iso"),
+            Cut("q_1*q_2<0", "os"),
+            Cut("pt_1 > 29 && abs(eta_1) < 2.1 && pt_2 > 30 && abs(eta_2) < 2.3","kinematics"),
+            #Cut("(trg_singleelectron_35 == 1 && pt_1 > 40)", "trg_selection"))
+            #Cut("(trg_crossele_ele24tau30 == 1 && pt_2 > 35 && abs(eta_2) < 2.1)", "trg_selection"))
+            Cut("(trg_singleelectron_35 == 1 && pt_1 > 40) || (trg_crossele_ele24tau30 == 1 && pt_1 <= 40 && pt_2 > 35 && abs(eta_2) < 2.1)", "trg_selection"))
+            #Cut("pt_2>30 && pt_1 > 25 && (((trg_singleelectron_35 == 1) || (trg_singleelectron_32 == 1) || ((trg_singleelectron_27 == 1))) || (abs(eta_1)>1.5 && pt_1 >= 28 && pt_1 < 35 && isEmbedded)) || (pt_1>25 && pt_1<28 && pt_2>35 && ((isEmbedded && (abs(eta_1)>1.5)) || (trg_crossele_ele24tau30 == 1)))", "trg_selection"))
+
+class MSSMvsSMET2018(Channel):
+    def __init__(self):
+        self._name = "et"
+        self._cuts = Cuts(
+            Cut("flagMETFilter==1", "met_filter"),
+            Cut("extraelec_veto<0.5", "extraelec_veto"),
+            Cut("extramuon_veto<0.5", "extramuon_veto"),
+            Cut("dilepton_veto<0.5", "dilepton_veto"),
+            Cut("byVLooseDeepTau2017v2p1VSmu_2>0.5", "againstMuonDiscriminator"),
+            Cut("byTightDeepTau2017v2p1VSe_2>0.5", "againstElectronDiscriminator"),
+            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
+            Cut("iso_1<0.15", "ele_iso"),
+            Cut("q_1*q_2<0", "os"),
+            Cut("pt_1 > 29 && abs(eta_1) < 2.1 && pt_2 > 30 && abs(eta_2) < 2.3","kinematics"),
+            Cut("(trg_singleelectron_32 == 1 && pt_1 > 37) || ((trg_crossele_ele24tau30 == 1 || trg_crossele_ele24tau30_hps == 1) && pt_1 <= 37 && pt_2 > 35 && abs(eta_2) < 2.1)", "trg_selection"))
+            #Cut("pt_2>30 && ((trg_singleelectron_35 == 1) || (trg_singleelectron_32 == 1) || (pt_1>25 && pt_1<33 && pt_2>35 && (trg_crossele_ele24tau30_hps == 1 || trg_crossele_ele24tau30 == 1)))", "trg_selection"))
+
+
+# MSSM vs SM TT
+class MSSMvsSMTT2016(Channel):
+    def __init__(self):
+        self._name = "tt"
+        self._cuts = Cuts(
+            Cut("flagMETFilter == 1", "METFilter"),
+            Cut("extraelec_veto<0.5", "extraelec_veto"),
+            Cut("extramuon_veto<0.5", "extramuon_veto"),
+            Cut("dilepton_veto<0.5", "dilepton_veto"),
+            Cut("byVLooseDeepTau2017v2p1VSmu_1>0.5 && byVLooseDeepTau2017v2p1VSmu_2>0.5", "againstMuonDiscriminator"),
+            Cut("byVVLooseDeepTau2017v2p1VSe_1>0.5 && byVVLooseDeepTau2017v2p1VSe_2>0.5", "againstElectronDiscriminator"),
+            Cut("byTightDeepTau2017v2p1VSjet_1>0.5", "tau_1_iso"),
+            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_2_iso"),
+            Cut("q_1*q_2<0", "os"),
+            Cut("pt_1 > 40 && abs(eta_1) < 2.1 && pt_2 > 40 && abs(eta_2) < 2.1","kinematics"),
+            Cut("trg_doubletau==1", "trg_doubletau"))
+
+
+class MSSMvsSMTT2017(Channel):
+    def __init__(self):
+        self._name = "tt"
+        self._cuts = Cuts(
+            Cut("flagMETFilter == 1", "METFilter"),
+            Cut("extraelec_veto<0.5", "extraelec_veto"),
+            Cut("extramuon_veto<0.5", "extramuon_veto"),
+            Cut("dilepton_veto<0.5", "dilepton_veto"),
+            Cut("byVLooseDeepTau2017v2p1VSmu_1>0.5 && byVLooseDeepTau2017v2p1VSmu_2>0.5", "againstMuonDiscriminator"),
+            Cut("byVVLooseDeepTau2017v2p1VSe_1>0.5 && byVVLooseDeepTau2017v2p1VSe_2>0.5", "againstElectronDiscriminator"),
+            Cut("byTightDeepTau2017v2p1VSjet_1>0.5", "tau_1_iso"),
+            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_2_iso"),
+            Cut("q_1*q_2<0", "os"),
+            Cut("pt_1 > 40 && abs(eta_1) < 2.1 && pt_2 > 40 && abs(eta_2) < 2.1","kinematics"),
+            Cut("(trg_doubletau_35_tightiso_tightid == 1) || (trg_doubletau_40_mediso_tightid == 1) || (trg_doubletau_40_tightiso == 1)", "trg_selection"))
+
+
+class MSSMvsSMTT2018(Channel):
+    def __init__(self):
+        self._name = "tt"
+        self._cuts = Cuts(
+            Cut("flagMETFilter == 1", "METFilter"),
+            Cut("extraelec_veto<0.5", "extraelec_veto"),
+            Cut("extramuon_veto<0.5", "extramuon_veto"),
+            Cut("dilepton_veto<0.5", "dilepton_veto"),
+            Cut("byVLooseDeepTau2017v2p1VSmu_1>0.5 && byVLooseDeepTau2017v2p1VSmu_2>0.5", "againstMuonDiscriminator"),
+            Cut("byVVLooseDeepTau2017v2p1VSe_1>0.5 && byVVLooseDeepTau2017v2p1VSe_2>0.5", "againstElectronDiscriminator"),
+            Cut("byTightDeepTau2017v2p1VSjet_1>0.5", "tau_1_iso"),
+            Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_2_iso"),
+            Cut("q_1*q_2<0", "os"),
+            Cut("pt_1 > 40 && abs(eta_1) < 2.1 && pt_2 > 40 && abs(eta_2) < 2.1","kinematics"),
+            Cut("(((!(isMC||isEmbedded) && run>=317509) || (isMC||isEmbedded)) && (trg_doubletau_35_mediso_hps == 1)) || (!(isMC||isEmbedded) && (run<317509) && ((trg_doubletau_35_tightiso_tightid == 1) || (trg_doubletau_40_mediso_tightid == 1) || (trg_doubletau_40_tightiso == 1)))", "trg_selection"))
+
+
+# MSSM vs SM EM
+class MSSMvsSMEM2016(Channel):
+    def __init__(self):
+        self._name = "em"
+        self._cuts = Cuts(
+            Cut("flagMETFilter == 1", "METFilter"),
+            Cut("extraelec_veto<0.5", "extraelec_veto"),
+            Cut("extramuon_veto<0.5", "extramuon_veto"),
+            Cut("dilepton_veto<0.5", "dilepton_veto"),
+            Cut("iso_1<0.15", "ele_iso"),
+            Cut("iso_2<0.2", "muon_iso"),
+            Cut("q_1*q_2<0", "os"),
+            Cut("pt_1 > 17 && abs(eta_1) < 2.4 && pt_2 > 10 && abs(eta_2) < 2.4", "kinematics"),
+            Cut("(pt_2 > 24 && trg_muonelectron_mu23ele12 == 1) || (pt_1 > 28 && trg_muonelectron_mu8ele23 == 1)","trg_selection"))
+
+class MSSMvsSMEM2017(Channel):
+    def __init__(self):
+        self._name = "em"
+        self._cuts = Cuts(
+            Cut("flagMETFilter == 1", "METFilter"),
+            Cut("extraelec_veto<0.5", "extraelec_veto"),
+            Cut("extramuon_veto<0.5", "extramuon_veto"),
+            Cut("dilepton_veto<0.5", "dilepton_veto"),
+            Cut("iso_1<0.15", "ele_iso"),
+            Cut("iso_2<0.2", "muon_iso"),
+            Cut("q_1*q_2<0", "os"),
+            Cut("pt_1 > 17 && abs(eta_1) < 2.4 && pt_2 > 10 && abs(eta_2) < 2.4", "kinematics"),
+            Cut("(pt_2 > 24 && trg_muonelectron_mu23ele12 == 1) || (pt_1 > 28 && trg_muonelectron_mu8ele23 == 1)","trg_selection"))
+
+class MSSMvsSMEM2018(Channel):
+    def __init__(self):
+        self._name = "em"
+        self._cuts = Cuts(
+            Cut("flagMETFilter == 1", "METFilter"),
+            Cut("extraelec_veto<0.5", "extraelec_veto"),
+            Cut("extramuon_veto<0.5", "extramuon_veto"),
+            Cut("dilepton_veto<0.5", "dilepton_veto"),
+            Cut("iso_1<0.15", "ele_iso"),
+            Cut("iso_2<0.2", "muon_iso"),
+            Cut("q_1*q_2<0", "os"),
+            Cut("pt_1 > 17 && abs(eta_1) < 2.4 && pt_2 > 10 && abs(eta_2) < 2.4", "kinematics"),
+            Cut("(pt_2 > 24 && trg_muonelectron_mu23ele12 == 1) || (pt_1 > 28 && trg_muonelectron_mu8ele23 == 1)","trg_selection"))
 
 # PU - no cuts
 class PU(Channel):
