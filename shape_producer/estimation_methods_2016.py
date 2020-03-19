@@ -67,7 +67,7 @@ def get_triggerweight_for_channel(channel):
 
     if "mt" in channel:
         trig_sL = "(trg_singlemuon)"
-        trig_X = "(pt_1 < 23 && trg_mutaucross && abs(eta_2)<2.1)"
+        trig_X = "(pt_1 <= 23 && abs(eta_2)<2.1 && trg_mutaucross)"
 
         MuTauMC = "*".join([trig_sL, singleMC]) + "+" + "*".join([trig_X, crossMCL, MCTau_2])
         MuTauData = MuTauMC.replace("MC", "Data")
@@ -76,7 +76,7 @@ def get_triggerweight_for_channel(channel):
 
     elif "et" in channel:
         trig_sL = "(trg_singleelectron)"
-        trig_X = "(pt_1 > 25 && pt_1 < 26 && trg_eletaucross)"
+        trig_X = "(pt_1 > 29 && pt_1 <= 30 && trg_eletaucross)"
 
         ElTauMC = "*".join([trig_sL, singleMC]) + "+" + "*".join([trig_X, crossMCL, MCTau_2])
         ElTauData = ElTauMC.replace("MC", "Data")
@@ -1425,7 +1425,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
 
         if "mt" in channel:
             trig_sL = "(trg_singlemuon)"
-            trig_X = "(pt_1 < 23 && trg_mutaucross)"
+            trig_X = "(pt_1 <= 23 && trg_mutaucross)"
 
             MuTauEMB = "{singletrigger} + {crosstrigger}".format(
                 singletrigger="*".join([trig_sL, singleEMB]),
@@ -1436,7 +1436,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
 
         elif "et" in channel:
             trig_sL = "(trg_singleelectron)"
-            trig_X = "(pt_1 > 25 && pt_1 < 26 && trg_eletaucross)"
+            trig_X = "(pt_1 > 29 && pt_1 <= 30 && trg_eletaucross)"
 
             ElTauEMB = "{singletrigger} + {crosstrigger}".format(
                 singletrigger="*".join([trig_sL, singleEMB]),

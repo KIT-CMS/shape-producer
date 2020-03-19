@@ -520,6 +520,8 @@ class MSSMvsSMET2016(Channel):
             Cut("iso_1<0.15", "ele_iso"),
             Cut("q_1*q_2<0", "os"),
             Cut("pt_1 > 29 && abs(eta_1) < 2.1 && pt_2 > 30 && abs(eta_2) < 2.3","kinematics"),
+            #Cut("(trg_singleelectron==1 && pt_1 > 30)", "trg_selection"))
+            #Cut("(pt_1<=29 && trg_eletaucross==1 && abs(eta_2) < 2.1)", "trg_selection"))
             Cut("(trg_singleelectron==1 && pt_1 > 30) || (pt_1<=29 && trg_eletaucross==1 && abs(eta_2) < 2.1)", "trg_selection"))
 
 class MSSMvsSMET2017(Channel):
@@ -554,8 +556,9 @@ class MSSMvsSMET2018(Channel):
             Cut("iso_1<0.15", "ele_iso"),
             Cut("q_1*q_2<0", "os"),
             Cut("pt_1 > 29 && abs(eta_1) < 2.1 && pt_2 > 30 && abs(eta_2) < 2.3","kinematics"),
+            #Cut("(trg_singleelectron_32 == 1 && pt_1 > 37)", "trg_selection"))
+            #Cut("((trg_crossele_ele24tau30 == 1 || trg_crossele_ele24tau30_hps == 1) && pt_1 <= 37 && pt_2 > 35 && abs(eta_2) < 2.1)", "trg_selection"))
             Cut("(trg_singleelectron_32 == 1 && pt_1 > 37) || ((trg_crossele_ele24tau30 == 1 || trg_crossele_ele24tau30_hps == 1) && pt_1 <= 37 && pt_2 > 35 && abs(eta_2) < 2.1)", "trg_selection"))
-            #Cut("pt_2>30 && ((trg_singleelectron_35 == 1) || (trg_singleelectron_32 == 1) || (pt_1>25 && pt_1<33 && pt_2>35 && (trg_crossele_ele24tau30_hps == 1 || trg_crossele_ele24tau30 == 1)))", "trg_selection"))
 
 
 # MSSM vs SM TT
