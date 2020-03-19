@@ -537,9 +537,8 @@ class MSSMvsSMET2017(Channel):
             Cut("q_1*q_2<0", "os"),
             Cut("pt_1 > 29 && abs(eta_1) < 2.1 && pt_2 > 30 && abs(eta_2) < 2.3","kinematics"),
             #Cut("(trg_singleelectron_35 == 1 && pt_1 > 40)", "trg_selection"))
-            #Cut("(trg_crossele_ele24tau30 == 1 && pt_2 > 35 && abs(eta_2) < 2.1)", "trg_selection"))
-            Cut("(trg_singleelectron_35 == 1 && pt_1 > 40) || (trg_crossele_ele24tau30 == 1 && pt_1 <= 40 && pt_2 > 35 && abs(eta_2) < 2.1)", "trg_selection"))
-            #Cut("pt_2>30 && pt_1 > 25 && (((trg_singleelectron_35 == 1) || (trg_singleelectron_32 == 1) || ((trg_singleelectron_27 == 1))) || (abs(eta_1)>1.5 && pt_1 >= 28 && pt_1 < 35 && isEmbedded)) || (pt_1>25 && pt_1<28 && pt_2>35 && ((isEmbedded && (abs(eta_1)>1.5)) || (trg_crossele_ele24tau30 == 1)))", "trg_selection"))
+            #Cut("((trg_crossele_ele24tau30 == 1 && !isEmbedded || isEmbedded) && pt_1 <= 40 && pt_2 > 35 && abs(eta_2) < 2.1)", "trg_selection"))
+            Cut("(trg_singleelectron_35 == 1 && pt_1 > 40) || ((trg_crossele_ele24tau30 == 1 && !isEmbedded || isEmbedded) && pt_1 <= 40 && pt_2 > 35 && abs(eta_2) < 2.1)", "trg_selection"))
 
 class MSSMvsSMET2018(Channel):
     def __init__(self):
