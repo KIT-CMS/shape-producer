@@ -44,7 +44,7 @@ def get_triggerweight_for_channel(channel):
     elif "et" in channel:
         singleMC = "((pt_1>37)*trigger_32_35_Weight_1)"
         trig_sL = "(trg_singleelectron_32)"
-        trig_X = "(pt_1>29 && pt_1<= 37 && trg_crossele_ele24tau30 && trg_crossele_ele24tau30_hps)"
+        trig_X = "(pt_1>29 && pt_1<= 37 && (trg_crossele_ele24tau30 || trg_crossele_ele24tau30_hps))"
 
         # Eff = Eff(singleL)*(1 - Eff(xTau)) + Eff(xL)*Eff(xTau)
         #ElTauMC = "*".join([trig_sL,singleMC,"(1-"+trig_X+"*"+crossMCL+")"])+"+"+"*".join([trig_X,crossMCL,MCTau_2])
