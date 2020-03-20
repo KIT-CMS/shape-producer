@@ -1083,7 +1083,7 @@ class HWWEstimation(EstimationMethod):
             self.get_triggerweight_for_channel(self.channel._name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel.name),
-            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
+            #self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
 
             # Data related scale-factors
@@ -1135,7 +1135,7 @@ class ggHWWEstimation(EstimationMethod):
             self.get_triggerweight_for_channel(self.channel._name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel.name),
-            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
+            #self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
 
             # Data related scale-factors
@@ -1187,7 +1187,7 @@ class qqHWWEstimation(EstimationMethod):
             self.get_triggerweight_for_channel(self.channel._name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel.name),
-            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
+            #self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
 
             # Data related scale-factors
@@ -1239,7 +1239,7 @@ class WHWWEstimation(EstimationMethod):
             self.get_triggerweight_for_channel(self.channel._name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel.name),
-            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
+            #self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
 
             # Data related scale-factors
@@ -1291,7 +1291,7 @@ class ZHWWEstimation(EstimationMethod):
             self.get_triggerweight_for_channel(self.channel._name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel.name),
-            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
+            #self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
 
             # Data related scale-factors
@@ -2171,7 +2171,7 @@ class SUSYggHEstimation(EstimationMethod):
             # self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel.name),
-            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
+            #self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
 
             # Data related scale-factors
             self.era.lumi_weight)
@@ -2229,7 +2229,7 @@ class SUSYbbHEstimation(EstimationMethod):
             # self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel.name),
-            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
+            #self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
 
             # Data related scale-factors
             self.era.lumi_weight)
