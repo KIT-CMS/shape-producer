@@ -463,7 +463,7 @@ class MSSMvsSMMT2016(Channel):
             Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
             Cut("iso_1<0.15", "muon_iso"),
             Cut("q_1*q_2<0", "os"),
-            Cut("pt_1 > 20 && abs(eta_1) < 2.1 && pt_2 > 30 && abs(eta_2) < 2.3","kinematics"),
+            Cut("pt_1 > 20 && abs(eta_1) < 2.1 && pt_2 > 30 && abs(eta_2) < 2.1","kinematics"),
             #Cut("(trg_singlemuon == 1 && pt_1 > 23)","trg_selection"))
             #Cut("(trg_mutaucross == 1 && pt_1 <= 23 && abs(eta_2) < 2.1)","trg_selection"))
             Cut("(trg_singlemuon == 1 && pt_1 > 23) || (trg_mutaucross == 1 && pt_1 <= 23 && abs(eta_2) < 2.1)","trg_selection"))
@@ -481,10 +481,10 @@ class MSSMvsSMMT2017(Channel):
             Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
             Cut("iso_1<0.15", "muon_iso"),
             Cut("q_1*q_2<0", "os"),
-            Cut("pt_1 > 20 && abs(eta_1) < 2.1 && pt_2 > 30 && abs(eta_2) < 2.3","kinematics"),
+            Cut("pt_1 > 20 && abs(eta_1) < 2.1 && pt_2 > 30 && abs(eta_2) < 2.1","kinematics"),
             #Cut("(trg_singlemuon_27 == 1 && pt_1 > 28)","trg_selection"))
             #Cut("(trg_crossmuon_mu20tau27 == 1 && pt_1 <= 28 && pt_1 > 21 && pt_2 > 32 && abs(eta_2) < 2.1)","trg_selection"))
-            Cut("(trg_singlemuon_27 == 1 && pt_1 > 28) || (trg_crossmuon_mu20tau27 == 1 && pt_1 <= 28 && pt_1 > 21 && pt_2 > 32 && abs(eta_2) < 2.1)","trg_selection"))
+            Cut("(trg_singlemuon_27 == 1 && pt_1 > 28) || (trg_crossmuon_mu20tau27 == 1 && pt_1 <= 28 && pt_1 > 21 && pt_2 > 32 && abs(eta_1) < 2.1)","trg_selection"))
 
 class MSSMvsSMMT2018(Channel):
     def __init__(self):
@@ -499,10 +499,10 @@ class MSSMvsSMMT2018(Channel):
             Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
             Cut("iso_1<0.15", "muon_iso"),
             Cut("q_1*q_2<0", "os"),
-            Cut("pt_1 > 20 && abs(eta_1) < 2.1 && pt_2 > 30 && abs(eta_2) < 2.3","kinematics"),
+            Cut("pt_1 > 20 && abs(eta_1) < 2.1 && pt_2 > 30 && abs(eta_2) < 2.1","kinematics"),
             #Cut("(trg_singlemuon_27 == 1 && pt_1 > 28)","trg_selection"))
             #Cut("((trg_crossmuon_mu20tau27 == 1 || trg_crossmuon_mu20tau27_hps == 1) && pt_1 <= 28 && pt_1 > 21 && pt_2 > 32 && abs(eta_2) < 2.1)","trg_selection"))
-            Cut("(trg_singlemuon_27 == 1 && pt_1 > 28) || ((trg_crossmuon_mu20tau27 == 1 || trg_crossmuon_mu20tau27_hps == 1) && pt_1 <= 28 && pt_1 > 21 && pt_2 > 32 && abs(eta_2) < 2.1)","trg_selection"))
+            Cut("(trg_singlemuon_27 == 1 && pt_1 > 28) || ((trg_crossmuon_mu20tau27 == 1 || trg_crossmuon_mu20tau27_hps == 1) && pt_1 <= 28 && pt_1 > 21 && pt_2 > 32 && abs(eta_1) < 2.1)","trg_selection"))
 
 
 # MSSM vs SM ET
@@ -519,7 +519,7 @@ class MSSMvsSMET2016(Channel):
             Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
             Cut("iso_1<0.15", "ele_iso"),
             Cut("q_1*q_2<0", "os"),
-            Cut("pt_1 > 29 && abs(eta_1) < 2.1 && pt_2 > 30 && abs(eta_2) < 2.3","kinematics"),
+            Cut("pt_1 > 29 && abs(eta_1) < 2.1 && pt_2 > 30 && abs(eta_2) < 2.1","kinematics"),
             #Cut("(trg_singleelectron==1 && pt_1 > 30)", "trg_selection"))
             #Cut("(pt_1<=29 && trg_eletaucross==1 && abs(eta_2) < 2.1)", "trg_selection"))
             Cut("(trg_singleelectron==1 && pt_1 > 30) || (pt_1<=29 && trg_eletaucross==1 && abs(eta_2) < 2.1)", "trg_selection"))
@@ -537,7 +537,7 @@ class MSSMvsSMET2017(Channel):
             Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
             Cut("iso_1<0.15", "ele_iso"),
             Cut("q_1*q_2<0", "os"),
-            Cut("pt_1 > 29 && abs(eta_1) < 2.1 && pt_2 > 30 && abs(eta_2) < 2.3","kinematics"),
+            Cut("pt_1 > 29 && abs(eta_1) < 2.1 && pt_2 > 30 && abs(eta_2) < 2.1","kinematics"),
             #Cut("(trg_singleelectron_35 == 1 && pt_1 > 40)", "trg_selection"))
             #Cut("((trg_crossele_ele24tau30 == 1 && !isEmbedded || isEmbedded) && pt_1 <= 40 && pt_2 > 35 && abs(eta_2) < 2.1)", "trg_selection"))
             Cut("(trg_singleelectron_35 == 1 && pt_1 > 40) || ((trg_crossele_ele24tau30 == 1 && !isEmbedded || isEmbedded) && pt_1 <= 40 && pt_2 > 35 && abs(eta_2) < 2.1)", "trg_selection"))
@@ -555,7 +555,7 @@ class MSSMvsSMET2018(Channel):
             Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
             Cut("iso_1<0.15", "ele_iso"),
             Cut("q_1*q_2<0", "os"),
-            Cut("pt_1 > 29 && abs(eta_1) < 2.1 && pt_2 > 30 && abs(eta_2) < 2.3","kinematics"),
+            Cut("pt_1 > 29 && abs(eta_1) < 2.1 && pt_2 > 30 && abs(eta_2) < 2.1","kinematics"),
             #Cut("(trg_singleelectron_32 == 1 && pt_1 > 37)", "trg_selection"))
             #Cut("((trg_crossele_ele24tau30 == 1 || trg_crossele_ele24tau30_hps == 1) && pt_1 <= 37 && pt_2 > 35 && abs(eta_2) < 2.1)", "trg_selection"))
             Cut("(trg_singleelectron_32 == 1 && pt_1 > 37) || ((trg_crossele_ele24tau30 == 1 || trg_crossele_ele24tau30_hps == 1) && pt_1 <= 37 && pt_2 > 35 && abs(eta_2) < 2.1)", "trg_selection"))
