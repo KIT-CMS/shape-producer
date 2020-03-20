@@ -922,7 +922,7 @@ class SUSYggHEstimation(EstimationMethod):
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,):
         super(SUSYggHEstimation, self).__init__(
-            name="_".join(contribution,str(mass)]),
+            name="_".join([contribution,str(mass)]),
             folder=folder,
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
