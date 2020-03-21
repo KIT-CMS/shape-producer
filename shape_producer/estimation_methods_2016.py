@@ -340,7 +340,7 @@ class HTTEstimation(EstimationMethod):
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
-            #self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
             get_eleRecoWeight_for_channel(self.channel.name),
@@ -664,7 +664,7 @@ class HWWEstimation(EstimationMethod):
                    "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
             Weight("prefiringweight", "prefireWeight"),
-            #self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
             self.era.lumi_weight)
 
@@ -723,7 +723,7 @@ class ggHWWEstimation(EstimationMethod):
                    "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
             Weight("prefiringweight", "prefireWeight"),
-            #self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
             self.era.lumi_weight)
 
@@ -782,7 +782,7 @@ class qqHWWEstimation(EstimationMethod):
                    "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
             Weight("prefiringweight", "prefireWeight"),
-            #self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
             self.era.lumi_weight)
 
@@ -841,7 +841,7 @@ class WHWWEstimation(EstimationMethod):
                    "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
             Weight("prefiringweight", "prefireWeight"),
-            #self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
             self.era.lumi_weight)
 
@@ -900,7 +900,7 @@ class ZHWWEstimation(EstimationMethod):
                    "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
             Weight("prefiringweight", "prefireWeight"),
-            #self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
             self.era.lumi_weight)
 
@@ -958,7 +958,7 @@ class SUSYggHEstimation(EstimationMethod):
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
             Weight("prefiringweight", "prefireWeight"),
-            #self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
 
             # Data related scale-factors
@@ -1010,7 +1010,7 @@ class SUSYbbHEstimation(EstimationMethod):
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
             Weight("prefiringweight", "prefireWeight"),
-            #self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
 
             # Data related scale-factors
@@ -1145,7 +1145,7 @@ class DYJetsToLLEstimation(EstimationMethod):
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
             self.get_triggerweight_for_channel(self.channel.name),
-            #self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
@@ -1555,7 +1555,7 @@ class WEstimation(EstimationMethod):
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
-            #self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
             get_eleRecoWeight_for_channel(self.channel.name),
@@ -1622,7 +1622,7 @@ class EWKWpEstimation(EstimationMethod):
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
-            #self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
             get_eleRecoWeight_for_channel(self.channel.name),
@@ -1677,7 +1677,7 @@ class EWKWmEstimation(EstimationMethod):
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
-            #self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
             get_eleRecoWeight_for_channel(self.channel.name),
@@ -1736,7 +1736,7 @@ class WEstimationRaw(EstimationMethod):
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
-            #self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
             get_eleRecoWeight_for_channel(self.channel.name),
@@ -1888,7 +1888,7 @@ class TTEstimation(EstimationMethod):
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
-            #self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight","leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
             get_eleRecoWeight_for_channel(self.channel.name),
@@ -2053,7 +2053,7 @@ class VVEstimation(EstimationMethod):
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
-            #self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
             get_eleRecoWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
