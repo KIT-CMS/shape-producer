@@ -1064,7 +1064,7 @@ class HWWEstimation(EstimationMethod):
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel.name),
             #self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
-            Weight("prefiringweight", "prefireWeight"),
+            #Weight("prefiringweight", "prefireWeight"),
 
             # Data related scale-factors
             self.era.lumi_weight)
@@ -1116,7 +1116,7 @@ class ggHWWEstimation(EstimationMethod):
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel.name),
             #self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
-            Weight("prefiringweight", "prefireWeight"),
+            #Weight("prefiringweight", "prefireWeight"),
 
             # Data related scale-factors
             self.era.lumi_weight)
@@ -1168,7 +1168,7 @@ class qqHWWEstimation(EstimationMethod):
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel.name),
             #self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
-            Weight("prefiringweight", "prefireWeight"),
+            #Weight("prefiringweight", "prefireWeight"),
 
             # Data related scale-factors
             self.era.lumi_weight)
@@ -1220,7 +1220,7 @@ class WHWWEstimation(EstimationMethod):
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel.name),
             #self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
-            Weight("prefiringweight", "prefireWeight"),
+            #Weight("prefiringweight", "prefireWeight"),
 
             # Data related scale-factors
             self.era.lumi_weight)
@@ -1272,14 +1272,14 @@ class ZHWWEstimation(EstimationMethod):
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel.name),
             #self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
-            Weight("prefiringweight", "prefireWeight"),
+            #Weight("prefiringweight", "prefireWeight"),
 
             # Data related scale-factors
             self.era.lumi_weight)
 
     def get_files(self):
         query = {
-            "process": "^HW(minus|plus)J_HToWW_M125",
+            "process": "(^HZJ_HToWW_M125|^GluGluZH_HToWW_M125)",
             "data": False,
             "campaign": self._mc_campaign,
             "generator": "powheg\-pythia8"
