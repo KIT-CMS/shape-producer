@@ -66,17 +66,17 @@ def get_triggerweight_for_channel(channel):
     MCTau_2 = MCTau_1.replace("_1", "_2")
 
     if "mt" in channel:
-        trig_sL = "(trg_singlemuon)"
-        trig_X = "(pt_1 <= 23 && abs(eta_2)<2.1 && trg_mutaucross)"
+        trig_sL = "(trg_singlemuon == 1 && pt_1 > 23)"
+        trig_X = "(trg_mutaucross == 1 && pt_1 <= 23)"
 
         MuTauMC = "*".join([trig_sL, singleMC]) + "+" + "*".join([trig_X, crossMCL, MCTau_2])
         MuTauData = MuTauMC.replace("MC", "Data")
-        MuTau = "(" + MuTauData + ")/(" + MuTauMC + "+((abs(eta_2)>2.1)))"
+        MuTau = "(" + MuTauData + ")/(" + MuTauMC + ")"
         weight = Weight(MuTau, "triggerweight")
 
     elif "et" in channel:
-        trig_sL = "(trg_singleelectron)"
-        trig_X = "(pt_1 > 29 && pt_1 <= 30 && trg_eletaucross)"
+        trig_sL = "(trg_singleelectron==1 && pt_1 > 30)"
+        trig_X = "(trg_eletaucross==1 && pt_1<=30)"
 
         ElTauMC = "*".join([trig_sL, singleMC]) + "+" + "*".join([trig_X, crossMCL, MCTau_2])
         ElTauData = ElTauMC.replace("MC", "Data")
@@ -1425,8 +1425,8 @@ class ZTTEmbeddedEstimation(EstimationMethod):
         EMBTau_2 = EMBTau_1.replace("_1", "_2")
 
         if "mt" in channel:
-            trig_sL = "(trg_singlemuon)"
-            trig_X = "(pt_1 <= 23 && trg_mutaucross)"
+            trig_sL = "(trg_singlemuon == 1 && pt_1 > 23)"
+            trig_X = "(trg_mutaucross == 1 && pt_1 <= 23)"
 
             MuTauEMB = "{singletrigger} + {crosstrigger}".format(
                 singletrigger="*".join([trig_sL, singleEMB]),
@@ -1436,8 +1436,8 @@ class ZTTEmbeddedEstimation(EstimationMethod):
             weight = Weight(MuTau, "triggerweight")
 
         elif "et" in channel:
-            trig_sL = "(trg_singleelectron)"
-            trig_X = "(pt_1 > 29 && pt_1 <= 30 && trg_eletaucross)"
+            trig_sL = "(trg_singleelectron==1 && pt_1 > 30)"
+            trig_X =  "(trg_eletaucross==1 && pt_1<=30)"
 
             ElTauEMB = "{singletrigger} + {crosstrigger}".format(
                 singletrigger="*".join([trig_sL, singleEMB]),
