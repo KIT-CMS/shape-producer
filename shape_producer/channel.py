@@ -242,7 +242,7 @@ class EM2016(Channel):
             Cut("iso_1<0.15", "ele_iso"), Cut("iso_2<0.2", "muon_iso"),
             Cut("q_1*q_2<0", "os"),
             Cut("abs(eta_1)<2.4", "electron_eta"),
-            Cut("pt_1>15 && pt_2>10 && ((pt_1>13 && pt_2>24 && trg_muonelectron_mu23ele12 == 1) || (pt_1>24 && pt_2>10 && trg_muonelectron_mu8ele23 == 1))","trg_selection"))
+            Cut("pt_1>15 && pt_2>15 && ((pt_1>15 && pt_2>24 && trg_muonelectron_mu23ele12 == 1) || (pt_1>24 && pt_2>15 && trg_muonelectron_mu8ele23 == 1))","trg_selection"))
 
 
 class EM2017(Channel):
@@ -256,7 +256,7 @@ class EM2017(Channel):
             Cut("iso_1<0.15", "ele_iso"), Cut("iso_2<0.2", "muon_iso"),
             Cut("q_1*q_2<0", "os"),
             Cut("abs(eta_1)<2.4","electron_eta"),
-            Cut("pt_1>15 && pt_2>10 && ((trg_muonelectron_mu23ele12 == 1) || (trg_muonelectron_mu8ele23 == 1))",
+            Cut("pt_1>15 && pt_2>15 && ((trg_muonelectron_mu23ele12 == 1) || (trg_muonelectron_mu8ele23 == 1))",
                 "trg_selection"))
 
 
@@ -271,7 +271,7 @@ class EM2018(Channel):
             Cut("iso_1<0.15", "ele_iso"), Cut("iso_2<0.2", "muon_iso"),
             Cut("q_1*q_2<0", "os"),
             Cut("abs(eta_1)<2.4", "electron_eta"),
-            Cut("(trg_muonelectron_mu23ele12 == 1 && pt_1>15 && pt_2 > 24) || (trg_muonelectron_mu8ele23 == 1 && pt_1>24 && pt_2>10)",
+            Cut("(trg_muonelectron_mu23ele12 == 1 && pt_1>15 && pt_2 > 24) || (trg_muonelectron_mu8ele23 == 1 && pt_1>24 && pt_2>15)",
                 "trg_selection"))
 
 
