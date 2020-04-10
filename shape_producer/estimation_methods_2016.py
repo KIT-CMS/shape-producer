@@ -525,6 +525,7 @@ class WHEstimation(HTTEstimation):
             directory,
             channel,
             friend_directory=None,
+            folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
@@ -565,6 +566,7 @@ class ZHEstimation(HTTEstimation):
             directory,
             channel,
             friend_directory=None,
+            folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
@@ -611,6 +613,7 @@ class ttHEstimation(HTTEstimation):
             directory,
             channel,
             friend_directory=None,
+            folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):

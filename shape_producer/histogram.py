@@ -313,12 +313,12 @@ def check_filepath(inputfile):
         status, info = myclient.stat(filepath)
         if info is None:
             logger.fatal("File not found: {}".format(inputfile))
-            raise Exception
+            raise Exception("File not found: {}".format(inputfile))
     else:
         # check is file is available locally
         if os.path.isfile(inputfile) is False:
             logger.fatal("File not found: {}".format(inputfile))
-            raise Exception
+            raise Exception("File not found: {}".format(inputfile))
 
 
 # automatic determination of the type
