@@ -24,6 +24,7 @@ class DatasetsHelper(object):
 class DatasetsHelperLight(object):
     def __init__(self, database_path):
         self._database_path = database_path
+        self.database = self._load_database()
 
     def _load_database(self):
         if not os.path.exists(self._database_path):
@@ -33,10 +34,9 @@ class DatasetsHelperLight(object):
         return json.load(open(self._database_path, "r"))
 
     def get_nicks_with_query(self, query):
-        database = self._load_database()
         nicks = []
-        for entry in database:
-            passed = self._check_recursively(entry, query, database)
+        for entry in self.database:
+            passed = self._check_recursively(entry, query, self.database)
             if passed:
                 nicks.append(entry)
         return nicks
