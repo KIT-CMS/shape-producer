@@ -71,7 +71,7 @@ def get_triggerweight_for_channel(channel):
 
         MuTauMC = "*".join([trig_sL, singleMC]) + "+" + "*".join([trig_X, crossMCL, MCTau_2])
         MuTauData = MuTauMC.replace("MC", "Data")
-        MuTau = "(" + MuTauData + ")/(" + MuTauMC + "+((abs(eta_2)>2.1)))"
+        MuTau = "(" + MuTauData + ")/(" + MuTauMC + ")"
         weight = Weight(MuTau, "triggerweight")
 
     elif "et" in channel:
