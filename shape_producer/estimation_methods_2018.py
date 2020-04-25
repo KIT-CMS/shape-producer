@@ -787,7 +787,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                        "simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
                 Weight("idWeight_1*isoWeight_1", "lepton_sf"),  # hotfix
-                Weight("(crossTriggerEmbeddedWeight_1*(crossTriggerCorrectedDataEfficiencyWeight_tight_DeepTau_2/((pt_1<33)*crossTriggerCorrectedEMBEfficiencyWeight_tight_DeepTau_2+(pt_1>=33)))*(pt_1<33)+(pt_1>=36)*trigger_32_35_Weight_1+(pt_1>=33)*(pt_1<36)*(trigger_32_Weight_1))", "triggerweight")
+                Weight("(crossTriggerEmbeddedWeight_1*(crossTriggerCorrectedDataEfficiencyWeight_tight_DeepTau_2/((pt_1<33)*crossTriggerCorrectedEMBEfficiencyWeight_tight_DeepTau_2+(pt_1>=33)))*(pt_1<33)+(pt_1>=36)*trigger_32_35_Weight_1+(pt_1>=33)*(pt_1<36)*(trigger_32_Weight_1))", "triggerweight"),
                 # Weight("idWeight_1*isoWeight_1*(crossTriggerEmbeddedWeight_1*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/((pt_1<33)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_2+(pt_1>=33)))*(pt_1<33)+(pt_1>=33)*trigger_32_35_Weight_1)", "lepton_sf"),
                 self.get_tauByIsoIdWeight_for_channel(self.channel.name),
                 # Weight("(pt_2<=20)*1.0+(pt_2>20&&pt_2<=25)*0.93+(pt_2>25&&pt_2<=30)*1.07+(pt_2>30&&pt_2<=35)*1.07+(pt_2>35&&pt_2<=40)*1.08+(pt_2>40)*1.05", "emb_tauID_correction_weight"),
