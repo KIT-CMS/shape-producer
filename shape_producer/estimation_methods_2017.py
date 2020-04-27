@@ -331,9 +331,9 @@ class VVEstimation(EstimationMethod):
 
     def get_files(self):
         query = {
-            "process": "(WW|ZZ|WZ)$",  # Query for Di-Boson samples
+            "process": "(VVTo2L2Nu|WZTo3LNu|WZTo2L2Q|ZZTo2L2Q|ZZTo4L)$",  # Query for Di-Boson samples
             "data": False,
-            "generator": "^pythia8",
+            "generator": "amcatnlo-pythia8",
             "campaign": self._mc_campaign
         }
         files = self.era.datasets_helper.get_nicks_with_query(query)
@@ -1041,7 +1041,7 @@ class TTEstimation(EstimationMethod):
             Weight("idWeight_1*idWeight_2","idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
-            Weight("topPtReweightWeightRun2", "topPtReweightWeight"),
+            Weight("topPtReweightWeightTTH", "topPtReweightWeight"),
             self.get_triggerweight_for_channel(self.channel._name),
             # self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),

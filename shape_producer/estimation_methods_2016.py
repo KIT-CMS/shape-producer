@@ -1904,7 +1904,7 @@ class TTEstimation(EstimationMethod):
 
     def get_weights(self):
         return Weights(
-            Weight("topPtReweightWeightRun2", "topPtReweightWeight"),
+            Weight("topPtReweightWeightTTH", "topPtReweightWeight"),
             Weight("isoWeight_1*isoWeight_2", "isoWeight"),
             Weight("idWeight_1*idWeight_2", "idWeight"),
             Weight("puweight", "puweight"),
@@ -1925,7 +1925,7 @@ class TTEstimation(EstimationMethod):
 
     def get_files(self):
         query = {
-            "process": "^TT$",
+            "process": "TTTo(2L2Nu|Hadronic|SemiLeptonic).*",
             "data": False,
             "campaign": self._mc_campaign
         }
@@ -2089,12 +2089,19 @@ class VVEstimation(EstimationMethod):
 
     def get_files(self):
         query = {
-            "process": "(WW|ZZ|WZ)$",  # Query for Di-Boson samples
+            "process": "(WZTo3LNu|WZTo2L2Q|ZZTo2L2Q|ZZTo4L)$",  # Query for Di-Boson samples
             "data": False,
-            "campaign": self._mc_campaign,
-            "generator": "pythia8"
+            "generator": "amcatnlo-pythia8",
+            "campaign": self._mc_campaign
         }
         files = self.era.datasets_helper.get_nicks_with_query(query)
+        query = {
+            "process": "(VVTo2L2Nu)$",  # Query for Di-Boson samples
+            "data": False,
+            "extension": "ext1",
+            "campaign": self._mc_campaign
+        }
+        files += self.era.datasets_helper.get_nicks_with_query(query)
 
         query = {
             "process":
