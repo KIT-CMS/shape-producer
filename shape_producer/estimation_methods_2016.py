@@ -66,7 +66,7 @@ def get_triggerweight_for_channel(channel):
     MCTau_2 = MCTau_1.replace("_1", "_2")
 
     if "mt" in channel:
-        trig_sL = "(trg_singlemuon)"
+        trig_sL = "(pt_1 >= 23 && trg_singlemuon)"
         trig_X = "(pt_1 < 23 && trg_mutaucross && abs(eta_2)<2.1)"
 
         MuTauMC = "*".join([trig_sL, singleMC]) + "+" + "*".join([trig_X, crossMCL, MCTau_2])
@@ -1440,7 +1440,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
         EMBTau_2 = EMBTau_1.replace("_1", "_2")
 
         if "mt" in channel:
-            trig_sL = "(trg_singlemuon)"
+            trig_sL = "(pt_1 >= 23 && trg_singlemuon)"
             trig_X = "(pt_1 < 23 && trg_mutaucross)"
 
             MuTauEMB = "{singletrigger} + {crosstrigger}".format(
