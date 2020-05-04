@@ -119,7 +119,7 @@ class MT2016(Channel):
             Cut("byTightDeepTau2017v2p1VSjet_2>0.5", "tau_iso"),
             Cut("iso_1<0.15", "muon_iso"),
             Cut("q_1*q_2<0", "os"),
-            Cut("pt_2>30 && ((trg_singlemuon == 1) || (trg_mutaucross == 1 && pt_1 < 23 && abs(eta_2)<2.1))","trg_selection")
+            Cut("pt_2>30 && ((pt_1 >= 23 && trg_singlemuon == 1) || (trg_mutaucross == 1 && pt_1 < 23 && abs(eta_2)<2.1))","trg_selection")
         )
 
 
