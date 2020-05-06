@@ -1213,6 +1213,7 @@ class DYJetsToLLEstimation(EstimationMethod):
             "data": False,
             "campaign": self._mc_campaign,
             "generator": "madgraph\-pythia8",
+            "extension": "ext2"
         }
         queryM50NLO_inc = {
             "process": "DYJetsToLL_M50",
@@ -1266,7 +1267,8 @@ class EWKZEstimation(DYJetsToLLEstimation):
             "process": "^EWKZ",
             "data": False,
             "campaign": self._mc_campaign,
-            "generator": "madgraph\-pythia8"
+            "generator": "madgraph\-pythia8",
+            "extension": "ext2"
         }
         files = self.era.datasets_helper.get_nicks_with_query(query_ewkz)
         log_query(self.name, query_ewkz, files)
@@ -1602,6 +1604,7 @@ class WEstimation(EstimationMethod):
             "data": False,
             "campaign": self._mc_campaign,
             "generator": "madgraph\-pythia8",
+            "extension": "ext2"
         }
         files += self.era.datasets_helper.get_nicks_with_query(query)
         log_query(self.name, query, files)
