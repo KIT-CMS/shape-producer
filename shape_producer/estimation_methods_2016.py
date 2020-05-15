@@ -17,7 +17,10 @@ logger = logging.getLogger(__name__)
 ggH_htxs = {
     "ggH125": "(htxs_stage1p1cat>=100)&&(htxs_stage1p1cat<=113)",
     "ggH_GG2H_FWDH125": "htxs_stage1p1cat == 100",
-    "ggH_GG2H_PTH_GT200125": "htxs_stage1p1cat == 101",
+    "ggH_GG2H_PTH_200_300125": "(htxs_stage1p1cat == 101)&&(genbosonpt<300)",
+    "ggH_GG2H_PTH_300_450125": "(htxs_stage1p1cat == 101)&&(genbosonpt>=300)&&(genbosonpt<450)",
+    "ggH_GG2H_PTH_450_650125": "(htxs_stage1p1cat == 101)&&(genbosonpt>=450)&&(genbosonpt<650)",
+    "ggH_GG2H_PTH_GT650125": "(htxs_stage1p1cat == 101)&&(genbosonpt>=650)",
     "ggH_GG2H_0J_PTH_0_10125": "htxs_stage1p1cat == 102",
     "ggH_GG2H_0J_PTH_GT10125": "htxs_stage1p1cat == 103",
     "ggH_GG2H_1J_PTH_0_60125": "htxs_stage1p1cat == 104",
