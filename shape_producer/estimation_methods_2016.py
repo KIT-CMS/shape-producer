@@ -318,6 +318,57 @@ class FakeEstimationTT(DataEstimation):
                      self).create_root_objects(aiso_systematic)
 
 
+class NMSSMEstimation(EstimationMethod):
+    def __init__(self, era, directory, channel, friend_directory=None, folder="nominal", heavy_mass = -1, light_mass= -1,
+            get_triggerweight_for_channel=get_triggerweight_for_channel,
+            get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel):
+        super(NMSSMEstimation, self).__init__(
+            name="NMSSM_{}_125_{}".format(heavy_mass, light_mass),
+            folder=folder,
+            get_triggerweight_for_channel=get_triggerweight_for_channel,
+            get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+            era=era,
+            heavy_mass = heavy_mass,
+            light_mass = light_mass,
+            directory=directory,
+            channel=channel,
+            friend_directory=friend_directory,
+            mc_campaign="RunIISummer16MiniAODv3")
+
+    def get_weights(self):
+        return Weights(
+            Weight("isoWeight_1*isoWeight_2", "isoWeight"),
+            Weight("idWeight_1*idWeight_2", "idWeight"),
+            self.get_tauByIsoIdWeight_for_channel(self.channel),
+            Weight("puweight", "puweight"),
+            Weight("trackWeight_1*trackWeight_2", "trackweight"),
+            self.get_triggerweight_for_channel(self.channel._name),
+            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
+                   "leptonTauFakeRateWeight"),
+            get_eleRecoWeight_for_channel(self.channel.name),
+            Weight("prefiringweight", "prefireWeight"),
+            # MC weights
+            Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
+            Weight("numberGeneratedEventsWeight",
+                   "numberGeneratedEventsWeight"),
+            Weight("generatorWeight", "generatorWeight"),
+            self.era.lumi_weight)
+
+    def get_files(self):
+        query = {
+            "process": "NMSSMM{}h1M125tautauh2M{}".format(self.heavy_mass, self.light_mass),
+            "data": False,
+            "campaign": self._mc_campaign,
+            "generator": "madgraph\-pythia8"
+        } 
+        files = self.era.datasets_helper.get_nicks_with_query(query)
+        files = [x for x in files if str(self.light_mass)+"_" in x]
+        log_query(self.name, query, files)
+        return self.artus_file_names(files)
+
 class HTTEstimation(EstimationMethod):
     def __init__(
             self,

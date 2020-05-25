@@ -73,7 +73,7 @@ class MT2017(Channel):
     def __init__(self):
         self._name = "mt"
         self._cuts = Cuts(
-            Cut("mt_1_puppi<70", "transverse_mass"),
+            Cut("nbtag>0", "btag"),
             Cut("flagMETFilter == 1", "METFilter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
@@ -91,7 +91,7 @@ class MT2018(Channel):
     def __init__(self):
         self._name = "mt"
         self._cuts = Cuts(
-            Cut("mt_1_puppi<70", "transverse_mass"),
+            Cut("nbtag>0", "btag"),
             Cut("flagMETFilter == 1", "METFilter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
@@ -109,7 +109,7 @@ class MT2016(Channel):
     def __init__(self):
         self._name = "mt"
         self._cuts = Cuts(
-            Cut("mt_1_puppi<70", "transverse_mass"),
+            Cut("nbtag>0", "btag"),
             Cut("flagMETFilter==1", "met_filter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
@@ -128,7 +128,7 @@ class ET2017(Channel):
     def __init__(self):
         self._name = "et"
         self._cuts = Cuts(
-            Cut("mt_1_puppi<70", "transverse_mass"),
+            Cut("nbtag>0", "btag"),
             Cut("flagMETFilter == 1", "METFilter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
@@ -146,7 +146,7 @@ class ET2018(Channel):
     def __init__(self):
         self._name = "et"
         self._cuts = Cuts(
-            Cut("mt_1_puppi<70", "transverse_mass"),
+            Cut("nbtag>0", "btag"),
             Cut("flagMETFilter == 1", "METFilter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
@@ -164,7 +164,7 @@ class ET2016(Channel):
     def __init__(self):
         self._name = "et"
         self._cuts = Cuts(
-            Cut("mt_1_puppi<70", "transverse_mass"),
+            Cut("nbtag>0", "btag"),
             Cut("flagMETFilter==1", "met_filter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
@@ -183,6 +183,7 @@ class TT2016(Channel):
     def __init__(self):
         self._name = "tt"
         self._cuts = Cuts(
+            Cut("nbtag>0", "btag"),
             Cut("flagMETFilter==1", "met_filter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
@@ -200,6 +201,7 @@ class TT2017(Channel):
     def __init__(self):
         self._name = "tt"
         self._cuts = Cuts(
+            Cut("nbtag>0", "btag"),
             Cut("flagMETFilter == 1", "METFilter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
@@ -220,6 +222,7 @@ class TT2018(Channel):
     def __init__(self):
         self._name = "tt"
         self._cuts = Cuts(
+            Cut("nbtag>0", "btag"),
             Cut("flagMETFilter == 1", "METFilter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
@@ -241,6 +244,7 @@ class EM2016(Channel):
     def __init__(self):
         self._name = "em"
         self._cuts = Cuts(
+            Cut("nbtag>0", "btag"),
             Cut("flagMETFilter == 1", "METFilter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
@@ -255,6 +259,7 @@ class EM2017(Channel):
     def __init__(self):
         self._name = "em"
         self._cuts = Cuts(
+            Cut("nbtag>0", "btag"),
             Cut("flagMETFilter == 1", "METFilter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
@@ -270,6 +275,7 @@ class EM2018(Channel):
     def __init__(self):
         self._name = "em"
         self._cuts = Cuts(
+            Cut("nbtag>0", "btag"),
             Cut("flagMETFilter == 1", "METFilter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
@@ -303,10 +309,6 @@ class TTSM2016(TT2016):
 class EMSM2016(EM2016):
     def __init__(self, **kvargs):
         super(EMSM2016, self).__init__(**kvargs)
-        self._cuts.add(
-            Cut("nbtag==0 && mTdileptonMET_puppi<60", "bveto_mTdileptonMET"),
-        )
-
 
 class MMSM2016(MM2016):
     def __init__(self, **kvargs):
@@ -337,10 +339,6 @@ class TTSM2017(TT2017):
 class EMSM2017(EM2017):
     def __init__(self, **kvargs):
         super(EMSM2017, self).__init__(**kvargs)
-        self._cuts.add(
-            Cut("nbtag==0 && mTdileptonMET_puppi<60", "bveto_mTdileptonMET"),
-        )
-
 
 class MMSM2017(MM2017):
     def __init__(self, **kvargs):
@@ -371,10 +369,6 @@ class TTSM2018(TT2018):
 class EMSM2018(EM2018):
     def __init__(self, **kvargs):
         super(EMSM2018, self).__init__(**kvargs)
-        self._cuts.add(
-            Cut("nbtag==0 && mTdileptonMET_puppi<60", "bveto_mTdileptonMET"),
-        )
-
 
 class MMSM2018(MM2018):
     def __init__(self, **kvargs):

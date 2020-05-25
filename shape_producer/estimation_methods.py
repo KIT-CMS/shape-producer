@@ -23,7 +23,9 @@ class EstimationMethod(object):
                  get_triggerweight_for_channel=None,
                  get_singlelepton_triggerweight_for_channel=None,
                  get_tauByIsoIdWeight_for_channel=None,
-                 get_eleHLTZvtxWeight_for_channel=None,):
+                 get_eleHLTZvtxWeight_for_channel=None,
+                 heavy_mass=None,
+                 light_mass=None):
         self._directory = directory
         self._folder = folder
         self._name = name
@@ -38,6 +40,8 @@ class EstimationMethod(object):
         self.get_singlelepton_triggerweight_for_channel = get_singlelepton_triggerweight_for_channel
         self.get_tauByIsoIdWeight_for_channel = get_tauByIsoIdWeight_for_channel
         self.get_eleHLTZvtxWeight_for_channel = get_eleHLTZvtxWeight_for_channel
+        self.heavy_mass = heavy_mass
+        self.light_mass = light_mass
         for i in ['get_triggerweight_for_channel', 'get_singlelepton_triggerweight_for_channel', 'get_tauByIsoIdWeight_for_channel', 'get_eleHLTZvtxWeight_for_channel']:
             if getattr(self, i) is None:
                 setattr(self, i, lambda x=None: (_ for _ in ()).throw(
