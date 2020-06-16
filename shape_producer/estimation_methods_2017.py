@@ -307,6 +307,10 @@ class VVEstimation(EstimationMethod):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -315,7 +319,7 @@ class VVEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel.name),
@@ -492,6 +496,10 @@ class EWKZEstimation(EstimationMethod):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -501,7 +509,7 @@ class EWKZEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel.name),
@@ -552,6 +560,10 @@ class DYJetsToLLEstimation(EstimationMethod):
         else:
             z_stitching_weight = Weight("((genbosonmass >= 50.0)*6.2139e-05*((npartons == 0 || npartons >= 5)*1.0 + (npartons == 1)*0.1743 + (npartons == 2)*0.3556 + (npartons == 3)*0.2273 + (npartons == 4)*0.2104) + (genbosonmass < 50.0)*numberGeneratedEventsWeight*crossSectionPerEventWeight)","z_stitching_weight")
               # xsec_NNLO [pb] = 2025.74*3, N_inclusive = 97800939, xsec_NNLO/N_inclusive = 6.2139e-05 [pb] weights: [1.0, 0.1743347690195873, 0.3556373947627093, 0.22728901609456784, 0.21040417678899315]
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -559,7 +571,7 @@ class DYJetsToLLEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
@@ -804,7 +816,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
 
                 # Weight("(pt_1>=28)+(pt_1<28)*((abs(eta_1)>=1.5)*crossTriggerDataEfficiencyWeight_1*crossTriggerDataEfficiencyWeight_tight_DeepTau_2+(abs(eta_1)<1.5)*crossTriggerEmbeddedWeight_1*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/((pt_1<28)*(abs(eta_1)<1.5)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_2+(pt_1>=28)+(abs(eta_1)>=1.5))))","cross_trg_weight"),
                 # Weight("((pt_1>=28)+(pt_1<28)*((abs(eta_1)>=1.5)*crossTriggerDataEfficiencyWeight_1*crossTriggerDataEfficiencyWeight_tight_DeepTau_2+(abs(eta_1)<1.5)*crossTriggerEmbeddedWeight_1*(crossTriggerDataEfficiencyWeight_tight_DeepTau_2/((pt_1<28)*(abs(eta_1)<1.5)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_2+(pt_1>=28)+(abs(eta_1)>=1.5)))))<10.0","cross_trg_cut"),
-                Weight("idWeight_1*isoWeight_1*((pt_1>28)*(((pt_1<33)*trigger_27_Weight_1+(pt_1>=33)*(pt_1<36)*trigger_27_32_Weight_1+(pt_1>=36)*trigger_27_32_35_Weight_1)*(abs(eta_1) < 1.5||pt_1>=40) + singleTriggerDataEfficiencyWeightKIT_1*(abs(eta_1)>=1.5)*(pt_1<40))+(pt_1<28))", "lepton_sf"),
+                Weight("id_weight_new*isoWeight_1*((pt_1>28)*(((pt_1<33)*trigger_27_Weight_1+(pt_1>=33)*(pt_1<36)*trigger_27_32_Weight_1+(pt_1>=36)*trigger_27_32_35_Weight_1)*(abs(eta_1) < 1.5||pt_1>=40) + singleTriggerDataEfficiencyWeightKIT_1*(abs(eta_1)>=1.5)*(pt_1<40))+(pt_1<28))", "lepton_sf"),
                 Weight("(idWeight_1*((pt_1>28)*(trigger_27_32_35_Weight_1*(abs(eta_1) < 1.5||pt_1>=40) + singleTriggerDataEfficiencyWeightKIT_1*(abs(eta_1)>=1.5)*(pt_1<40))+(pt_1<28))*isoWeight_1)<10.0", "lepton_cut"),
                 self.get_tauByIsoIdWeight_for_channel(self.channel.name),
                 # Weight("(pt_2<=20)*1.0+(pt_2>20&&pt_2<=25)*1.08+(pt_2>25&&pt_2<=30)*1.05+(pt_2>30&&pt_2<=35)*1.11+(pt_2>35&&pt_2<=40)*1.09+(pt_2>40)*1.10", "emb_tauID_correction_weight"),
@@ -827,7 +839,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("generatorWeight", "simulation_sf"),
                 Weight("(gen_match_1==3 && gen_match_2==4)", "emb_gen_match"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
-                Weight("0.99*trackWeight_1*trackWeight_2*idWeight_1*isoWeight_1*idWeight_2*looseIsoWeight_2",
+                Weight("0.99*trackWeight_1*trackWeight_2*id_weight_new*isoWeight_1*idWeight_2*looseIsoWeight_2",
                        "idiso_lepton_sf"),
                 Weight("(trigger_23_data_Weight_2*trigger_12_data_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_data_Weight_1*trigger_8_data_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_data_Weight_2*trigger_23_data_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))/(trigger_23_embed_Weight_2*trigger_12_embed_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_embed_Weight_1*trigger_8_embed_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_embed_Weight_2*trigger_23_embed_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))",
                        "trigger_lepton_sf"))
@@ -965,6 +977,10 @@ class WEstimation(EstimationMethod):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -975,7 +991,7 @@ class WEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
@@ -1028,6 +1044,10 @@ class TTEstimation(EstimationMethod):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -1038,7 +1058,7 @@ class TTEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             Weight("topPtReweightWeightTTH", "topPtReweightWeight"),
@@ -1184,6 +1204,10 @@ class HTTEstimation(EstimationMethod):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -1193,7 +1217,7 @@ class HTTEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
@@ -1237,6 +1261,10 @@ class HWWEstimation(EstimationMethod):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -1246,7 +1274,7 @@ class HWWEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
@@ -1289,6 +1317,10 @@ class ggHWWEstimation(EstimationMethod):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -1298,7 +1330,7 @@ class ggHWWEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
@@ -1341,6 +1373,10 @@ class qqHWWEstimation(EstimationMethod):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -1350,7 +1386,7 @@ class qqHWWEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
@@ -1393,6 +1429,10 @@ class WHWWEstimation(EstimationMethod):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -1402,7 +1442,7 @@ class WHWWEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
@@ -1445,6 +1485,10 @@ class ZHWWEstimation(EstimationMethod):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -1454,7 +1498,7 @@ class ZHWWEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
@@ -1712,7 +1756,10 @@ class SUSYggHEstimation(EstimationMethod):
         contribution_weight = "1.0"
         if self.contribution in ["A_i", "A_t", "A_b", "H_i", "H_t", "H_b", "h_i", "h_t", "h_b"]:
             contribution_weight = "gg%s_weight"%self.contribution
-
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -1723,7 +1770,7 @@ class SUSYggHEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
@@ -1773,6 +1820,10 @@ class SUSYbbHEstimation(EstimationMethod):
         ]
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -1782,7 +1833,7 @@ class SUSYbbHEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
@@ -2073,6 +2124,99 @@ class NewFakeEstimationLT(NewFakeEstimationMethodLT):
                 "byTightDeepTau2017v2p1VSjet_2<0.5&&byVLooseDeepTau2017v2p1VSjet_2>0.5",
                 "tau_aiso"),
             fakeWeightstring="ff2_nom")
+
+class NewFakeEstimationLTW(NewFakeEstimationMethodLT):
+    def __init__(self,
+            era,
+            directory,
+            channel,
+            nofake_processes,
+            data_process,
+            friend_directory=None,
+            folder="nominal",
+            get_triggerweight_for_channel=get_triggerweight_for_channel,
+            get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,):
+        super(NewFakeEstimationLTW, self).__init__(
+            name="jetFakesW",
+            folder=folder,
+            get_triggerweight_for_channel=get_triggerweight_for_channel,
+            get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
+            era=era,
+            directory=directory,
+            friend_directory=friend_directory,
+            channel=channel,
+            nofake_processes=nofake_processes,
+            data_process=data_process,
+            aisoCut=Cut(
+                "byTightDeepTau2017v2p1VSjet_2<0.5&&byVLooseDeepTau2017v2p1VSjet_2>0.5",
+                "tau_aiso"),
+            fakeWeightstring="ff2_onlyw*ff2_fracw")
+
+class NewFakeEstimationLTQCD(NewFakeEstimationMethodLT):
+    def __init__(self,
+            era,
+            directory,
+            channel,
+            nofake_processes,
+            data_process,
+            friend_directory=None,
+            folder="nominal",
+            get_triggerweight_for_channel=get_triggerweight_for_channel,
+            get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,):
+        super(NewFakeEstimationLTQCD, self).__init__(
+            name="jetFakesQCD",
+            folder=folder,
+            get_triggerweight_for_channel=get_triggerweight_for_channel,
+            get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
+            era=era,
+            directory=directory,
+            friend_directory=friend_directory,
+            channel=channel,
+            nofake_processes=nofake_processes,
+            data_process=data_process,
+            aisoCut=Cut(
+                "byTightDeepTau2017v2p1VSjet_2<0.5&&byVLooseDeepTau2017v2p1VSjet_2>0.5",
+                "tau_aiso"),
+            fakeWeightstring="ff2_onlyqcd*ff2_fracqcd")
+
+class NewFakeEstimationLTTT(NewFakeEstimationMethodLT):
+    def __init__(self,
+            era,
+            directory,
+            channel,
+            nofake_processes,
+            data_process,
+            friend_directory=None,
+            folder="nominal",
+            get_triggerweight_for_channel=get_triggerweight_for_channel,
+            get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,):
+        super(NewFakeEstimationLTTT, self).__init__(
+            name="jetFakesTT",
+            folder=folder,
+            get_triggerweight_for_channel=get_triggerweight_for_channel,
+            get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
+            era=era,
+            directory=directory,
+            friend_directory=friend_directory,
+            channel=channel,
+            nofake_processes=nofake_processes,
+            data_process=data_process,
+            aisoCut=Cut(
+                "byTightDeepTau2017v2p1VSjet_2<0.5&&byVLooseDeepTau2017v2p1VSjet_2>0.5",
+                "tau_aiso"),
+            fakeWeightstring="ff2_onlytt*ff2_fractt")
 
 
 class NewFakeEstimationTT(NewFakeEstimationMethodTT):
