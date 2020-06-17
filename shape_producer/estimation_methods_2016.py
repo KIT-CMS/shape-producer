@@ -16,46 +16,10 @@ logger = logging.getLogger(__name__)
 
 ggH_htxs = {
     "ggH125": "(htxs_stage1p1cat>=100)&&(htxs_stage1p1cat<=113)",
-    "ggH_GG2H_FWDH125": "htxs_stage1p1cat == 100",
-    "ggH_GG2H_PTH_200_300125": "(htxs_stage1p1cat == 101)&&(genbosonpt<300)",
-    "ggH_GG2H_PTH_300_450125": "(htxs_stage1p1cat == 101)&&(genbosonpt>=300)&&(genbosonpt<450)",
-    "ggH_GG2H_PTH_450_650125": "(htxs_stage1p1cat == 101)&&(genbosonpt>=450)&&(genbosonpt<650)",
-    "ggH_GG2H_PTH_GT650125": "(htxs_stage1p1cat == 101)&&(genbosonpt>=650)",
-    "ggH_GG2H_0J_PTH_0_10125": "htxs_stage1p1cat == 102",
-    "ggH_GG2H_0J_PTH_GT10125": "htxs_stage1p1cat == 103",
-    "ggH_GG2H_1J_PTH_0_60125": "htxs_stage1p1cat == 104",
-    "ggH_GG2H_1J_PTH_60_120125": "htxs_stage1p1cat == 105",
-    "ggH_GG2H_1J_PTH_120_200125": "htxs_stage1p1cat == 106",
-    "ggH_GG2H_GE2J_MJJ_0_350_PTH_0_60125": "htxs_stage1p1cat == 107",
-    "ggH_GG2H_GE2J_MJJ_0_350_PTH_60_120125": "htxs_stage1p1cat == 108",
-    "ggH_GG2H_GE2J_MJJ_0_350_PTH_120_200125": "htxs_stage1p1cat == 109",
-    "ggH_GG2H_GE2J_MJJ_350_700_PTH_0_200_PTHJJ_0_25125":
-    "htxs_stage1p1cat == 110",
-    "ggH_GG2H_GE2J_MJJ_350_700_PTH_0_200_PTHJJ_GT25125":
-    "htxs_stage1p1cat == 111",
-    "ggH_GG2H_GE2J_MJJ_GT700_PTH_0_200_PTHJJ_0_25125":
-    "htxs_stage1p1cat == 112",
-    "ggH_GG2H_GE2J_MJJ_GT700_PTH_0_200_PTHJJ_GT25125":
-    "htxs_stage1p1cat == 113",
 }
 
 qqH_htxs = {
     "qqH125": "(htxs_stage1p1cat>=200)&&(htxs_stage1p1cat<=210)",
-    "qqH_QQ2HQQ_FWDH125": "htxs_stage1p1cat == 200",
-    "qqH_QQ2HQQ_0J125": "htxs_stage1p1cat == 201",
-    "qqH_QQ2HQQ_1J125": "htxs_stage1p1cat == 202",
-    "qqH_QQ2HQQ_GE2J_MJJ_0_60125": "htxs_stage1p1cat == 203",
-    "qqH_QQ2HQQ_GE2J_MJJ_60_120125": "htxs_stage1p1cat == 204",
-    "qqH_QQ2HQQ_GE2J_MJJ_120_350125": "htxs_stage1p1cat == 205",
-    "qqH_QQ2HQQ_GE2J_MJJ_GT350_PTH_GT200125": "htxs_stage1p1cat == 206",
-    "qqH_QQ2HQQ_GE2J_MJJ_350_700_PTH_0_200_PTHJJ_0_25125":
-    "htxs_stage1p1cat == 207",
-    "qqH_QQ2HQQ_GE2J_MJJ_350_700_PTH_0_200_PTHJJ_GT25125":
-    "htxs_stage1p1cat == 208",
-    "qqH_QQ2HQQ_GE2J_MJJ_GT700_PTH_0_200_PTHJJ_0_25125":
-    "htxs_stage1p1cat == 209",
-    "qqH_QQ2HQQ_GE2J_MJJ_GT700_PTH_0_200_PTHJJ_GT25125":
-    "htxs_stage1p1cat == 210",
 }
 
 
@@ -65,7 +29,7 @@ def get_triggerweight_for_channel(channel):
     singleMC = "singleTriggerMCEfficiencyWeightKIT_1"
     crossMCL = "crossTriggerMCEfficiencyWeightKIT_1"
     # MCTau_1 = "((abs(eta_2)<2.1)*((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1))"
-    MCTau_1 = "((abs(eta_2)<2.1)*((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedMCEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedMCEfficiencyWeight_tight_DeepTau_1))"  # Hotfix for old trigger weights.
+    MCTau_1 = "((abs(eta_2)<2.1)*((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1))"  # Hotfix for old trigger weights.
     MCTau_2 = MCTau_1.replace("_1", "_2")
 
     if "mt" in channel:
@@ -111,7 +75,7 @@ def get_singlelepton_triggerweight_for_channel(channel):
     weight = Weight("1.0", "triggerweight_sl")
 
     # MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byMediumDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_medium_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1)"
-    MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byMediumDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedMCEfficiencyWeight_medium_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedMCEfficiencyWeight_tight_DeepTau_1)"
+    MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byMediumDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_medium_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1)"
     MCTau_2 = MCTau_1.replace("_1", "_2")
 
     # if "mt" in channel or "et" in channel:
@@ -468,7 +432,7 @@ class ggHEstimation(HTTEstimation):
 
     def get_files(self):
         query = {
-            "process": "(^GluGluHToTauTau.*125.*|ggZH.*ZToQQ.*125.*)",
+            "process": "(^GluGluHToTauTau.*125.*)",
             "data": False,
             "campaign": self._mc_campaign,
             "generator": "powheg\-pythia8"
@@ -1491,7 +1455,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
 
         singleEMB = "singleTriggerEmbeddedEfficiencyWeightKIT_1"
         crossEMBL = "crossTriggerEmbeddedEfficiencyWeightKIT_1"
-        EMBTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedEMBEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedEMBEfficiencyWeight_tight_DeepTau_1)" # hotfix
+        EMBTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_1)" # hotfix
         # EMBTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerEMBEfficiencyWeight_tight_DeepTau_1)"
         EMBTau_2 = EMBTau_1.replace("_1", "_2")
 
@@ -1979,6 +1943,7 @@ class TTEstimation(EstimationMethod):
             Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
             Weight("generatorWeight", "generatorWeight"),
             self.era.lumi_weight)
+
 
     def get_files(self):
         query = {
