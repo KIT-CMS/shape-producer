@@ -1609,7 +1609,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                    "scale_factor"),
             Weight("embeddedDecayModeWeight", "decayMode_SF"))
         if self.channel.name == "mt":
-            emb_weights.add(Weight("IdWeight_1*isoWeight_1", "lepton_sf"))
+            emb_weights.add(Weight("idWeight_1*isoWeight_1", "lepton_sf"))
             emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel))
             emb_weights.add(
                 Weight("gen_match_1==4 && gen_match_2==5", "emb_veto"))
