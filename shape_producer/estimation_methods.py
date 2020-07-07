@@ -197,11 +197,6 @@ class SStoOSEstimationMethod(EstimationMethod):
                 variation=systematic.variation,
                 mass=125,
                 additionalWeights=Weights(self._qcd_weight))
-            #if process == self._data_process:
-            #    s._additionalWeights.add(Weight('1.0', 'prefireWeight'))
-            #    direction = s.variation._direction
-            #    s.variation = Nominal()
-            #    s.variation._direction = direction
             systematic._qcd_systematics.append(s)
             s.create_root_objects()
             root_objects += s.root_objects
