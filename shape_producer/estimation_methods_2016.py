@@ -17,7 +17,10 @@ logger = logging.getLogger(__name__)
 ggH_htxs = {
     "ggH125": "(htxs_stage1p1cat>=100)&&(htxs_stage1p1cat<=113)",
     "ggH_GG2H_FWDH125": "htxs_stage1p1cat == 100",
-    "ggH_GG2H_PTH_GT200125": "htxs_stage1p1cat == 101",
+    "ggH_GG2H_PTH_200_300125": "(htxs_stage1p1cat == 101)&&(genbosonpt<300)",
+    "ggH_GG2H_PTH_300_450125": "(htxs_stage1p1cat == 101)&&(genbosonpt>=300)&&(genbosonpt<450)",
+    "ggH_GG2H_PTH_450_650125": "(htxs_stage1p1cat == 101)&&(genbosonpt>=450)&&(genbosonpt<650)",
+    "ggH_GG2H_PTH_GT650125": "(htxs_stage1p1cat == 101)&&(genbosonpt>=650)",
     "ggH_GG2H_0J_PTH_0_10125": "htxs_stage1p1cat == 102",
     "ggH_GG2H_0J_PTH_GT10125": "htxs_stage1p1cat == 103",
     "ggH_GG2H_1J_PTH_0_60125": "htxs_stage1p1cat == 104",
@@ -95,6 +98,13 @@ def get_triggerweight_for_channel(channel):
         ElMu = "("+ElMuData+")/("+ElMuEmb+")"
         weight = Weight(ElMu, "triggerweight")
     return weight
+
+
+def aiso_muon_correction(channel):
+    if "em" in channel:
+        return Weight("(iso_2 <= 0.15)*1.0+((iso_2 > 0.15 && iso_2 < 0.20)*(((abs(eta_2) > 0 && abs(eta_2) < 0.9)*(((pt_2 > 10.0 && pt_2 < 15.0)*0.9327831343)+((pt_2 > 15.0 && pt_2 < 20.0)*0.953716709495)+((pt_2 > 20.0 && pt_2 < 22.0)*0.970107931338)+((pt_2 > 22.0 && pt_2 < 24.0)*0.975194707069)+((pt_2 > 24.0 && pt_2 < 26.0)*0.987926954702)+((pt_2 > 26.0 && pt_2 < 28.0)*0.984899759186)+((pt_2 > 28.0 && pt_2 < 30.0)*0.98461236424)+((pt_2 > 30.0 && pt_2 < 32.0)*0.982678110647)+((pt_2 > 32.0 && pt_2 < 34.0)*0.969564600424)+((pt_2 > 34.0 && pt_2 < 36.0)*0.952545963996)+((pt_2 > 36.0 && pt_2 < 38.0)*0.93801027736)+((pt_2 > 38.0 && pt_2 < 40.0)*0.928180181431)+((pt_2 > 40.0 && pt_2 < 45.0)*0.936587036212)+((pt_2 > 45.0 && pt_2 < 50.0)*0.937996645301)+((pt_2 > 50.0 && pt_2 < 60.0)*0.906087339587)+((pt_2 > 60.0 && pt_2 < 80.0)*0.887611582681)+((pt_2 > 80.0 && pt_2 < 100.0)*0.8834356199)+((pt_2 > 100.0 && pt_2 < 200.0)*1.17717912783)+((pt_2 > 200.0)*0.782070939337)))+((abs(eta_2) > 0.9 && abs(eta_2) < 1.2)*(((pt_2 > 10.0 && pt_2 < 15.0)*0.886291162409)+((pt_2 > 15.0 && pt_2 < 20.0)*0.915805873893)+((pt_2 > 20.0 && pt_2 < 22.0)*0.928213984488)+((pt_2 > 22.0 && pt_2 < 24.0)*0.968808738285)+((pt_2 > 24.0 && pt_2 < 26.0)*1.00847685497)+((pt_2 > 26.0 && pt_2 < 28.0)*1.01823133239)+((pt_2 > 28.0 && pt_2 < 30.0)*0.992528525978)+((pt_2 > 30.0 && pt_2 < 32.0)*0.978795541905)+((pt_2 > 32.0 && pt_2 < 34.0)*0.942964386045)+((pt_2 > 34.0 && pt_2 < 36.0)*0.938710844744)+((pt_2 > 36.0 && pt_2 < 38.0)*0.922702562159)+((pt_2 > 38.0 && pt_2 < 40.0)*0.897758415445)+((pt_2 > 40.0 && pt_2 < 45.0)*0.909162491)+((pt_2 > 45.0 && pt_2 < 50.0)*0.90265167858)+((pt_2 > 50.0 && pt_2 < 60.0)*0.912325787246)+((pt_2 > 60.0 && pt_2 < 80.0)*0.897018870572)+((pt_2 > 80.0 && pt_2 < 100.0)*0.972647372742)+((pt_2 > 100.0 && pt_2 < 200.0)*1.38562213225)+((pt_2 > 200.0)*0.738304282781)))+((abs(eta_2) > 1.2 && abs(eta_2) < 2.1)*(((pt_2 > 10.0 && pt_2 < 15.0)*0.88678133381)+((pt_2 > 15.0 && pt_2 < 20.0)*0.855042730357)+((pt_2 > 20.0 && pt_2 < 22.0)*0.897842682768)+((pt_2 > 22.0 && pt_2 < 24.0)*0.905849165918)+((pt_2 > 24.0 && pt_2 < 26.0)*0.910626040493)+((pt_2 > 26.0 && pt_2 < 28.0)*0.952076550342)+((pt_2 > 28.0 && pt_2 < 30.0)*0.968869527514)+((pt_2 > 30.0 && pt_2 < 32.0)*0.942569376345)+((pt_2 > 32.0 && pt_2 < 34.0)*0.941205386066)+((pt_2 > 34.0 && pt_2 < 36.0)*0.925500794627)+((pt_2 > 36.0 && pt_2 < 38.0)*0.907300484346)+((pt_2 > 38.0 && pt_2 < 40.0)*0.87984390364)+((pt_2 > 40.0 && pt_2 < 45.0)*0.87339713294)+((pt_2 > 45.0 && pt_2 < 50.0)*0.87980130335)+((pt_2 > 50.0 && pt_2 < 60.0)*0.860066115116)+((pt_2 > 60.0 && pt_2 < 80.0)*0.857712710727)+((pt_2 > 80.0 && pt_2 < 100.0)*1.0645948221)+((pt_2 > 100.0 && pt_2 < 200.0)*1.18849162977)+((pt_2 > 200.0)*1.28784467602)))+((abs(eta_2) > 2.1 && abs(eta_2) < 2.4)*(((pt_2 > 10.0 && pt_2 < 15.0)*0.776167258269)+((pt_2 > 15.0 && pt_2 < 20.0)*0.770868349402)+((pt_2 > 20.0 && pt_2 < 22.0)*0.808779663589)+((pt_2 > 22.0 && pt_2 < 24.0)*0.812754474056)+((pt_2 > 24.0 && pt_2 < 26.0)*0.84667222665)+((pt_2 > 26.0 && pt_2 < 28.0)*0.837142139899)+((pt_2 > 28.0 && pt_2 < 30.0)*0.8356560823)+((pt_2 > 30.0 && pt_2 < 32.0)*0.888386540505)+((pt_2 > 32.0 && pt_2 < 34.0)*0.881083238091)+((pt_2 > 34.0 && pt_2 < 36.0)*0.872500048844)+((pt_2 > 36.0 && pt_2 < 38.0)*0.861737355714)+((pt_2 > 38.0 && pt_2 < 40.0)*0.872186406375)+((pt_2 > 40.0 && pt_2 < 45.0)*0.853060222605)+((pt_2 > 45.0 && pt_2 < 50.0)*0.927735148085)+((pt_2 > 50.0 && pt_2 < 60.0)*0.82749753618)+((pt_2 > 60.0 && pt_2 < 80.0)*0.924329437022)+((pt_2 > 80.0 && pt_2 < 100.0)*0.887073323216)+((pt_2 > 100.0 && pt_2 < 200.0)*1.15559449916)+((pt_2 > 200.0)*0.37887229649)))))", "m_aiso_correction")
+    else:
+        return  Weight("1.0", "m_aiso_correction")
 
 
 def get_singlelepton_triggerweight_for_channel(channel):
@@ -333,13 +343,18 @@ class HTTEstimation(EstimationMethod):
             mc_campaign="RunIISummer16MiniAODv3")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             Weight("isoWeight_1*isoWeight_2", "isoWeight"),
-            Weight("idWeight_1*idWeight_2", "idWeight"),
+            Weight(idWeight, "idWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
+            aiso_muon_correction(self.channel._name),
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
@@ -647,6 +662,10 @@ class HWWEstimation(EstimationMethod):
             mc_campaign="RunIISummer16MiniAODv3")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -656,10 +675,11 @@ class HWWEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2", "idweight"),
+            Weight(idWeight, "idweight"),
             Weight("isoWeight_1*isoWeight_2", "isoweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             self.get_triggerweight_for_channel(self.channel.name),
+            aiso_muon_correction(self.channel._name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
@@ -706,6 +726,10 @@ class ggHWWEstimation(EstimationMethod):
             mc_campaign="RunIISummer16MiniAODv3")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -715,10 +739,11 @@ class ggHWWEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2", "idweight"),
+            Weight(idWeight, "idweight"),
             Weight("isoWeight_1*isoWeight_2", "isoweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             self.get_triggerweight_for_channel(self.channel.name),
+            aiso_muon_correction(self.channel._name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
@@ -765,6 +790,10 @@ class qqHWWEstimation(EstimationMethod):
             mc_campaign="RunIISummer16MiniAODv3")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -774,10 +803,11 @@ class qqHWWEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2", "idweight"),
+            Weight(idWeight, "idweight"),
             Weight("isoWeight_1*isoWeight_2", "isoweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             self.get_triggerweight_for_channel(self.channel.name),
+            aiso_muon_correction(self.channel._name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
@@ -824,6 +854,10 @@ class WHWWEstimation(EstimationMethod):
             mc_campaign="RunIISummer16MiniAODv3")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -833,10 +867,11 @@ class WHWWEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2", "idweight"),
+            Weight(idWeight, "idweight"),
             Weight("isoWeight_1*isoWeight_2", "isoweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             self.get_triggerweight_for_channel(self.channel.name),
+            aiso_muon_correction(self.channel._name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
@@ -883,6 +918,10 @@ class ZHWWEstimation(EstimationMethod):
             mc_campaign="RunIISummer16MiniAODv3")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -892,10 +931,11 @@ class ZHWWEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2", "idweight"),
+            Weight(idWeight, "idweight"),
             Weight("isoWeight_1*isoWeight_2", "isoweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             self.get_triggerweight_for_channel(self.channel.name),
+            aiso_muon_correction(self.channel._name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
@@ -941,6 +981,10 @@ class SUSYggHEstimation(EstimationMethod):
         if self.contribution in ["ggA_i", "ggA_t", "ggA_b", "ggH_i", "ggH_t", "ggH_b", "ggh_i", "ggh_t", "ggh_b"]:
             contribution_weight = "%s_weight*%s"%(self.contribution,str(self.fractionweight))
 
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -951,12 +995,13 @@ class SUSYggHEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
+            aiso_muon_correction(self.channel._name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
-            self.get_tauByIsoIdWeight_for_channel(self.channel),
+            self.get_tauByIsoIdWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
@@ -994,6 +1039,10 @@ class SUSYbbHEstimation(EstimationMethod):
         self.mass = mass
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -1003,12 +1052,13 @@ class SUSYbbHEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
+            aiso_muon_correction(self.channel._name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
-            self.get_tauByIsoIdWeight_for_channel(self.channel),
+            self.get_tauByIsoIdWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
@@ -1136,15 +1186,20 @@ class DYJetsToLLEstimation(EstimationMethod):
             z_stitching_weight = Weight(
                 "((genbosonmass >= 50.0) * 4.1545e-05*((npartons == 0 || npartons >= 5)*1.0+(npartons == 1)*0.32123574062076404+(npartons == 2)*0.3314444833963529+(npartons == 3)*0.3389929050626262+(npartons == 4)*0.2785338687268455) + (genbosonmass < 50.0)*(numberGeneratedEventsWeight * crossSectionPerEventWeight))",
                 "z_stitching_weight")
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             Weight("generatorWeight", "generatorWeight"),
             Weight("isoWeight_1*isoWeight_2", "isoWeight"),
-            Weight("idWeight_1*idWeight_2", "idWeight"),
+            Weight(idWeight, "idWeight"),
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
-            self.get_triggerweight_for_channel(self.channel.name),
+	        self.get_triggerweight_for_channel(self.channel._name),
+            aiso_muon_correction(self.channel._name),
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             get_eleRecoWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
@@ -1197,6 +1252,7 @@ class DYJetsToLLEstimation(EstimationMethod):
             "data": False,
             "campaign": self._mc_campaign,
             "generator": "madgraph\-pythia8",
+            "extension": "ext2"
         }
         queryM50NLO_inc = {
             "process": "DYJetsToLL_M50",
@@ -1250,7 +1306,8 @@ class EWKZEstimation(DYJetsToLLEstimation):
             "process": "^EWKZ",
             "data": False,
             "campaign": self._mc_campaign,
-            "generator": "madgraph\-pythia8"
+            "generator": "madgraph\-pythia8",
+            "extension": "ext2"
         }
         files = self.era.datasets_helper.get_nicks_with_query(query_ewkz)
         log_query(self.name, query_ewkz, files)
@@ -1473,7 +1530,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
             emb_weights.add(self.emb_triggerweights())
 
         elif self.channel.name == "et":
-            emb_weights.add(Weight("idWeight_1*isoWeight_1", "lepton_sf"))
+            emb_weights.add(Weight("id_weight_new*isoWeight_1", "lepton_sf"))
             emb_weights.add(self.get_tauByIsoIdWeight_for_channel(self.channel)),
             emb_weights.add(
                 Weight("gen_match_1==3 && gen_match_2==5", "emb_veto"))
@@ -1490,7 +1547,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
             )
             emb_weights.add(self.emb_triggerweights())
             emb_weights.add(
-                Weight("idWeight_1*isoWeight_1*idWeight_2*isoWeight_2",
+                Weight("id_weight_new*isoWeight_1*idWeight_2*looseIsoWeight_2",
                        "leptopn_sf"))
             emb_weights.remove(
                 "decayMode_SF"
@@ -1548,13 +1605,18 @@ class WEstimation(EstimationMethod):
             mc_campaign="RunIISummer16MiniAODv3")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             Weight("isoWeight_1*isoWeight_2", "isoWeight"),
-            Weight("idWeight_1*idWeight_2", "idWeight"),
+            Weight(idWeight, "idWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
+            aiso_muon_correction(self.channel._name),
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
@@ -1584,6 +1646,7 @@ class WEstimation(EstimationMethod):
             "data": False,
             "campaign": self._mc_campaign,
             "generator": "madgraph\-pythia8",
+            "extension": "ext2"
         }
         files += self.era.datasets_helper.get_nicks_with_query(query)
         log_query(self.name, query, files)
@@ -1615,13 +1678,18 @@ class EWKWpEstimation(EstimationMethod):
             mc_campaign="RunIISummer16MiniAODv3")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             Weight("isoWeight_1*isoWeight_2", "isoWeight"),
-            Weight("idWeight_1*idWeight_2", "idWeight"),
+            Weight(idWeight, "idWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
+            aiso_muon_correction(self.channel._name),
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
@@ -1670,13 +1738,18 @@ class EWKWmEstimation(EstimationMethod):
             mc_campaign="RunIISummer16MiniAODv3")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             Weight("isoWeight_1*isoWeight_2", "isoWeight"),
-            Weight("idWeight_1*idWeight_2", "idWeight"),
+            Weight(idWeight, "idWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
+            aiso_muon_correction(self.channel._name),
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
@@ -1729,13 +1802,18 @@ class WEstimationRaw(EstimationMethod):
             mc_campaign="RunIISummer16MiniAODv3")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             Weight("isoWeight_1*isoWeight_2", "isoWeight"),
-            Weight("idWeight_1*idWeight_2", "idWeight"),
+            Weight(idWeight, "idWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
+            aiso_muon_correction(self.channel._name),
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
@@ -1881,14 +1959,18 @@ class TTEstimation(EstimationMethod):
             mc_campaign="RunIISummer16MiniAODv3")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
-            Weight("topPtReweightWeightRun2", "topPtReweightWeight"),
+            Weight("topPtReweightWeightTTH", "topPtReweightWeight"),
             Weight("isoWeight_1*isoWeight_2", "isoWeight"),
-            Weight("idWeight_1*idWeight_2", "idWeight"),
+            Weight(idWeight, "idWeight"),
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
-            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            aiso_muon_correction(self.channel._name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight","leptonTauFakeRateWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
             get_eleRecoWeight_for_channel(self.channel.name),
@@ -1902,7 +1984,7 @@ class TTEstimation(EstimationMethod):
 
     def get_files(self):
         query = {
-            "process": "^TT$",
+            "process": "TTTo(2L2Nu|Hadronic|SemiLeptonic).*",
             "data": False,
             "campaign": self._mc_campaign
         }
@@ -2046,13 +2128,18 @@ class VVEstimation(EstimationMethod):
             mc_campaign="RunIISummer16MiniAODv3")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             Weight("isoWeight_1*isoWeight_2","isoWeight"),
-            Weight("idWeight_1*idWeight_2","idWeight"),
+            Weight(idWeight,"idWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel),
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
+            aiso_muon_correction(self.channel._name),
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
             get_eleRecoWeight_for_channel(self.channel.name),
@@ -2065,12 +2152,19 @@ class VVEstimation(EstimationMethod):
 
     def get_files(self):
         query = {
-            "process": "(WW|ZZ|WZ)$",  # Query for Di-Boson samples
+            "process": "(WZTo3LNu|WZTo2L2Q|ZZTo2L2Q|ZZTo4L)$",  # Query for Di-Boson samples
             "data": False,
-            "campaign": self._mc_campaign,
-            "generator": "pythia8"
+            "generator": "amcatnlo-pythia8",
+            "campaign": self._mc_campaign
         }
         files = self.era.datasets_helper.get_nicks_with_query(query)
+        query = {
+            "process": "(VVTo2L2Nu)$",  # Query for Di-Boson samples
+            "data": False,
+            "extension": "ext1",
+            "campaign": self._mc_campaign
+        }
+        files += self.era.datasets_helper.get_nicks_with_query(query)
 
         query = {
             "process":
@@ -2125,11 +2219,12 @@ class VVEstimation(EstimationMethod):
 #         # else:
 #         return Weights(
 #             Weight("isoWeight_1*isoWeight_2", "isoWeight"),
-#             Weight("idWeight_1*idWeight_2", "idWeight"),
+#             Weight("id_weight_new*idWeight_2", "idWeight"),
 #             self.get_tauByIsoIdWeight_for_channel(self.channel),
 #             Weight("puweight", "puweight"),
 #             Weight("trackWeight_1*trackWeight_2", "trackweight"),
 #             self.get_triggerweight_for_channel(self.channel._name),
+#             aiso_muon_correction(self.channel._name),
 #             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
 #             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
 #                    "leptonTauFakeRateWeight"),
