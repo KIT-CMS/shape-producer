@@ -307,6 +307,10 @@ class VVEstimation(EstimationMethod):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -315,7 +319,7 @@ class VVEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel.name),
@@ -331,9 +335,9 @@ class VVEstimation(EstimationMethod):
 
     def get_files(self):
         query = {
-            "process": "(WW|ZZ|WZ)$",  # Query for Di-Boson samples
+            "process": "(VVTo2L2Nu|WZTo3LNu|WZTo2L2Q|ZZTo2L2Q|ZZTo4L)$",  # Query for Di-Boson samples
             "data": False,
-            "generator": "^pythia8",
+            "generator": "amcatnlo-pythia8",
             "campaign": self._mc_campaign
         }
         files = self.era.datasets_helper.get_nicks_with_query(query)
@@ -492,6 +496,10 @@ class EWKZEstimation(EstimationMethod):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -501,7 +509,7 @@ class EWKZEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel.name),
@@ -552,6 +560,10 @@ class DYJetsToLLEstimation(EstimationMethod):
         else:
             z_stitching_weight = Weight("((genbosonmass >= 50.0)*6.2139e-05*((npartons == 0 || npartons >= 5)*1.0 + (npartons == 1)*0.1743 + (npartons == 2)*0.3556 + (npartons == 3)*0.2273 + (npartons == 4)*0.2104) + (genbosonmass < 50.0)*numberGeneratedEventsWeight*crossSectionPerEventWeight)","z_stitching_weight")
               # xsec_NNLO [pb] = 2025.74*3, N_inclusive = 97800939, xsec_NNLO/N_inclusive = 6.2139e-05 [pb] weights: [1.0, 0.1743347690195873, 0.3556373947627093, 0.22728901609456784, 0.21040417678899315]
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -559,7 +571,7 @@ class DYJetsToLLEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
@@ -792,8 +804,8 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
 
                 Weight("(pt_1>40)*1.0 + (pt_1<=40 && pt_1>35)*0.72 + (pt_1<=35 && pt_1>30)*0.67 + (pt_1<=30 && pt_1>29)*0.65","crossele_nonclosure_weight"),
-                Weight("idWeight_1*isoWeight_1", "lepton_sf"),
-                Weight("trigger_27_32_35_Weight_1*(pt_1>40) + (pt_1 <= 40 && pt_1 > 29)*crossTriggerDataEfficiencyWeight_1*crossTriggerDataEfficiencyWeight_tight_DeepTau_2/crossTriggerEMBEfficiencyWeight_tight_DeepTau_2", "triggerweight"),
+                Weight("id_weight_new*isoWeight_1", "lepton_sf"),
+                Weight("trigger_27_32_35_Weight_1*(pt_1>40) + (pt_1 <= 40 && pt_1 > 29)*crossTriggerDataEfficiencyWeight_1*crossTriggerCorrectedDataEfficiencyWeight_tight_DeepTau_2/crossTriggerCorrectedEMBEfficiencyWeight_tight_DeepTau_2", "triggerweight"),
                 self.get_tauByIsoIdWeight_for_channel(self.channel.name),
                 Weight("gen_match_1==3 && gen_match_2==5","emb_veto"),
                 Weight("embeddedDecayModeWeight", "decayMode_SF"))
@@ -811,7 +823,7 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                 Weight("generatorWeight", "simulation_sf"),
                 Weight("(gen_match_1==3 && gen_match_2==4)", "emb_gen_match"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
-                Weight("0.99*trackWeight_1*trackWeight_2*idWeight_1*isoWeight_1*idWeight_2*looseIsoWeight_2",
+                Weight("0.99*trackWeight_1*trackWeight_2*id_weight_new*isoWeight_1*idWeight_2*looseIsoWeight_2",
                        "idiso_lepton_sf"),
                 Weight("(trigger_23_data_Weight_2*trigger_12_data_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_data_Weight_1*trigger_8_data_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_data_Weight_2*trigger_23_data_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))/(trigger_23_embed_Weight_2*trigger_12_embed_Weight_1*(trg_muonelectron_mu23ele12==1)+trigger_23_embed_Weight_1*trigger_8_embed_Weight_2*(trg_muonelectron_mu8ele23==1) - trigger_23_embed_Weight_2*trigger_23_embed_Weight_1*(trg_muonelectron_mu8ele23==1 && trg_muonelectron_mu23ele12==1))",
                        "trigger_lepton_sf"))
@@ -949,6 +961,10 @@ class WEstimation(EstimationMethod):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -959,7 +975,7 @@ class WEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
@@ -1012,6 +1028,10 @@ class TTEstimation(EstimationMethod):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -1022,10 +1042,10 @@ class TTEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
-            Weight("topPtReweightWeightRun2", "topPtReweightWeight"),
+            Weight("topPtReweightWeightTTH", "topPtReweightWeight"),
             self.get_triggerweight_for_channel(self.channel._name),
             # self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
@@ -1168,6 +1188,10 @@ class HTTEstimation(EstimationMethod):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -1177,7 +1201,7 @@ class HTTEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
@@ -1221,6 +1245,10 @@ class HWWEstimation(EstimationMethod):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -1230,7 +1258,7 @@ class HWWEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
@@ -1273,6 +1301,10 @@ class ggHWWEstimation(EstimationMethod):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -1282,7 +1314,7 @@ class ggHWWEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
@@ -1325,6 +1357,10 @@ class qqHWWEstimation(EstimationMethod):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -1334,7 +1370,7 @@ class qqHWWEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
@@ -1377,6 +1413,10 @@ class WHWWEstimation(EstimationMethod):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -1386,7 +1426,7 @@ class WHWWEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
@@ -1429,6 +1469,10 @@ class ZHWWEstimation(EstimationMethod):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -1438,7 +1482,7 @@ class ZHWWEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
@@ -1697,7 +1741,10 @@ class SUSYggHEstimation(EstimationMethod):
         contribution_weight = "1.0"
         if self.contribution in ["ggA_i", "ggA_t", "ggA_b", "ggH_i", "ggH_t", "ggH_b", "ggh_i", "ggh_t", "ggh_b"]:
             contribution_weight = "%s_weight*%s"%(self.contribution,str(self.fractionweight))
-
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -1708,7 +1755,7 @@ class SUSYggHEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
@@ -1758,6 +1805,10 @@ class SUSYbbHEstimation(EstimationMethod):
         ]
 
     def get_weights(self):
+        if self.channel.name in ["et", "em"]:
+            idWeight="id_weight_new*idWeight_2"
+        else:
+            idWeight="idWeight_1*idWeight_2"
         return Weights(
             # MC related weights
             Weight("generatorWeight", "generatorWeight"),
@@ -1767,7 +1818,7 @@ class SUSYbbHEstimation(EstimationMethod):
 
             # Weights for corrections
             Weight("puweight", "puweight"),
-            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight(idWeight,"idweight"),
             Weight("isoWeight_1*isoWeight_2","isoweight"),
             Weight("trackWeight_1*trackWeight_2","trackweight"),
             self.get_triggerweight_for_channel(self.channel._name),
