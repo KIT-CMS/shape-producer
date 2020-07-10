@@ -803,9 +803,9 @@ class ZTTEmbeddedEstimation(EstimationMethod):
                        "simulation_sf"),
                 Weight("muonEffTrgWeight*muonEffIDWeight_1*muonEffIDWeight_2", "scale_factor"),
 
-                Weight("(pt_1>40)*1.0 + (pt_1<=40 && pt_1>35)*0.72 + (pt_1<=35 && pt_1>30)*0.67 + (pt_1<=30 && pt_1>29)*0.65","crossele_nonclosure_weight"),
+                #Weight("(pt_1>40)*1.0 + (pt_1<=40 && pt_1>35)*0.72 + (pt_1<=35 && pt_1>30)*0.67 + (pt_1<=30 && pt_1>29)*0.65","crossele_nonclosure_weight"),
                 Weight("id_weight_new*isoWeight_1", "lepton_sf"),
-                Weight("trigger_27_32_35_Weight_1*(pt_1>40) + (pt_1 <= 40 && pt_1 > 29)*crossTriggerDataEfficiencyWeight_1*crossTriggerCorrectedDataEfficiencyWeight_tight_DeepTau_2/crossTriggerCorrectedEMBEfficiencyWeight_tight_DeepTau_2", "triggerweight"),
+                Weight("trigger_27_32_35_Weight_1*(pt_1>40) + (pt_1 <= 40 && pt_1 > 29)*crossTriggerEmbeddedWeight_1*crossTriggerCorrectedDataEfficiencyWeight_tight_DeepTau_2/crossTriggerCorrectedEMBEfficiencyWeight_tight_DeepTau_2", "triggerweight"),
                 self.get_tauByIsoIdWeight_for_channel(self.channel.name),
                 Weight("gen_match_1==3 && gen_match_2==5","emb_veto"),
                 Weight("embeddedDecayModeWeight", "decayMode_SF"))
