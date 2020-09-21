@@ -25,7 +25,9 @@ class EstimationMethod(object):
                  get_triggerweight_for_channel=None,
                  get_singlelepton_triggerweight_for_channel=None,
                  get_tauByIsoIdWeight_for_channel=None,
-                 get_eleHLTZvtxWeight_for_channel=None,):
+                 get_eleHLTZvtxWeight_for_channel=None,
+                 heavy_mass=None,
+                 light_mass=None):
         self._directory = directory
         self._folder = folder
         self._heavy_mass = heavy_mass
@@ -34,13 +36,16 @@ class EstimationMethod(object):
         self._mc_campaign = mc_campaign
         self._channel = channel
         self._era = era
+        import six
         self._friend_directories = [friend_directory] if isinstance(
-            friend_directory, str) else friend_directory
+            friend_directory, six.string_types) else friend_directory
 
         self.get_triggerweight_for_channel = get_triggerweight_for_channel
         self.get_singlelepton_triggerweight_for_channel = get_singlelepton_triggerweight_for_channel
         self.get_tauByIsoIdWeight_for_channel = get_tauByIsoIdWeight_for_channel
         self.get_eleHLTZvtxWeight_for_channel = get_eleHLTZvtxWeight_for_channel
+        self.heavy_mass = heavy_mass
+        self.light_mass = light_mass
         for i in ['get_triggerweight_for_channel', 'get_singlelepton_triggerweight_for_channel', 'get_tauByIsoIdWeight_for_channel', 'get_eleHLTZvtxWeight_for_channel']:
             if getattr(self, i) is None:
                 setattr(self, i, lambda x=None: (_ for _ in ()).throw(
@@ -358,6 +363,10 @@ class ABCDEstimationMethod(EstimationMethod):
                     era=self.era,
                     variation=systematic.variation,
                     mass=125)
+                if process == self._data_process:
+                    direction = s.variation._direction
+                    s.variation = Nominal()
+                    s.variation._direction = direction
                 systematic._ABCD_systematics.append(s)
                 s.create_root_objects()
                 root_objects += s.root_objects
@@ -395,9 +404,9 @@ class ABCDEstimationMethod(EstimationMethod):
             logger.warning("No data in C or D region in ABCD method for systematic %s. Setting extrapolation factor to 0.0", systematic.name)
             extrapolation_factor = 0.0
         elif not D_yield > 0.0:
-            logger.fatal("D_yield in ABCD method for systematic %s is %f.",
+            logger.warning("D_yield in ABCD method for systematic %s is %f.",
                          systematic.name, D_yield)
-            raise Exception
+            extrapolation_factor = 0.0
         else:
             extrapolation_factor = C_yield / D_yield
         logger.debug("D to C extrapolation factor: %s",

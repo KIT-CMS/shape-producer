@@ -5,6 +5,8 @@ from array import array
 import hashlib
 import logging
 import binning
+import os
+from XRootD import client
 logger = logging.getLogger(__name__)
 """
 """
@@ -121,23 +123,23 @@ class Histogram(TTreeContent):
             logger.debug("------>combine files to a single tree using TChain")
             tree = ROOT.TChain()
             for inputfile in self._inputfiles:
-                logger.debug("------>inputfile: " + inputfile)
                 folder = self._folder
-                logger.debug("------>include:" + inputfile + " / " + self._folder)
-
+                logger.debug("------>inputfile: " + inputfile + " / " + self._folder)
+                check_filepath(inputfile)
                 tree.Add(inputfile + "/" + folder)
             # repeat this for friends if applicable
             friend_trees = []
             if self._friend_inputfiles_collection is not None:
                 logger.debug(self._friend_inputfiles_collection)
-                for friend_inputfiles in self._friend_inputfiles_collection:
+                for i, friend_inputfiles in enumerate(self._friend_inputfiles_collection):
                     logger.debug("------>friend_inputfiles: [" + ', '.join(friend_inputfiles) + ']')
                     friend_tree = ROOT.TChain()
                     for friend_inputfile in friend_inputfiles:
                         folder = self._folder
+                        logger.debug("-------->Add friend_inputfile:" + friend_inputfile + " / " + self._folder)
+                        check_filepath(friend_inputfile)
                         friend_tree.Add(friend_inputfile + "/" + folder)
-                        logger.debug("-------->Add friend_inputfile:" + friend_inputfile + "/" + self._folder)
-                    tree.AddFriend(friend_tree)
+                    tree.AddFriend(friend_tree, 'fr%d' % i)
                     friend_trees.append(friend_tree)
 
             # create unfilled template histogram
@@ -146,7 +148,7 @@ class Histogram(TTreeContent):
                              self._variable.binning.nbinsx,
                              self._variable.binning.bin_borders)
             # draw histogram and pipe result in the template histogram
-            logger.debug("------>draw histogram and pipe result in the template histogram: " )
+            logger.debug("------>draw histogram and pipe result in the template histogram: ")
             logger.debug(self._variable.expression + ">>" + self._name + ' ; \n' + self._cuts.expand() + "*" + self._weights.extract())
             tree.Draw(self._variable.expression + ">>" + self._name,
                       self._cuts.expand() + "*" + self._weights.extract(),
@@ -208,7 +210,7 @@ class Histogram(TTreeContent):
 
         if norm_all < 0.0:
             logger.fatal(
-                "Aborted renormalization because initial normalization is negative. Check histogram %s ",
+                "Aborted renormalization because initial normalization is negative: %f. Check histogram %s ",
                 norm_all, self.name)
             raise Exception
 
@@ -265,6 +267,7 @@ class Count(TTreeContent):
         else:  # classic way
             tree = ROOT.TChain()
             for inputfile in self._inputfiles:
+                check_filepath(inputfile)
                 tree.Add(inputfile + "/" + self._folder)
             # repeat this for friends if applicable
             friend_trees = []
@@ -272,6 +275,7 @@ class Count(TTreeContent):
                 for friend_inputfiles in self._friend_inputfiles_collection:
                     friend_tree = ROOT.TChain()
                     for friend_inputfile in friend_inputfiles:
+                        check_filepath(friend_inputfile)
                         friend_tree.Add(friend_inputfile + "/" + self._folder)
                     tree.AddFriend(friend_tree)
                     friend_trees.append(friend_tree)
@@ -298,6 +302,24 @@ class Count(TTreeContent):
     def update(self):
         if not isinstance(self._result, float):
             self._result = self._result.GetBinContent(59)
+
+
+def check_filepath(inputfile):
+    logger.debug("Checking if file is available:{}".format(inputfile))
+    if "root://" in inputfile:
+        # check if file exists via xrootd
+        serverurl = inputfile.split("/")[0] + "//"+inputfile.split("/")[2]
+        filepath = "//"+inputfile.strip(serverurl) + ".root"
+        myclient = client.FileSystem(serverurl)
+        status, info = myclient.stat(filepath)
+        if info is None:
+            logger.fatal("File not found: {}".format(inputfile))
+            raise Exception
+    else:
+        # check is file is available locally
+        if os.path.isfile(inputfile) is False:
+            logger.fatal("File not found: {}".format(inputfile))
+            raise Exception
 
 
 # automatic determination of the type
@@ -421,6 +443,13 @@ class RootObjects(object):
     def produce_classic(self, num_threads):
         self.create_output_file()
         self._produced = True
+
+        if len(self._root_objects) == 0:
+            logger.info(
+                "produce_classic : %u shapes in classic mode and %u processes. -> nothing to produce, returning",
+                len(self._root_objects), num_threads)
+            return self
+
         logger.info(
             "produce_classic : Start to produce %u shapes in classic mode and %u processes.",
             len(self._root_objects), num_threads)

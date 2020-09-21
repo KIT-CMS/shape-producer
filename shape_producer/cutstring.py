@@ -279,10 +279,11 @@ class Cuts(object):
                 cutstring,
                 Cut):  # TODO: Make this easier, remove one if not needed
             if cutstring.name in self.names:
-                logger.fatal(
-                    "Not possible to add the cutstring %s since its name is not unique.",
-                    cutstring)
-                raise LookupError
+                if (self.get(cutstring.name).weightstring).replace(" ", "") != (cutstring.weightstring).replace(" ", ""):
+                    logger.fatal(
+                        "Not possible to add the cutstring %s since its name is not unique.",
+                        cutstring)
+                    raise LookupError
             else:
                 self._cutstrings.append(cutstring)
         else:
