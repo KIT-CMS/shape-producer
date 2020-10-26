@@ -184,7 +184,7 @@ class QCDEstimation_ABCD_TT_ISO2(ABCDEstimationMethod):
             ],
             BD_cuts=[      # cuts to be applied instead of cuts removed above
                 Cut("byMediumDeepTau2017v2p1VSjet_2<0.5", "tau_2_iso"),
-                Cut("byMediumDeepTau2017v2p1VSjet_2>0.5",
+                Cut("byLooseDeepTau2017v2p1VSjet_2>0.5",
                     "tau_2_iso_loose"),
             ],
             AB_cut_names=[ # cuts applied in AB, which should be removed in the CD control regions
@@ -1191,7 +1191,7 @@ class NMSSMEstimation(EstimationMethod):
             Weight("generatorWeight", "generatorWeight"),
             Weight("numberGeneratedEventsWeight",
                    "numberGeneratedEventsWeight"),
-            Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
+            Weight("0.1*crossSectionPerEventWeight", "crossSectionPerEventWeight"),
 
             # Weights for corrections
             Weight("puweight", "puweight"),
@@ -1558,7 +1558,7 @@ class VHEstimation(HTTEstimation):
 
     def get_files(self):
         query = {
-            "process": "(^W(minus|plus)HToTauTau.*125.*|^ZHToTauTau.*125.*|^ggZH.*ZToNuNu.*125.*|^ggZH.*ZToLL.*125.*)",
+            "process": "(^W(minus|plus)HToTauTau.*125.*|^ZHToTauTau.*125.*)",
             "data": False,
             "campaign": self._mc_campaign,
             "generator": "powheg\-pythia8"
@@ -1939,6 +1939,13 @@ class ttHEstimation(HTTEstimation):
             friend_directory=friend_directory,
             channel=channel,
             mc_campaign="RunIIFall17MiniAODv2")
+
+    def get_weights(self):
+        weights = super(ttHEstimation, self).get_weights()
+        weights.remove("numberGeneratedEventsWeight")
+        weights.add(Weight("4.6053649e-8", "numberGeneratedEventsWeight")) # fix as I am not using downsized sample as is done in SMHTT
+
+        return weights
 
     def get_files(self):
         query = {

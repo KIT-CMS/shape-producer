@@ -73,7 +73,7 @@ class MT2017(Channel):
     def __init__(self):
         self._name = "mt"
         self._cuts = Cuts(
-            Cut("nbtag>0", "btag"),
+            Cut("(nbtag>0) *(kinfit_chi2>-1) *(kinfit_chi2<990)", "btag"),
             Cut("flagMETFilter == 1", "METFilter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
@@ -91,7 +91,7 @@ class MT2018(Channel):
     def __init__(self):
         self._name = "mt"
         self._cuts = Cuts(
-            Cut("nbtag>0", "btag"),
+            Cut("(nbtag>0) *(kinfit_chi2>-1) *(kinfit_chi2<990)", "btag"),
             Cut("flagMETFilter == 1", "METFilter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
@@ -109,7 +109,7 @@ class MT2016(Channel):
     def __init__(self):
         self._name = "mt"
         self._cuts = Cuts(
-            Cut("nbtag>0", "btag"),
+            Cut("(nbtag>0) *(kinfit_chi2>-1) *(kinfit_chi2<990)", "btag"),
             Cut("flagMETFilter==1", "met_filter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
@@ -128,7 +128,7 @@ class ET2017(Channel):
     def __init__(self):
         self._name = "et"
         self._cuts = Cuts(
-            Cut("nbtag>0", "btag"),
+            Cut("(nbtag>0) *(kinfit_chi2>-1) *(kinfit_chi2<990)", "btag"),
             Cut("flagMETFilter == 1", "METFilter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
@@ -146,7 +146,7 @@ class ET2018(Channel):
     def __init__(self):
         self._name = "et"
         self._cuts = Cuts(
-            Cut("nbtag>0", "btag"),
+            Cut("(nbtag>0) *(kinfit_chi2>-1) *(kinfit_chi2<990)", "btag"),
             Cut("flagMETFilter == 1", "METFilter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
@@ -164,7 +164,7 @@ class ET2016(Channel):
     def __init__(self):
         self._name = "et"
         self._cuts = Cuts(
-            Cut("nbtag>0", "btag"),
+            Cut("(nbtag>0) *(kinfit_chi2>-1) *(kinfit_chi2<990)", "btag"),
             Cut("flagMETFilter==1", "met_filter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
@@ -183,7 +183,7 @@ class TT2016(Channel):
     def __init__(self):
         self._name = "tt"
         self._cuts = Cuts(
-            Cut("nbtag>0", "btag"),
+            Cut("(nbtag>0) *(kinfit_chi2>-1) *(kinfit_chi2<990)", "btag"),
             Cut("flagMETFilter==1", "met_filter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
@@ -201,7 +201,7 @@ class TT2017(Channel):
     def __init__(self):
         self._name = "tt"
         self._cuts = Cuts(
-            Cut("nbtag>0", "btag"),
+            Cut("(nbtag>0) *(kinfit_chi2>-1) *(kinfit_chi2<990)", "btag"),
             Cut("flagMETFilter == 1", "METFilter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
@@ -222,7 +222,7 @@ class TT2018(Channel):
     def __init__(self):
         self._name = "tt"
         self._cuts = Cuts(
-            Cut("nbtag>0", "btag"),
+            Cut("(nbtag>0) *(kinfit_chi2>-1) *(kinfit_chi2<990)", "btag"),
             Cut("flagMETFilter == 1", "METFilter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
@@ -244,7 +244,7 @@ class EM2016(Channel):
     def __init__(self):
         self._name = "em"
         self._cuts = Cuts(
-            Cut("nbtag>0", "btag"),
+            Cut("(nbtag>0) *(kinfit_chi2>-1) *(kinfit_chi2<990)", "btag"),
             Cut("flagMETFilter == 1", "METFilter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
@@ -259,7 +259,7 @@ class EM2017(Channel):
     def __init__(self):
         self._name = "em"
         self._cuts = Cuts(
-            Cut("nbtag>0", "btag"),
+            Cut("(nbtag>0) *(kinfit_chi2>-1) *(kinfit_chi2<990)", "btag"),
             Cut("flagMETFilter == 1", "METFilter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),
@@ -275,7 +275,7 @@ class EM2018(Channel):
     def __init__(self):
         self._name = "em"
         self._cuts = Cuts(
-            Cut("nbtag>0", "btag"),
+            Cut("(nbtag>0) *(kinfit_chi2>-1) *(kinfit_chi2<990)", "btag"),
             Cut("flagMETFilter == 1", "METFilter"),
             Cut("extraelec_veto<0.5", "extraelec_veto"),
             Cut("extramuon_veto<0.5", "extramuon_veto"),

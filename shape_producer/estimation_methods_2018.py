@@ -1370,7 +1370,7 @@ class NMSSMEstimation(EstimationMethod):
             Weight("generatorWeight", "generatorWeight"),
             Weight("numberGeneratedEventsWeight",
                    "numberGeneratedEventsWeight"),
-            Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
+            Weight("0.1*crossSectionPerEventWeight", "crossSectionPerEventWeight"),
 
             # Weights for corrections
             Weight("puweight", "puweight"),
@@ -1630,7 +1630,7 @@ class VHEstimation(HTTEstimation):
 
     def get_files(self):
         query = {
-            "process": "(^W(minus|plus)HToTauTau.*125.*|^ZHToTauTau.*125.*|^ggZH.*ZToNuNu.*125.*|^ggZH.*ZToLL.*125.*)",
+            "process": "(^W(minus|plus)HToTauTau.*125.*|^ZHToTauTau.*125.*)",
             "data": False,
             "campaign": self._mc_campaign,
             "generator": "powheg\-pythia8"
@@ -2376,6 +2376,13 @@ class ttHEstimation(HTTEstimation):
             friend_directory=friend_directory,
             channel=channel,
             mc_campaign="RunIIAutumn18MiniAOD")
+
+    def get_weights(self):
+        weights = super(ttHEstimation, self).get_weights()
+        weights.remove("numberGeneratedEventsWeight")
+        weights.add(Weight("4.569757e-8", "numberGeneratedEventsWeight")) # fix as I am not using downsized sample as is done in SMHTT
+
+        return weights
 
     def get_files(self):
         query = {
