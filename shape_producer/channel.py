@@ -393,64 +393,106 @@ class EESM2018(ET2018):
 class ETMSSM2016(ET2016):
     def __init__(self, **kvargs):
         super(ETMSSM2016, self).__init__(**kvargs)
+        self._cuts.add(
+            Cut("nbtag==0 && m_sv_puppi<250", "mssm_veto"),
+        )
 
 
 class MTMSSM2016(MT2016):
     def __init__(self, **kvargs):
         super(MTMSSM2016, self).__init__(**kvargs)
+        self._cuts.add(
+            Cut("nbtag==0 && m_sv_puppi<250", "mssm_veto"),
+        )
 
 
 class TTMSSM2016(TT2016):
     def __init__(self, **kvargs):
         super(TTMSSM2016, self).__init__(**kvargs)
+        self._cuts.add(
+            Cut("nbtag==0 && m_sv_puppi<250", "mssm_veto"),
+        )
 
 
 class EMMSSM2016(EM2016):
     def __init__(self, **kvargs):
         super(EMMSSM2016, self).__init__(**kvargs)
-
+        self._cuts.add(
+            Cut("nbtag==0 && m_sv_puppi<250", "mssm_veto"),
+        )
+        self._cuts.add(
+            Cut("pZetaPuppiMissVis>=-35", "pZetaPuppiMissViscut"),
+        )
 
 # MSSM 2017
 class ETMSSM2017(ET2017):
     def __init__(self, **kvargs):
         super(ETMSSM2017, self).__init__(**kvargs)
+        self._cuts.add(
+            Cut("nbtag==0 && m_sv_puppi<250", "mssm_veto"),
+        )
 
 
 class MTMSSM2017(MT2017):
     def __init__(self, **kvargs):
         super(MTMSSM2017, self).__init__(**kvargs)
+        self._cuts.add(
+            Cut("nbtag==0 && m_sv_puppi<250", "mssm_veto"),
+        )
 
 
 class TTMSSM2017(TT2017):
     def __init__(self, **kvargs):
         super(TTMSSM2017, self).__init__(**kvargs)
+        self._cuts.add(
+            Cut("nbtag==0 && m_sv_puppi<250", "mssm_veto"),
+        )
 
 
 class EMMSSM2017(EM2017):
     def __init__(self, **kvargs):
         super(EMMSSM2017, self).__init__(**kvargs)
-
+        self._cuts.add(
+            Cut("nbtag==0 && m_sv_puppi<250", "mssm_veto"),
+        )
+        self._cuts.add(
+            Cut("pZetaPuppiMissVis>=-35", "pZetaPuppiMissViscut"),
+        )
 
 # MSSM 2018
 class ETMSSM2018(ET2018):
     def __init__(self, **kvargs):
         super(ETMSSM2018, self).__init__(**kvargs)
+        self._cuts.add(
+            Cut("nbtag==0 && m_sv_puppi<250", "mssm_veto"),
+        )
 
 
 class MTMSSM2018(MT2018):
     def __init__(self, **kvargs):
         super(MTMSSM2018, self).__init__(**kvargs)
+        self._cuts.add(
+            Cut("nbtag==0 && m_sv_puppi<250", "mssm_veto"),
+        )
 
 
 class TTMSSM2018(TT2018):
     def __init__(self, **kvargs):
         super(TTMSSM2018, self).__init__(**kvargs)
+        self._cuts.add(
+            Cut("nbtag==0 && m_sv_puppi<250", "mssm_veto"),
+        )
 
 
 class EMMSSM2018(EM2018):
     def __init__(self, **kvargs):
         super(EMMSSM2018, self).__init__(**kvargs)
-
+        self._cuts.add(
+            Cut("nbtag==0 && m_sv_puppi<250", "mssm_veto"),
+        )
+        self._cuts.add(
+            Cut("pZetaPuppiMissVis>=-35", "pZetaPuppiMissViscut"),
+        )
 
 # PU - no cuts
 class PU(Channel):

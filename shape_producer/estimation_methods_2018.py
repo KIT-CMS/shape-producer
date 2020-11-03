@@ -2180,14 +2180,15 @@ class qqHEstimation_PTJET1_GT200(qqHEstimation):
         return Cuts(Cut("htxs_stage1p1cat==205", "htxs_match"))
 
 
+
 class SUSYggHEstimation(EstimationMethod):
-    def __init__(self, era, directory, channel, mass, contribution, friend_directory=None, folder="nominal",
+    def __init__(self, era, directory, channel, mass, contribution, fractionweight, friend_directory=None, folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
             get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,):
         super(SUSYggHEstimation, self).__init__(
-            name="_".join(["gg"+contribution,str(mass)]),
+            name="_".join([contribution,str(mass)]),
             folder=folder,
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
@@ -2200,6 +2201,7 @@ class SUSYggHEstimation(EstimationMethod):
             mc_campaign="RunIIAutumn18MiniAOD")
         self.mass = mass
         self.contribution = contribution
+        self.fractionweight = fractionweight
         self.queries = [
             {
                 "process": "^SUSYGluGluToHToTauTau_M{MASS}$".format(MASS=self.mass),
@@ -2210,8 +2212,8 @@ class SUSYggHEstimation(EstimationMethod):
 
     def get_weights(self):
         contribution_weight = "1.0"
-        if self.contribution in ["A_i", "A_t", "A_b", "H_i", "H_t", "H_b", "h_i", "h_t", "h_b"]:
-            contribution_weight = "gg%s_weight"%self.contribution
+        if self.contribution in ["ggA_i", "ggA_t", "ggA_b", "ggH_i", "ggH_t", "ggH_b", "ggh_i", "ggh_t", "ggh_b"]:
+            contribution_weight = "%s_weight*%s"%(self.contribution,str(self.fractionweight))
         if self.channel.name in ["et", "em"]:
             idWeight="id_weight_new*idWeight_2"
         else:
