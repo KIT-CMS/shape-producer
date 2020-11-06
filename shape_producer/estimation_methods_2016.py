@@ -323,7 +323,7 @@ class NMSSMEstimation(EstimationMethod):
 
     def get_files(self):
         query = {
-            "process": "NMSSMM{}h1M125tautauh2M{}".format(self.heavy_mass, self.light_mass),
+            "process": "NMSSMM{}h1M125tautauh2M{}$".format(self.heavy_mass, self.light_mass),
             "data": False,
             "campaign": self._mc_campaign,
             "generator": "madgraph\-pythia8"
