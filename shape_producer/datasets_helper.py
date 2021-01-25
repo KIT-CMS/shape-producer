@@ -45,7 +45,7 @@ class DatasetsHelperLight(object):
         for attribute in query:
             a = query[attribute]
             b = database[entry][attribute]
-            if isinstance(b, str) or isinstance(b, unicode):
+            if isinstance(b, str):
                 result = re.match(a, b)
                 if result == None:
                     return False

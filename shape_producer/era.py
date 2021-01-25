@@ -3,8 +3,8 @@
 import logging
 logger = logging.getLogger(__name__)
 
-from cutstring import Constant
-from datasets_helper import DatasetsHelperLight as DatasetsHelper
+from .cutstring import Constant
+from .datasets_helper import DatasetsHelperLight as DatasetsHelper
 
 import os
 """

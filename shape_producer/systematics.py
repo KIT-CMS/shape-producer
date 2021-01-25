@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import ROOT
-from histogram import *
-from cutstring import *
+from .histogram import *
+from .cutstring import *
 import copy
 
 import logging
@@ -97,7 +97,7 @@ class Systematic(object):
         return self._root_objects
 
     def create_root_objects(self):
-        if logger.getEffectiveLevel() == 10: print '--->Systematic::create_root_objects: ' + self._process.estimation_method.name, self._process.estimation_method._friend_directories, self._process
+        if logger.getEffectiveLevel() == 10: print ('--->Systematic::create_root_objects: ' + self._process.estimation_method.name, self._process.estimation_method._friend_directories, self._process)
         self._root_objects = self._process.estimation_method.create_root_objects(
             self)
 
@@ -194,7 +194,7 @@ class Systematics(object):
             for systematic in self._systematics:
                 logger.debug("---->Create ROOT objects for systematic %s.",
                              systematic.name)
-                if logger.getEffectiveLevel() == 10: print '---->Systematics::create_histograms: systematic', systematic.process, systematic._process.estimation_method._friend_directories
+                if logger.getEffectiveLevel() == 10: print ('---->Systematics::create_histograms: systematic', systematic.process, systematic._process.estimation_method._friend_directories)
                 systematic.create_root_objects()
         else:
             logger.debug("Create ROOT objects for all systematics.")

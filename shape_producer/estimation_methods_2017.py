@@ -2,15 +2,15 @@
 
 # -*- coding: utf-8 -*-
 
-from cutstring import *
-from estimation_methods import EstimationMethod, SStoOSEstimationMethod, ABCDEstimationMethod, SumUpEstimationMethod, NewFakeEstimationMethodLT, NewFakeEstimationMethodTT
-from estimation_methods_2016 import DataEstimation as DataEstimation2016
-from estimation_methods_2016 import WEstimationWithQCD as WEstimationWithQCD2016
-from estimation_methods_2016 import QCDEstimationWithW as QCDEstimationWithW2016
-from estimation_methods_2016 import ggH_htxs, qqH_htxs
-from systematics import *
-from era import log_query
-from process import *
+from .cutstring import *
+from .estimation_methods import EstimationMethod, SStoOSEstimationMethod, ABCDEstimationMethod, SumUpEstimationMethod, NewFakeEstimationMethodLT, NewFakeEstimationMethodTT
+from .estimation_methods_2016 import DataEstimation as DataEstimation2016
+from .estimation_methods_2016 import WEstimationWithQCD as WEstimationWithQCD2016
+from .estimation_methods_2016 import QCDEstimationWithW as QCDEstimationWithW2016
+from .estimation_methods_2016 import ggH_htxs, qqH_htxs
+from .systematics import *
+from .era import log_query
+from .process import *
 
 
 def get_triggerweight_for_channel(channel):
@@ -936,7 +936,7 @@ class ZttEmbeddingEstimation_ScaledToMC(EstimationMethod):
 
         # scale factor = MC(TTT + ZTT) yield / embedding yield
         sf = (shapes[2].result + shapes[3].result) / shapes[1].result
-        print "Scale factor", sf
+        print ("Scale factor", sf)
 
         # scaling shape
         embedding_shape.result.Scale(sf)

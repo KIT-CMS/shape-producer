@@ -3,13 +3,13 @@
 import copy
 import os
 
-from estimation_methods import EstimationMethod, SStoOSEstimationMethod, ABCDEstimationMethod, SumUpEstimationMethod, NewFakeEstimationMethodLT, NewFakeEstimationMethodTT
-from histogram import *
-from cutstring import *
-from process import *
-from systematics import *
-from systematic_variations import *
-from era import log_query
+from .estimation_methods import EstimationMethod, SStoOSEstimationMethod, ABCDEstimationMethod, SumUpEstimationMethod, NewFakeEstimationMethodLT, NewFakeEstimationMethodTT
+from .histogram import *
+from .cutstring import *
+from .process import *
+from .systematics import *
+from .systematic_variations import *
+from .era import log_query
 
 import logging
 logger = logging.getLogger(__name__)

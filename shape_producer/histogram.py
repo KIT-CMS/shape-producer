@@ -4,7 +4,7 @@ import ROOT
 from array import array
 import hashlib
 import logging
-import binning
+from . import binning
 import os
 from XRootD import client
 logger = logging.getLogger(__name__)

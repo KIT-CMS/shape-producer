@@ -2,10 +2,10 @@
 
 import os
 
-from histogram import *
-from cutstring import *
-from systematics import *
-from systematic_variations import *
+from .histogram import *
+from .cutstring import *
+from .systematics import *
+from .systematic_variations import *
 
 import logging
 logger = logging.getLogger(__name__)
@@ -125,12 +125,12 @@ class EstimationMethod(object):
             systematic, root_object_settings)
         for setting in root_object_settings:
             for key, value in setting.iteritems():
-                if logger.getEffectiveLevel() == 10: print 'k,v:', key, value
+                if logger.getEffectiveLevel() == 10: print ('k,v:', key, value)
                 if isinstance(value, list):
                     setting[key] = value[0](*value[1:])  # returned: <pipeline>/ntuple
                 elif callable(value):
                     setting[key] = value()
-                    if logger.getEffectiveLevel() == 10: print setting[key]
+                    if logger.getEffectiveLevel() == 10: print (setting[key])
 
         root_objects = []
         for setting in root_object_settings:

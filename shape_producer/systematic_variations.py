@@ -124,7 +124,7 @@ class ReplaceExpressions(SystematicVariation):
                         try:
                             cuts.add(Cut(cut_value, cut_name))
                         except:
-                            print 'Couldn\'t add the updated cut', cut_name, ' : ', cut_value, 'to the cuts of category'
+                            print ('Couldn\'t add the updated cut', cut_name, ' : ', cut_value, 'to the cuts of category')
                             raise
             if affected:
                 returned_h_settings.append(h_settings[index])
