@@ -16,7 +16,7 @@ import yaml
 
 def get_generator_weights_powheg(type, mass):
     weights = yaml.load(open("shapes/generatorWeights.yaml"))
-    return weights["2018"][type][int(mass)]
+    return str(weights["2018"][type][int(mass)])
 
 
 def get_triggerweight_for_channel(channel, usepowheg=False):
@@ -26,7 +26,7 @@ def get_triggerweight_for_channel(channel, usepowheg=False):
     crossMCL = "crossTriggerMCEfficiencyWeight_1"
     MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedMCEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedMCEfficiencyWeight_tight_DeepTau_1)"  # hotfix
     if usepowheg:
-        MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_vloose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1)"
+        MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_VLoose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_Tight_DeepTau_1)"
     MCTau_2 = MCTau_1.replace("_1","_2")
 
     if "mt" in channel:

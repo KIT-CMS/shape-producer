@@ -15,7 +15,7 @@ import yaml
 
 def get_generator_weights_powheg(type, mass):
     weights = yaml.load(open("shapes/generatorWeights.yaml"))
-    return weights["2017"][type][int(mass)]
+    return str(weights["2017"][type][int(mass)])
 
 def get_triggerweight_for_channel(channel, usepowheg=False):
     weight = Weight("1.0", "triggerweight")
@@ -26,7 +26,7 @@ def get_triggerweight_for_channel(channel, usepowheg=False):
     if usepowheg:
         # using later ntuples, where the hotfix is no longer needed
         MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byVLooseDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_VLoose_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_Tight_DeepTau_1)"
-    MCTau_2 = MCTau_1.replace("_1","_2")
+    MCTau_2 = MCTau_1.replace("_1", "_2")
 
     if "mt" in channel:
         trig_sL = "(trg_singlemuon_27 || trg_singlemuon_24)"
@@ -1832,7 +1832,7 @@ class SUSYggHEstimationPowheg(EstimationMethod):
         if self.contribution in ["ggA_i", "ggA_t", "ggA_b", "ggH_i", "ggH_t", "ggH_b", "ggh_i", "ggh_t", "ggh_b"]:
             contribution_weight = "{}_weight".format(self.contribution)
         generatorWeight = get_generator_weights_powheg("ggH", self.mass)
-        return Weights(
+        weights = Weights(
             # MC related weights
             Weight(generatorWeight, "generatorWeight"),
             Weight(contribution_weight, "contributionWeight"),
@@ -1854,6 +1854,7 @@ class SUSYggHEstimationPowheg(EstimationMethod):
 
             # Data related scale-factors
             self.era.lumi_weight)
+        return weights
 
     def get_files(self):
         files = []
@@ -1957,7 +1958,7 @@ class SUSYbbHEstimationPowheg(EstimationMethod):
     def get_weights(self):
 
         generatorWeight = get_generator_weights_powheg("bbH", self.mass)
-        return Weights(
+        weights = Weights(
             # MC related weights
             Weight(generatorWeight, "generatorWeight"),
             Weight("numberGeneratedEventsWeight",
@@ -1976,6 +1977,7 @@ class SUSYbbHEstimationPowheg(EstimationMethod):
 
             # Data related scale-factors
             self.era.lumi_weight)
+        return weights
 
 
     def get_files(self):
