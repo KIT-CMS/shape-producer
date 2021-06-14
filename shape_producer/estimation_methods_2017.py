@@ -1580,6 +1580,12 @@ class WHEstimation(HTTEstimation):
             channel=channel,
             mc_campaign="RunIIFall17MiniAODv2")
 
+    def get_weights(self):
+        weights = super(WHEstimation, self).get_weights()
+        weights.remove("crossSectionPerEventWeight")
+        weights.add(Weight("(abs(crossSectionPerEventWeight - 0.052685) < 0.001)*0.051607+(abs(crossSectionPerEventWeight - 0.03342) < 0.001)*0.032728576", "crossSectionPerEventWeight"))
+        return weights
+
     def get_cuts(self):
         return Cuts(Cut("(htxs_stage1p1cat>=300)&&(htxs_stage1p1cat<=305)", "htxs_match"))
 
@@ -1613,6 +1619,12 @@ class ZHEstimation(HTTEstimation):
             friend_directory=friend_directory,
             channel=channel,
             mc_campaign="RunIIFall17MiniAODv2")
+
+    def get_weights(self):
+        weights = super(ZHEstimation, self).get_weights()
+        weights.remove("crossSectionPerEventWeight")
+        weights.add(Weight("(abs(crossSectionPerEventWeight - 0.04774) < 0.001)*0.04683+(abs(crossSectionPerEventWeight - 0.0007771) < 0.00001)*0.0007666+(abs(crossSectionPerEventWeight - 0.0015391) < 0.0001)*0.00151848", "crossSectionPerEventWeight"))
+        return weights
 
     def get_cuts(self):
         return Cuts(Cut("(htxs_stage1p1cat>=400)&&(htxs_stage1p1cat<=505)", "htxs_match"))
@@ -1657,13 +1669,13 @@ class ggHEstimation(HTTEstimation):
 
         weights.remove("numberGeneratedEventsWeight"),
         weights.remove("crossSectionPerEventWeight"),
-        weights.add(Weight("(((htxs_stage1p1cat==100||htxs_stage1p1cat==102||htxs_stage1p1cat==103)*crossSectionPerEventWeight*8.210e-8+"
-             "(htxs_stage1p1cat==101)*2.17e-8+"
-             "(htxs_stage1p1cat==104||htxs_stage1p1cat==105)*4.39e-8+"
-             "(htxs_stage1p1cat==106)*1.19e-8+"
-             "(htxs_stage1p1cat>=107&&htxs_stage1p1cat<=109)*4.91e-8+"
-             "(htxs_stage1p1cat>=110&&htxs_stage1p1cat<=113)*7.90e-9"
-             ")*(abs(crossSectionPerEventWeight - 0.00538017) > 1e-5) + numberGeneratedEventsWeight*crossSectionPerEventWeight*(abs(crossSectionPerEventWeight - 0.00538017) < 1e-5))","ggh_stitching_weight"))
+        weights.add(Weight("((htxs_stage1p1cat==100||htxs_stage1p1cat==102||htxs_stage1p1cat==103)*crossSectionPerEventWeight*8.210e-8+"
+                  "(htxs_stage1p1cat==101)*2.08e-8+"
+                  "(htxs_stage1p1cat==104||htxs_stage1p1cat==105)*4.39e-8+"
+                  "(htxs_stage1p1cat==106)*1.19e-8+"
+                  "(htxs_stage1p1cat>=107&&htxs_stage1p1cat<=109)*4.91e-8+"
+                  "(htxs_stage1p1cat>=110&&htxs_stage1p1cat<=113)*7.90e-9"
+                  ")*0.98409104275716*(abs(crossSectionPerEventWeight - 0.00538017) > 1e-5) + numberGeneratedEventsWeight*0.005307836*(abs(crossSectionPerEventWeight - 0.00538017) < 1e-5)","ggh_stitching_weight")
 
         return weights
 
@@ -1763,11 +1775,15 @@ class qqHEstimation(HTTEstimation):
 
         weights.remove("numberGeneratedEventsWeight"),
         weights.remove("crossSectionPerEventWeight"),
-        weights.add(Weight("((htxs_stage1p1cat>=200&&htxs_stage1p1cat<=202)||abs(crossSectionPerEventWeight-0.04774)<0.001||abs(crossSectionPerEventWeight-0.052685)<0.001||abs(crossSectionPerEventWeight-0.03342)<0.001)*crossSectionPerEventWeight*numberGeneratedEventsWeight+(abs(crossSectionPerEventWeight-0.04774)>=0.001&&abs(crossSectionPerEventWeight-0.052685)>=0.001&&abs(crossSectionPerEventWeight-0.03342)>=0.001)*("
-             "(htxs_stage1p1cat>=203&&htxs_stage1p1cat<=205)*8.70e-9+"
-             "(htxs_stage1p1cat==206)*8.61e-9+"
-             "(htxs_stage1p1cat>=207&&htxs_stage1p1cat<=210)*1.79e-8"
-             ")" ,"qqh_stitching_weight"))
+        weights.add(Weight("(((htxs_stage1p1cat>=200&&htxs_stage1p1cat<=202)*(abs(crossSectionPerEventWeight-0.237207)<1e-4)*0.2340416)+"
+                    "(abs(crossSectionPerEventWeight-0.04774)<0.001)*0.04683+"
+                    "(abs(crossSectionPerEventWeight-0.052685)<0.001)*0.051607+"
+                    "(abs(crossSectionPerEventWeight-0.03342)<0.001)*0.032728576)*numberGeneratedEventsWeight"
+                  "+0.987231127517045*(abs(crossSectionPerEventWeight-0.04774)>=0.001&&abs(crossSectionPerEventWeight-0.052685)>=0.001&&abs(crossSectionPerEventWeight-0.03342)>=0.001)*("
+                  "(htxs_stage1p1cat>=203&&htxs_stage1p1cat<=205)*8.70e-9+"
+                  "(htxs_stage1p1cat==206)*8.61e-9+"
+                  "(htxs_stage1p1cat>=207&&htxs_stage1p1cat<=210)*1.79e-8"
+                  ")" ,"qqh_stitching_weight")
 
         return weights
 

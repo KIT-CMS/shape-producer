@@ -505,7 +505,7 @@ class ggHEstimation(HTTEstimation):
         weights = super(ggHEstimation, self).get_weights()
         # weights.add(Weight("8.8384e-8/numberGeneratedEventsWeight", "ggh_stitching_weight")),
         weights.remove("numberGeneratedEventsWeight")
-        weights.add(Weight("(numberGeneratedEventsWeight*(abs(crossSectionPerEventWeight - 3.0469376) > 1e-5)+1.0/(9673200 + 19939500 + 19977000)*(abs(crossSectionPerEventWeight - 3.0469376) < 1e-5))", "numberGeneratedEventsWeight"))  # 9673200 for inclusive sample and 19673200 for extension
+        weights.add(Weight("(numberGeneratedEventsWeight*0.005307836*(abs(crossSectionPerEventWeight - 3.0469376) > 1e-5)+1.0/(9673200 + 19939500 + 19977000)*2.998464*(abs(crossSectionPerEventWeight - 3.0469376) < 1e-5))", "numberGeneratedEventsWeight")  # 9673200 for inclusive sample and 19673200 for extension
         weights.add(Weight("ggh_NNLO_weight", "gghNNLO"))
         # weights.add(Weight("1.01", "bbh_inclusion_weight"))
         return weights
@@ -620,7 +620,10 @@ class qqHEstimation(HTTEstimation):
     def get_weights(self):
         weights = super(qqHEstimation, self).get_weights()
         weights.remove("numberGeneratedEventsWeight")
-        weights.add(Weight("(numberGeneratedEventsWeight*(abs(crossSectionPerEventWeight - 0.2370687)>1e-4)+1.0/(1499400 + 1999000 + 2997000)*(abs(crossSectionPerEventWeight - 0.2370687)<1e-4))", "numberGeneratedEventsWeight")) # 1499400 for inclusive sample and 1999000 for ext1 and 2997000 for ext2
+        weights.add(Weight("(numberGeneratedEventsWeight*((abs(crossSectionPerEventWeight - 0.04774)<0.001)*0.04683+"
+                                                "(abs(crossSectionPerEventWeight - 0.052685)<0.001)*0.051607+"
+                                                "(abs(crossSectionPerEventWeight - 0.03342)<0.001)*0.032728576)"
+                    "+1.0/(1499400 + 1999000 + 2997000)*0.2340416*(abs(crossSectionPerEventWeight - 0.2370687)<1e-4))", "numberGeneratedEventsWeight")
         return weights
 
     def get_files(self):
@@ -760,6 +763,12 @@ class WHEstimation(HTTEstimation):
             channel=channel,
             mc_campaign="RunIISummer16MiniAODv3")
 
+    def get_weights(self):
+        weights = super(WHEstimation, self).get_weights()
+        weights.remove("crossSectionPerEventWeight")
+        weights.add(Weight("(abs(crossSectionPerEventWeight - 0.052685) < 0.001)*0.051607+(abs(crossSectionPerEventWeight - 0.03342) < 0.001)*0.032728576", "crossSectionPerEventWeight"))
+        return weights
+
     def get_cuts(self):
         return Cuts(
             Cut("(htxs_stage1p1cat>=300)&&(htxs_stage1p1cat<=305)",
@@ -799,6 +808,12 @@ class ZHEstimation(HTTEstimation):
             friend_directory=friend_directory,
             channel=channel,
             mc_campaign="RunIISummer16MiniAODv3")
+
+    def get_weights(self):
+        weights = super(ZHEstimation, self).get_weights()
+        weights.remove("crossSectionPerEventWeight")
+        weights.add(Weight("(abs(crossSectionPerEventWeight - 0.04774) < 0.001)*0.04683+(abs(crossSectionPerEventWeight - 0.0007771) < 0.00001)*0.0007666+(abs(crossSectionPerEventWeight - 0.0015391) < 0.0001)*0.00151848", "crossSectionPerEventWeight"))
+        return weights
 
     def get_cuts(self):
         return Cuts(
