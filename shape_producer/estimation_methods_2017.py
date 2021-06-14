@@ -1653,7 +1653,7 @@ class ggHEstimation(HTTEstimation):
     def get_weights(self):
         weights = super(ggHEstimation, self).get_weights()
         weights.add(Weight("ggh_NNLO_weight", "gghNNLO"))
-        weights.add(Weight("1.01", "bbh_inclusion_weight"))
+        # weights.add(Weight("1.01", "bbh_inclusion_weight"))
 
         weights.remove("numberGeneratedEventsWeight"),
         weights.remove("crossSectionPerEventWeight"),
@@ -1681,6 +1681,61 @@ class ggHEstimation(HTTEstimation):
         log_query(self.name, query, files)
         return self.artus_file_names(files)
 
+class ggH95Estimation(HTTEstimation):
+    def __init__(
+            self,
+            era,
+            directory,
+            channel,
+            friend_directory=None,
+            folder="nominal",
+            get_triggerweight_for_channel=get_triggerweight_for_channel,
+            get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+    ):
+        super(HTTEstimation, self).__init__(
+            name="ggH95",
+            folder=folder,
+            get_triggerweight_for_channel=get_triggerweight_for_channel,
+            get_singlelepton_triggerweight_for_channel=
+            get_singlelepton_triggerweight_for_channel,
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+            era=era,
+            directory=directory,
+            friend_directory=friend_directory,
+            channel=channel,
+            mc_campaign="RunIIFall17MiniAODv2")
+
+    def get_weights(self):
+        idWeight="idWeight_1*idWeight_2"
+        return Weights(
+            Weight("isoWeight_1*isoWeight_2", "isoWeight"),
+            Weight(idWeight, "idWeight"),
+            self.get_tauByIsoIdWeight_for_channel(self.channel),
+            Weight("puweight", "puweight"),
+            Weight("trackWeight_1*trackWeight_2", "trackweight"),
+            self.get_triggerweight_for_channel(self.channel._name, True),
+            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
+                   "leptonTauFakeRateWeight"),
+            Weight("prefiringweight", "prefireWeight"),
+            # MC weights
+            Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
+            Weight("numberGeneratedEventsWeight",
+                   "numberGeneratedEventsWeight"),
+            Weight("generatorWeight", "generatorWeight"),
+            self.era.lumi_weight)
+
+    def get_files(self):
+        query = {
+            "process": "(^GluGluHToTauTau.*M95.*)",
+            "data": False,
+            "campaign": self._mc_campaign,
+            "generator": "powheg\-pythia8"
+        }
+        files = self.era.datasets_helper.get_nicks_with_query(query)
+        log_query(self.name, query, files)
+        return self.artus_file_names(files)
 
 # Stage 0 and Stage 1.1 binning of qqH chosen by given name. If no name match, default is stage 0
 class qqHEstimation(HTTEstimation):
@@ -1730,6 +1785,62 @@ class qqHEstimation(HTTEstimation):
         log_query(self.name, query, files)
         return self.artus_file_names(files)
 
+class qqH95Estimation(HTTEstimation):
+    def __init__(
+            self,
+            era,
+            directory,
+            channel,
+            friend_directory=None,
+            folder="nominal",
+            get_triggerweight_for_channel=get_triggerweight_for_channel,
+            get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+    ):
+        super(HTTEstimation, self).__init__(
+            name="qqH95",
+            folder=folder,
+            get_triggerweight_for_channel=get_triggerweight_for_channel,
+            get_singlelepton_triggerweight_for_channel=
+            get_singlelepton_triggerweight_for_channel,
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+            era=era,
+            directory=directory,
+            friend_directory=friend_directory,
+            channel=channel,
+            mc_campaign="RunIIFall17MiniAODv2")
+
+    def get_weights(self):
+        idWeight="idWeight_1*idWeight_2"
+        return Weights(
+            Weight("isoWeight_1*isoWeight_2", "isoWeight"),
+            Weight(idWeight, "idWeight"),
+            self.get_tauByIsoIdWeight_for_channel(self.channel),
+            Weight("puweight", "puweight"),
+            Weight("trackWeight_1*trackWeight_2", "trackweight"),
+            self.get_triggerweight_for_channel(self.channel._name, True),
+            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
+            Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
+                   "leptonTauFakeRateWeight"),
+            Weight("prefiringweight", "prefireWeight"),
+            # MC weights
+            Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
+            Weight("numberGeneratedEventsWeight",
+                   "numberGeneratedEventsWeight"),
+            Weight("generatorWeight", "generatorWeight"),
+            self.era.lumi_weight)
+
+    def get_files(self):
+        query = {
+            "process":
+            "(^VBFHToTauTau.*M95.*)",
+            "data": False,
+            "campaign": self._mc_campaign,
+            "generator": "powheg\-pythia8"
+        }
+        files = self.era.datasets_helper.get_nicks_with_query(query)
+        log_query(self.name, query, files)
+        return self.artus_file_names(files)
 class SUSYggHEstimation(EstimationMethod):
     def __init__(self, era, directory, channel, mass, contribution, fractionweight, friend_directory=None, folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
