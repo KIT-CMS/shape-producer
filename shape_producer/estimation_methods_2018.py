@@ -1764,7 +1764,7 @@ class ggHEstimation(HTTEstimation):
                   "(htxs_stage1p1cat==106)*1.39e-8+"
                   "(htxs_stage1p1cat>=107&&htxs_stage1p1cat<=109)*4.90e-8+"
                   "(htxs_stage1p1cat>=110&&htxs_stage1p1cat<=113)*9.69e-9"
-                  ")*0.98409104275716*(abs(crossSectionPerEventWeight - 0.00538017) > 1e-5) + numberGeneratedEventsWeight*0.005307836*(abs(crossSectionPerEventWeight - 0.00538017) < 1e-5))","ggh_stitching_weight")
+                  ")*0.98409104275716*(abs(crossSectionPerEventWeight - 0.00538017) > 1e-5) + numberGeneratedEventsWeight*0.005307836*(abs(crossSectionPerEventWeight - 0.00538017) < 1e-5))","ggh_stitching_weight"))
 
         return weights
 
@@ -1806,8 +1806,6 @@ class ggH95Estimation(HTTEstimation):
             friend_directory=friend_directory,
             channel=channel,
             mc_campaign="RunIIAutumn18MiniAOD")
-
-            def get_weights(self):
 
     def get_weights(self):
         idWeight="idWeight_1*idWeight_2"
@@ -1864,7 +1862,6 @@ class qqHEstimation(HTTEstimation):
 
     def get_weights(self):
         weights = super(qqHEstimation, self).get_weights()
-
         weights.remove("numberGeneratedEventsWeight"),
         weights.remove("crossSectionPerEventWeight"),
         weights.add(Weight("(((htxs_stage1p1cat>=200&&htxs_stage1p1cat<=202)*(abs(crossSectionPerEventWeight-0.2370687)<1e-4)*0.2340416)+"
@@ -1875,7 +1872,7 @@ class qqHEstimation(HTTEstimation):
                   "(htxs_stage1p1cat>=203&&htxs_stage1p1cat<=205)*9.41e-9+"
                   "(htxs_stage1p1cat==206)*8.52e-9+"
                   "(htxs_stage1p1cat>=207&&htxs_stage1p1cat<=210)*1.79e-8"
-                  ")","qqh_stitching_weight")
+                  ")","qqh_stitching_weight"))
 
         return weights
 
@@ -1917,8 +1914,6 @@ class qqH95Estimation(HTTEstimation):
             friend_directory=friend_directory,
             channel=channel,
             mc_campaign="RunIIAutumn18MiniAOD")
-
-            def get_weights(self):
 
     def get_weights(self):
         idWeight="idWeight_1*idWeight_2"
