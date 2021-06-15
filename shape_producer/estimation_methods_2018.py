@@ -1793,6 +1793,7 @@ class ggH95Estimation(HTTEstimation):
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
     ):
         super(HTTEstimation, self).__init__(
             name="ggH95",
@@ -1801,6 +1802,7 @@ class ggH95Estimation(HTTEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -1812,10 +1814,10 @@ class ggH95Estimation(HTTEstimation):
         return Weights(
             Weight("isoWeight_1*isoWeight_2", "isoWeight"),
             Weight(idWeight, "idWeight"),
-            self.get_tauByIsoIdWeight_for_channel(self.channel),
+            self.get_tauByIsoIdWeight_for_channel(self.channel.name),
+            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
-            self.get_triggerweight_for_channel(self.channel._name, True),
             self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
@@ -1901,6 +1903,7 @@ class qqH95Estimation(HTTEstimation):
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
     ):
         super(HTTEstimation, self).__init__(
             name="qqH95",
@@ -1909,6 +1912,7 @@ class qqH95Estimation(HTTEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -1920,11 +1924,11 @@ class qqH95Estimation(HTTEstimation):
         return Weights(
             Weight("isoWeight_1*isoWeight_2", "isoWeight"),
             Weight(idWeight, "idWeight"),
-            self.get_tauByIsoIdWeight_for_channel(self.channel),
+            self.get_tauByIsoIdWeight_for_channel(self.channel.name),
+            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             self.get_triggerweight_for_channel(self.channel._name, True),
-            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
             Weight("prefiringweight", "prefireWeight"),
@@ -1941,7 +1945,7 @@ class qqH95Estimation(HTTEstimation):
             "(^VBFHToTauTau.*M95.*)",
             "data": False,
             "campaign": self._mc_campaign,
-            "generator": "powheg\-pythia8"
+            "generator": "powheg\-pythia"
         }
         files = self.era.datasets_helper.get_nicks_with_query(query)
         log_query(self.name, query, files)

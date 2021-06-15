@@ -1704,6 +1704,7 @@ class ggH95Estimation(HTTEstimation):
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
     ):
         super(HTTEstimation, self).__init__(
             name="ggH95",
@@ -1712,6 +1713,7 @@ class ggH95Estimation(HTTEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -1723,11 +1725,11 @@ class ggH95Estimation(HTTEstimation):
         return Weights(
             Weight("isoWeight_1*isoWeight_2", "isoWeight"),
             Weight(idWeight, "idWeight"),
-            self.get_tauByIsoIdWeight_for_channel(self.channel),
+            self.get_tauByIsoIdWeight_for_channel(self.channel.name),
+            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
             self.get_triggerweight_for_channel(self.channel._name, True),
-            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
             Weight("prefiringweight", "prefireWeight"),
@@ -1812,7 +1814,7 @@ class qqH95Estimation(HTTEstimation):
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
-    ):
+            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,):
         super(HTTEstimation, self).__init__(
             name="qqH95",
             folder=folder,
@@ -1820,6 +1822,7 @@ class qqH95Estimation(HTTEstimation):
             get_singlelepton_triggerweight_for_channel=
             get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
             era=era,
             directory=directory,
             friend_directory=friend_directory,
@@ -1827,23 +1830,24 @@ class qqH95Estimation(HTTEstimation):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_weights(self):
-        idWeight="idWeight_1*idWeight_2"
         return Weights(
-            Weight("isoWeight_1*isoWeight_2", "isoWeight"),
-            Weight(idWeight, "idWeight"),
-            self.get_tauByIsoIdWeight_for_channel(self.channel),
-            Weight("puweight", "puweight"),
-            Weight("trackWeight_1*trackWeight_2", "trackweight"),
-            self.get_triggerweight_for_channel(self.channel._name, True),
-            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
-            Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
-                   "leptonTauFakeRateWeight"),
-            Weight("prefiringweight", "prefireWeight"),
-            # MC weights
-            Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
-            Weight("numberGeneratedEventsWeight",
-                   "numberGeneratedEventsWeight"),
+            # MC related weights
             Weight("generatorWeight", "generatorWeight"),
+            Weight("numberGeneratedEventsWeight",
+                "numberGeneratedEventsWeight"),
+            Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
+            # Weights for corrections
+            Weight("puweight", "puweight"),
+            Weight("idWeight_1*idWeight_2","idweight"),
+            Weight("isoWeight_1*isoWeight_2","isoweight"),
+            Weight("trackWeight_1*trackWeight_2","trackweight"),
+            self.get_triggerweight_for_channel(self.channel.name, True),
+            Weight("eleTauFakeRateWeight*muTauFakeRateWeight", "leptonTauFakeRateWeight"),
+            self.get_tauByIsoIdWeight_for_channel(self.channel.name),
+            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
+            Weight("prefiringweight", "prefireWeight"),
+
+            # Data related scale-factors
             self.era.lumi_weight)
 
     def get_files(self):
