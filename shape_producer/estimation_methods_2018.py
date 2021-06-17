@@ -85,11 +85,12 @@ def get_triggerweight_for_channel(channel, usepowheg=False):
 
     return weight
 
-def get_singlelepton_triggerweight_for_channel(channel):
+def get_singlelepton_triggerweight_for_channel(channel, usepowheg=False):
     weight = Weight("1.0","triggerweight")
 
     MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byMediumDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedMCEfficiencyWeight_medium_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerCorrectedMCEfficiencyWeight_tight_DeepTau_1)"  # hotfix
-    # MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byMediumDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_medium_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1)"
+    if usepowheg:
+        MCTau_1 = "((byTightDeepTau2017v2p1VSjet_1<0.5 && byMediumDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_medium_DeepTau_1 + (byTightDeepTau2017v2p1VSjet_1>0.5)*crossTriggerMCEfficiencyWeight_tight_DeepTau_1)"
     MCTau_2 = MCTau_1.replace("_1","_2")
 
     if "mt" in channel or "et" in channel:
@@ -1816,9 +1817,9 @@ class ggH95Estimation(HTTEstimation):
             Weight(idWeight, "idWeight"),
             self.get_tauByIsoIdWeight_for_channel(self.channel.name),
             self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
+            self.get_triggerweight_for_channel(self.channel._name, True),
             Weight("puweight", "puweight"),
             Weight("trackWeight_1*trackWeight_2", "trackweight"),
-            self.get_singlelepton_triggerweight_for_channel(self.channel.name),
             Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
                    "leptonTauFakeRateWeight"),
             Weight("prefiringweight", "prefireWeight"),
@@ -1840,6 +1841,74 @@ class ggH95Estimation(HTTEstimation):
         files = self.era.datasets_helper.get_nicks_with_query(query)
         log_query(self.name, query, files)
         return self.artus_file_names(files)
+
+
+class ggH95EstimationSplit(HTTEstimation):
+    def __init__(
+            self,
+            era,
+            directory,
+            channel,
+            contribution,
+            friend_directory=None,
+            folder="nominal",
+            get_triggerweight_for_channel=get_triggerweight_for_channel,
+            get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
+    ):
+        super(HTTEstimation, self).__init__(
+            name="ggHM95_{}".format(contribution),
+            folder=folder,
+            get_triggerweight_for_channel=get_triggerweight_for_channel,
+            get_singlelepton_triggerweight_for_channel=
+            get_singlelepton_triggerweight_for_channel,
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
+            era=era,
+            directory=directory,
+            friend_directory=friend_directory,
+            channel=channel,
+            mc_campaign="RunIIAutumn18MiniAOD")
+        self.contribution = contribution
+
+    def get_weights(self):
+        contribution_weight = "1.0"
+        if self.contribution in ["ggA_i", "ggA_t", "ggA_b", "ggH_i", "ggH_t", "ggH_b", "ggh_i", "ggh_t", "ggh_b"]:
+            contribution_weight = "{}_weight".format(self.contribution)
+
+        idWeight="idWeight_1*idWeight_2"
+        return Weights(
+            Weight(contribution_weight, "contributionWeight"),
+            Weight("isoWeight_1*isoWeight_2", "isoWeight"),
+            Weight(idWeight, "idWeight"),
+            self.get_tauByIsoIdWeight_for_channel(self.channel.name),
+            self.get_eleHLTZvtxWeight_for_channel(self.channel.name),
+            self.get_triggerweight_for_channel(self.channel._name, True),
+            Weight("puweight", "puweight"),
+            Weight("trackWeight_1*trackWeight_2", "trackweight"),
+            Weight("eleTauFakeRateWeight*muTauFakeRateWeight",
+                   "leptonTauFakeRateWeight"),
+            Weight("prefiringweight", "prefireWeight"),
+            # MC weights
+            Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
+            Weight("numberGeneratedEventsWeight",
+                   "numberGeneratedEventsWeight"),
+            Weight("generatorWeight", "generatorWeight"),
+            self.era.lumi_weight)
+
+    def get_files(self):
+        query = {
+            "process":
+            "(^GluGluHToTauTau.*M95.*)",
+            "data": False,
+            "campaign": self._mc_campaign,
+            "generator": "powheg\-pythia8"
+        }
+        files = self.era.datasets_helper.get_nicks_with_query(query)
+        log_query(self.name, query, files)
+        return self.artus_file_names(files)
+
 
 
 class qqHEstimation(HTTEstimation):
