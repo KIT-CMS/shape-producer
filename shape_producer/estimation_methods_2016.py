@@ -505,6 +505,7 @@ class ggHEstimation(HTTEstimation):
         weights = super(ggHEstimation, self).get_weights()
         # weights.add(Weight("8.8384e-8/numberGeneratedEventsWeight", "ggh_stitching_weight")),
         weights.remove("numberGeneratedEventsWeight")
+        weights.remove("crossSectionPerEventWeight")
         weights.add(Weight("(numberGeneratedEventsWeight*0.005307836*(abs(crossSectionPerEventWeight - 3.0469376) > 1e-5)+1.0/(9673200 + 19939500 + 19977000)*2.998464*(abs(crossSectionPerEventWeight - 3.0469376) < 1e-5))", "numberGeneratedEventsWeight"))  # 9673200 for inclusive sample and 19673200 for extension
         weights.add(Weight("ggh_NNLO_weight", "gghNNLO"))
         # weights.add(Weight("1.01", "bbh_inclusion_weight"))
@@ -685,6 +686,7 @@ class qqHEstimation(HTTEstimation):
     def get_weights(self):
         weights = super(qqHEstimation, self).get_weights()
         weights.remove("numberGeneratedEventsWeight")
+        weights.remove("crossSectionPerEventWeight")
         weights.add(Weight("(numberGeneratedEventsWeight*((abs(crossSectionPerEventWeight - 0.04774)<0.001)*0.04683+"
                                                 "(abs(crossSectionPerEventWeight - 0.052685)<0.001)*0.051607+"
                                                 "(abs(crossSectionPerEventWeight - 0.03342)<0.001)*0.032728576)"
@@ -3327,3 +3329,4 @@ class QCDEstimationWithW(EstimationMethod):
 
     def get_weights(self):
         raise NotImplementedError
+                                            
