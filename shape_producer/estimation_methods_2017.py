@@ -7,7 +7,7 @@ from estimation_methods import EstimationMethod, SStoOSEstimationMethod, ABCDEst
 from estimation_methods_2016 import DataEstimation as DataEstimation2016
 from estimation_methods_2016 import WEstimationWithQCD as WEstimationWithQCD2016
 from estimation_methods_2016 import QCDEstimationWithW as QCDEstimationWithW2016
-from estimation_methods_2016 import ggH_htxs, qqH_htxs
+from estimation_methods_2016 import ggH_htxs, qqH_htxs, WH_htxs, ZH_htxs, ggZH_htxs
 from systematics import *
 from era import log_query
 from process import *
@@ -1556,13 +1556,14 @@ class VHEstimation(HTTEstimation):
 
 
 class WHEstimation(HTTEstimation):
-    def __init__(self, era, directory, channel, friend_directory=None, folder="nominal",
+    htxs_dict = WH_htxs
+    def __init__(self, name, era, directory, channel, friend_directory=None, folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
             get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,):
         super(HTTEstimation, self).__init__(
-            name="WH",
+            name=name,
             folder=folder,
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
@@ -1575,7 +1576,7 @@ class WHEstimation(HTTEstimation):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_cuts(self):
-        return Cuts(Cut("(htxs_stage1p1cat>=300)&&(htxs_stage1p1cat<=305)", "htxs_match"))
+        return Cuts(Cut(self.htxs_dict[self.name], "htxs_match"))
 
     def get_files(self):
         query = {
@@ -1590,13 +1591,14 @@ class WHEstimation(HTTEstimation):
 
 
 class ZHEstimation(HTTEstimation):
-    def __init__(self, era, directory, channel, friend_directory=None, folder="nominal",
+    htxs_dict = ZH_htxs
+    def __init__(self, name, era, directory, channel, friend_directory=None, folder="nominal",
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
             get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
             get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,):
         super(HTTEstimation, self).__init__(
-            name="ZH",
+            name=name,
             folder=folder,
             get_triggerweight_for_channel=get_triggerweight_for_channel,
             get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
@@ -1609,11 +1611,11 @@ class ZHEstimation(HTTEstimation):
             mc_campaign="RunIIFall17MiniAODv2")
 
     def get_cuts(self):
-        return Cuts(Cut("(htxs_stage1p1cat>=400)&&(htxs_stage1p1cat<=505)", "htxs_match"))
+        return Cuts(Cut(self.htxs_dict[self.name], "htxs_match"))
 
     def get_files(self):
         query = {
-            "process": "(^ZHToTauTau.*125.*|^ggZH.*ZToNuNu.*125.*|^ggZH.*ZToLL.*125.*)",
+            "process": "^ZHToTauTau.*125.*",
             "data": False,
             "campaign": self._mc_campaign,
             "generator": "powheg\-pythia8"
@@ -1622,6 +1624,39 @@ class ZHEstimation(HTTEstimation):
         log_query(self.name, query, files)
         return self.artus_file_names(files)
 
+class ggZHEstimation(HTTEstimation):
+    htxs_dict = ggZH_htxs
+    def __init__(self, name, era, directory, channel, friend_directory=None, folder="nominal",
+            get_triggerweight_for_channel=get_triggerweight_for_channel,
+            get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,):
+        super(HTTEstimation, self).__init__(
+            name=name,
+            folder=folder,
+            get_triggerweight_for_channel=get_triggerweight_for_channel,
+            get_singlelepton_triggerweight_for_channel=get_singlelepton_triggerweight_for_channel,
+            get_tauByIsoIdWeight_for_channel=get_tauByIsoIdWeight_for_channel,
+            get_eleHLTZvtxWeight_for_channel=get_eleHLTZvtxWeight_for_channel,
+            era=era,
+            directory=directory,
+            friend_directory=friend_directory,
+            channel=channel,
+            mc_campaign="RunIIFall17MiniAODv2")
+
+    def get_cuts(self):
+        return Cuts(Cut(self.htxs_dict[self.name], "htxs_match"))
+
+    def get_files(self):
+        query = {
+            "process": "(^ggZH.*ZToNuNu.*125.*|^ggZH.*ZToLL.*125.*)",
+            "data": False,
+            "campaign": self._mc_campaign,
+            "generator": "powheg\-pythia8"
+        }
+        files = self.era.datasets_helper.get_nicks_with_query(query)
+        log_query(self.name, query, files)
+        return self.artus_file_names(files)
 
 # Stage 0 and Stage 1.1 binning of ggH chosen by given name. If no name match, default is stage 0
 class ggHEstimation(HTTEstimation):
@@ -1666,7 +1701,7 @@ class ggHEstimation(HTTEstimation):
 
     def get_files(self):
         query = {
-            "process": "(^GluGluHToTauTau.*125.*|^ggZH.*ZToQQ.*125.*)",
+            "process": "^GluGluHToTauTau.*125.*",
             "data": False,
             "campaign": self._mc_campaign,
             "generator": "powheg\-pythia8"
@@ -1675,6 +1710,21 @@ class ggHEstimation(HTTEstimation):
         log_query(self.name, query, files)
         return self.artus_file_names(files)
 
+class ggZH_hadEstimation(ggHEstimation):
+    def get_cuts(self):
+        return Cuts(
+            Cut(self.htxs_dict[self.name.replace("ggZH_had", "ggH").replace("GG2HQQ", "GG2H")],"htxs_match"))
+
+    def get_files(self):
+        query = {
+            "process": "^ggZH.*ZToQQ.*125.*",
+            "data": False,
+            "campaign": self._mc_campaign,
+            "generator": "powheg\-pythia8"
+        }
+        files = self.era.datasets_helper.get_nicks_with_query(query)
+        log_query(self.name, query, files)
+        return self.artus_file_names(files)
 
 # Stage 0 and Stage 1.1 binning of qqH chosen by given name. If no name match, default is stage 0
 class qqHEstimation(HTTEstimation):
@@ -1715,7 +1765,39 @@ class qqHEstimation(HTTEstimation):
 
     def get_files(self):
         query = {
-            "process": "(^VBFHToTauTau.*125.*|^W(minus|plus)HToTauTau.*125.*|^ZHToTauTau.*125.*)",
+            "process": "^VBFHToTauTau.*125.*",
+            "data": False,
+            "campaign": self._mc_campaign,
+            "generator": "powheg\-pythia8"
+        }
+        files = self.era.datasets_helper.get_nicks_with_query(query)
+        log_query(self.name, query, files)
+        return self.artus_file_names(files)
+
+class WH_hadEstimation(qqHEstimation):
+    def get_cuts(self):
+        return Cuts(
+            Cut(self.htxs_dict[self.name.replace("WH_had", "qqH")],"htxs_match"))
+
+    def get_files(self):
+        query = {
+            "process": "^W(minus|plus)HToTauTau.*125.*",
+            "data": False,
+            "campaign": self._mc_campaign,
+            "generator": "powheg\-pythia8"
+        }
+        files = self.era.datasets_helper.get_nicks_with_query(query)
+        log_query(self.name, query, files)
+        return self.artus_file_names(files)
+
+class ZH_hadEstimation(qqHEstimation):
+    def get_cuts(self):
+        return Cuts(
+            Cut(self.htxs_dict[self.name.replace("ZH_had", "qqH")],"htxs_match"))
+
+    def get_files(self):
+        query = {
+            "process": "^ZHToTauTau.*125.*",
             "data": False,
             "campaign": self._mc_campaign,
             "generator": "powheg\-pythia8"
