@@ -315,7 +315,7 @@ class NMSSMEstimation(EstimationMethod):
             get_eleRecoWeight_for_channel(self.channel.name),
             Weight("prefiringweight", "prefireWeight"),
             # MC weights
-            Weight("0.1*crossSectionPerEventWeight", "crossSectionPerEventWeight"),
+            Weight("crossSectionPerEventWeight", "crossSectionPerEventWeight"),
             Weight("numberGeneratedEventsWeight",
                    "numberGeneratedEventsWeight"),
             Weight("generatorWeight", "generatorWeight"),
